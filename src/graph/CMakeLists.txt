@@ -9,7 +9,6 @@ set(SOURCE_FILES
         Edge.cpp
         Path.cpp
         Graph.cpp
-        Vertex.cpp
         )
 
 add_library(graph STATIC ${SOURCE_FILES})

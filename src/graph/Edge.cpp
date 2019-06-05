@@ -21,10 +21,4 @@ namespace graph {
     }
 
 
-    bool Edge::isDirectionalCompatible(def::Orientation ori) const {
-
-        return (orientation() == def::Orientation::NONE) || (isForward() == (ori == def::Orientation::FORWARDS));
-
-    }
-
 }
