@@ -68,7 +68,7 @@ public:
     void createPath(double len, double s0) {
 
         if (fabs(s0) > len * 0.5 || len < 0.0)
-            std::invalid_argument("abs(s0) must be smaller than len * 0.5 and len must be larger than zero");
+            throw std::invalid_argument("abs(s0) must be smaller than len * 0.5 and len must be larger than zero");
 
         // map coordinate for path start
         simmap::server::MapCoordinate mc(e_R1_LS1_R1, 0.0, 0.0);
