@@ -40,7 +40,8 @@ Eigen::Vector2d Path::Matcher::bounds() const {
 
 void Path::create(Path &path, Track &track, double lenHead, double lenBack, const MapCoordinate &position) {
 
-    m_assert(lenBack >= 0.0 && lenHead >= 0.0, "Wrong length");
+    if (lenBack < 0.0 || lenHead < 0.0)
+        throw std::invalid_argument("Lengths must be larger than zero");
 
     // empty segments and add position edge
     path._segments.clear();
@@ -62,7 +63,8 @@ void Path::create(Path &path, Track &track, double lenHead, double lenBack, cons
 
 void Path::updatePath(double lenHead, double lenBack, Track &track) {
 
-    m_assert(lenHead >= 0.0 || lenBack >= 0.0, "length must not be negative");
+    if (lenHead < 0.0 && lenBack < 0.0)
+        throw std::invalid_argument("length must not be negative");
 
     // update track
     updateTrack(position(), track);

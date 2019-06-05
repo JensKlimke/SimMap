@@ -6,7 +6,6 @@
 #include "Path.h"
 #include "Edge.h"
 #include "Object.h"
-#include <base/m_assert.h>
 #include <tuple>
 
 namespace graph {
@@ -48,7 +47,8 @@ namespace graph {
 
     void Path::position(double s) {
 
-        m_assert(s <= distanceToHead() && s >= -distanceToBack(), "wrong s");
+        if (s > distanceToHead() || s < -distanceToBack())
+            throw std::invalid_argument("wrong s");
 
         // get iterator
         auto r = index(s);
@@ -134,14 +134,16 @@ namespace graph {
     Path::iterator_t Path::index_fw(double &s) const {
 
         // check if s is positive
-        m_assert(s >= 0.0, "s must be positive");
+        if (s < 0.0)
+            throw std::invalid_argument("s must be positive");
 
         // get body part until s is reached
         auto r = _body(s);
+        auto sm = r.back().s;
 
         // check result (resultant position must be equal to search position)
-        auto sm = r.back().s;
-        m_assert(fabs(sm - s) < def::EPS_DOUBLE_CMP, "Wrong s");
+        if (fabs(sm - s) >= def::EPS_DOUBLE_CMP)
+            throw std::invalid_argument("Wrong s");
 
         // update s
         if (r.size() > 1)
@@ -158,14 +160,16 @@ namespace graph {
     Path::iterator_t Path::index_bw(double &s) const {
 
         // check if s is positive
-        m_assert(s <= 0.0, "s must be negative");
+        if (s > 0.0)
+            throw std::invalid_argument("s must be negative");
 
         // get tail part until s is reached
         auto r = _tail(-s);
 
         // check result (resultant position must be equal to search position)
         auto sm = r.back().s;
-        m_assert(fabs(sm + s) < def::EPS_DOUBLE_CMP, "Wrong s");
+        if (fabs(sm + s) > def::EPS_DOUBLE_CMP)
+            throw std::invalid_argument("Wrong s");
 
         // update s
         if (r.size() > 1) {

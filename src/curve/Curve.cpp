@@ -11,7 +11,6 @@
 
 #include <base/functions.h>
 #include <cmath>
-#include <base/m_assert.h>
 
 namespace simmap {
 namespace curve {
@@ -34,7 +33,8 @@ namespace curve {
     void Curve::startPoint(const def::CurvePoint &pos) {
 
         // check
-        m_assert(!empty(), "no elements");
+        if (empty())
+            throw std::runtime_error("no elements are defined");
 
         // set start point and update start points of elements
         GeoElement::startPoint(pos);
@@ -87,7 +87,8 @@ namespace curve {
     void Curve::curvature(const Eigen::RowVectorXd &s, const Eigen::RowVectorXd &kappa) {
 
         // check size
-        m_assert(s.size() == kappa.size(), "sizes don't match");
+        if (s.size() != kappa.size())
+            throw std::invalid_argument("sizes don't match");
 
         // set end point
         length(s(s.cols() - 1));
@@ -102,7 +103,8 @@ namespace curve {
     void Curve::curvature(const Eigen::RowVectorXd &s, const Eigen::RowVectorXd &kappa0, const Eigen::RowVectorXd &kappa1) {
 
         // check size
-        m_assert(s.size() - 1 == kappa0.size() && kappa0.size() == kappa1.size(), "sizes invalid");
+        if (s.size() - 1 != kappa0.size() || kappa0.size() != kappa1.size())
+            throw std::invalid_argument("sizes invalid");
 
         // set end point
         length(s(s.cols() - 1));

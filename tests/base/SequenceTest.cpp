@@ -278,8 +278,8 @@ TEST_F(SequenceTest, AccessElements) {
     EXPECT_NEAR(1.0, this->atPos(7.0).position, def::EPS_DISTANCE);
 
     // check wrong access
-    EXPECT_DEATH(this->atPos(0.999999), ".*");
-    EXPECT_DEATH(this->atPos(7.000001), ".*");
+    EXPECT_THROW(this->atPos(0.999999), std::invalid_argument);
+    EXPECT_THROW(this->atPos(7.000001), std::invalid_argument);
 
 }
 

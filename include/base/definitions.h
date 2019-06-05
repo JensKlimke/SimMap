@@ -51,8 +51,11 @@ namespace def {
     enum class ContactPoint { START, END };
     enum class Reference {INNER, OUTER, CENTER};
 
-    struct CurvePoint
-    {
+    /**
+     * Curve point class
+     * @author Jens Klimke <jens.klimke@rwth-aachen.de>
+     */
+    struct CurvePoint {
         Eigen::Vector3d position;
         double angle;
         double curvature;
