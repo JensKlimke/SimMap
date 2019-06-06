@@ -866,10 +866,8 @@ namespace simmap {
             _getTargetsOnPath(pool, tars, ag->path, 0, true);
 
             // iterate over neighbored paths
-            for (const auto &p : ag->path.neighboredPaths(ag->track)) {
-                _getTargetsOnPath(pool, tars, p.second, p.first.index, p.second.position().edge()->isForward() == ag->path.position().edge()->isForward());
-            }
-
+            // for (const auto &p : ag->path.neighboredPaths(ag->track))
+            //    _getTargetsOnPath(pool, tars, p.second, p.first.index, p.second.position().edge()->isForward() == ag->path.position().edge()->isForward());
 
             // sort results by distance
             sort(tars.begin(), tars.end(),

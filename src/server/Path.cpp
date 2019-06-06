@@ -462,6 +462,7 @@ std::vector<double> Path::distance(const MapCoordinate &mc) const {
 
     // create container
     std::vector<double> ret{};
+    ret.reserve(_segments.size());
 
     // initialize vars and get body
     double s0 = -position().s();
