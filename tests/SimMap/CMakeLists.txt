@@ -1,6 +1,7 @@
 set(SOURCE_FILES
         LibTest.cpp
-        LoadLibTest.cpp)
+        LoadLibTest.cpp
+        SpeedTest.cpp )
 
 
 add_executable(LibTest ${SOURCE_FILES})

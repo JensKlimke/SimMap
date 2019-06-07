@@ -22,6 +22,9 @@ TEST(AdapterTest, LoadMap2) {
     simmap::odra::ODRAdapter odr;
     odr.loadFile("./tests/tracks/CircleR100.xodr");
 
+    std::fstream file("./tools/map.json", std::ios::out);
+    odr.streamTo(file);
+
 }
 
 

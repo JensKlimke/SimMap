@@ -149,25 +149,25 @@ namespace odra {
 
         }
 
-        /*i = 0;
-        for(const auto &o : this->_offsets) {
 
-            os << (i++ == 0 ? "" : ", ") << R"({"name" : ")" << o.first << R"(", "type" : "offset", "points" : [ )";
+        for (const auto &e : _laneNetwork) {
 
-            // get curve and steps
-            auto c = _curves.at(o.first);
-            auto s = c->steps(1.0, 10.0);
+            // get rad and curves
+            auto edge = reinterpret_cast<ODREdge *>(e.second.get());
+
+            // start data set
+            os << (i++ == 0 ? "" : ", ") << R"({"name" : ")" << e.first << R"(", "type" : "line", "points" : [ )";
 
             // calculate points
-            auto pts = (*c)(s);
-            auto offs = (*o.second)(s);
+            auto pts = base::maxspace(0.0, edge->length(), 5.0);
 
             // iterate over points
-            size_t j = 0;
-            for(auto pt : pts) {
+            for (size_t j = 0; j < pts.size(); ++j) {
 
-                // add offset
-                pt.position = base::toGlobal(pt, {0.0, offs(j), 0.0});
+                auto s = pts(j);
+
+                // inner line
+                auto pt = edge->position(s, def::Reference::INNER, 0.0);
 
                 // write position
                 os << (j++ == 0 ? "" : ", ") << "{ \"x\" : " << pt.position.x() << ", \"y\" : " << pt.position.y()
@@ -183,7 +183,34 @@ namespace odra {
 
             os << " ] }\n ";
 
-        }*/
+
+            // start data set
+            os << (i++ == 0 ? "" : ", ") << R"({"name" : ")" << e.first << R"(", "type" : "line", "points" : [ )";
+
+            // iterate over points
+            for (size_t j = 0; j < pts.size(); ++j) {
+
+                auto s = pts(j);
+
+                // outer line
+                auto pt = edge->position(s, def::Reference::OUTER, 0.0);
+
+                // write position
+                os << (j++ == 0 ? "" : ", ") << "{ \"x\" : " << pt.position.x() << ", \"y\" : " << pt.position.y()
+                   << ", \"phi\" : " << pt.angle << " }\n";
+
+                // save boundaries
+                xMin = xMin <= pt.position.x() ? xMin : pt.position.x();
+                xMax = xMax >= pt.position.x() ? xMax : pt.position.x();
+                yMin = yMin <= pt.position.y() ? yMin : pt.position.y();
+                yMax = yMax >= pt.position.y() ? yMax : pt.position.y();
+
+            }
+
+            os << " ] }\n ";
+
+
+        }
 
         // write meta data
         os << R"( ], "meta" : { "xMin" : )" << xMin << ", \"xMax\" : " << xMax
