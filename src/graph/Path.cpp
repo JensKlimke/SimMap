@@ -48,7 +48,7 @@ namespace graph {
 
     void Path::position(double s) {
 
-        m_assert(s <= distanceToHead() && s >= -distanceToBack(), "wrong s");
+        if (s <= distanceToHead() && s >= -distanceToBack(), "wrong s");
 
         // get iterator
         auto r = index(s);
