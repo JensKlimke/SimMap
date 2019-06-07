@@ -9,12 +9,22 @@ namespace graph {
 
     class Edge;
 
-    class Object {
+    /**
+     * An interface to define objects
+     * @author Jens Klimke jens.klimke@rwth-aachen.de
+     */
+    struct Object {
 
-    public:
 
+        /**
+         * Default constructor
+         */
         Object() = default;
 
+
+        /**
+         * Default destructor
+         */
         virtual ~Object() = default;
 
 

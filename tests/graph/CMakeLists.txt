@@ -1,7 +1,6 @@
 # source files
 set(SOURCE_FILES
             BasicPathTest.cpp
-            GraphTest.cpp
             NeighbordTest.cpp
             OrientedTest.cpp
         )

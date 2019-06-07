@@ -5,8 +5,9 @@
 #ifndef SIMMAP_GRAPH_H
 #define SIMMAP_GRAPH_H
 
-#include <vector>
+#include <string>
 #include <list>
+#include <tuple>
 #include <map>
 #include <memory>
 #include <base/definitions.h>
@@ -14,6 +15,7 @@
 
 namespace graph {
 
+    // pre-define edge class
     class Edge;
 
 
@@ -24,11 +26,22 @@ namespace graph {
     struct Graph : public std::map<std::string, std::shared_ptr<Edge>> {
 
 
+        /** A short definition of an orientation stored together with and edge */
         typedef std::pair<def::Orientation, const graph::Edge *> OrientedEdge;
+
+        /** A typedef to store a list of oriented edges */
         typedef std::list<OrientedEdge> EdgeList;
 
 
+        /**
+         * Default constructor
+         */
         Graph() = default;
+
+
+        /**
+         * Default destructor
+         */
         virtual ~Graph() = default;
 
 

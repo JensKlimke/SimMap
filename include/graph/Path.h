@@ -23,31 +23,38 @@ namespace graph {
 
     protected:
 
-
+        /** Type definition for a list of edges. */
         typedef std::list<const Edge *> edge_vector_t;
+
+        /** Type definition for an iterator of edge lists. */
         typedef edge_vector_t::const_iterator iterator_t;
 
+        /**
+         * Structure to store an edge list iterator and a position.
+         * An object of this type is called path position.
+         */
         struct position_t {
             iterator_t it;
             double s{};
         };
 
+        /** Type definition to store a vector of path positions. */
         typedef std::vector<position_t> position_vector_t;
 
 
-        /* Attributes */
 
-        edge_vector_t _segments;
+        edge_vector_t _segments; //!< The container to store the edges of the path
 
-        iterator_t _it{};
-        double _s = 0.0;
+        iterator_t _it{}; //!< An iterator to store the edge of the path, in which the current position is defined TODO: use position_t to store position
+        double _s = 0.0;  //!< The position in the current edge
 
-        double _backPos = 0.0;
-        double _headPos = 0.0;
+        double _backPos = 0.0; //!< The position in the last edge, where the path ends
+        double _headPos = 0.0; //!< The position in the first edge, where the path begins
 
 
     public:
 
+        /** Type definition for object list (only a reference to the edge object list type definition) */
         typedef Edge::ObjectsList ObjectsList;
 
 
@@ -178,9 +185,6 @@ namespace graph {
          * @return Vector of position objects
          */
         position_vector_t _tail(double stopAt = INFINITY) const;
-
-
-
 
     };
 

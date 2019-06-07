@@ -24,8 +24,10 @@ class MapCoordinate;
 struct LaneEdge : public ::graph::Edge {
 
 
-    Track::TrackElement _trackElement = {def::Orientation::NONE, nullptr};
-    base::sequence<LaneSeparation*> _separations{};
+    Track::TrackElement _trackElement = {def::Orientation::NONE, nullptr}; //!< The track element the edge belongs to (e.g. a road)
+
+    base::sequence<LaneSeparation*> _separations_left{};  //!< A sequence of separation objects, which separate the edge from the neighbored left hand side edge
+    base::sequence<LaneSeparation*> _separations_right{}; //!< A sequence of separation objects, which separate the edge from the neighbored right hand side edge
 
 
     /**

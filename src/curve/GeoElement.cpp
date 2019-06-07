@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <Eigen/Geometry>
 #include <Eigen/Core>
-#include <base/m_assert.h>
 #include <base/definitions.h>
 
 
@@ -39,7 +38,9 @@ namespace curve {
 
     void GeoElement::length(double l) {
 
-        m_assert(len >= 0.0, "Length must not be negative");
+        if (l < 0.0)
+            throw std::invalid_argument("Length must not be negative");
+
         len = l;
 
     }

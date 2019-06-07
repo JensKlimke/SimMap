@@ -29,8 +29,6 @@
 
 #include <vector>
 #include <set>
-
-#include "m_assert.h"
 #include "definitions.h"
 #include "sequence_types.h"
 
@@ -131,7 +129,8 @@ namespace base {
          */
         T* emplace(double s, T &&e) {
 
-            m_assert(_end > s, "s is out of bounds");
+            if (s > _end)
+                throw std::invalid_argument("s is out of bounds");
 
             auto res = _entries.insert(entry_type_t{s, std::move(e)});
 
@@ -150,7 +149,8 @@ namespace base {
          */
         T* push(double s, const T& e) {
 
-            m_assert(_end > s, "s is out of bounds");
+            if (s > _end)
+                throw std::invalid_argument("s is out of bounds");
 
             auto res = _entries.insert(entry_type_t{s, e});
 
@@ -232,7 +232,9 @@ namespace base {
          */
         Entry front() const {
 
-            m_assert(!empty(), "sequence is empty");
+            if (empty())
+                throw std::runtime_error("sequence is empty");
+
             return *begin();
 
         }
@@ -244,7 +246,8 @@ namespace base {
          */
         Entry back() const {
 
-            m_assert(!empty(), "sequence is empty");
+            if (empty())
+                throw std::runtime_error("sequence is empty");
 
             // get last element and update position to end position
             auto e = *std::next(begin(), _entries.size() - 1);
@@ -292,8 +295,11 @@ namespace base {
 
             // TODO: define eps (in template?) to avoid numerical error at beginning or end
 
-            throw_assert(!empty(), "sequence is empty");
-            throw_assert((s <= _end && s >= startPosition()), "s is out of range");
+            if (empty())
+                throw std::runtime_error("sequence is empty");
+
+            if (s > _end || s < startPosition())
+                throw std::invalid_argument("s is out of range");
 
             // find element
             auto it = std::upper_bound(_entries.begin(), _entries.end(), s);

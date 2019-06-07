@@ -23,7 +23,7 @@ namespace curve {
         else if(p.rows() == 1)
             fromValues(s, p);
         else
-            m_assert(false, "Parameter vector p is invalid!");
+            throw std::invalid_argument("Parameter vector p is invalid");
 
     }
 
@@ -37,7 +37,8 @@ namespace curve {
 
     void C3Spline::fromDefinition(const Eigen::RowVectorXd& s, const Eigen::Matrix<double, 4, Eigen::Dynamic>& p) {
 
-        m_assert(s.cols() - 1 == p.cols(), "s must be +1 larger than p");
+        if (s.cols() - 1 != p.cols())
+            throw std::invalid_argument("s must be +1 larger than p");
 
         // set length
         double s0 = -INFINITY;
@@ -46,7 +47,8 @@ namespace curve {
         for(int i = 0; i < p.cols(); ++i) {
 
             // check s
-            m_assert(s(i) > s0, "s must increase monotonically");
+            if (s(i) <= s0)
+                std::invalid_argument("s must increase monotonically");
 
             // create element such that derivatives are zero and values are as given
             insert(s(i), p(0,i), p(1,i), p(2,i), p(3,i));
@@ -70,13 +72,15 @@ namespace curve {
 
     void C3Spline::fromValuesAndDerivatives(const Eigen::RowVectorXd& s, const Eigen::RowVectorXd& w, const Eigen::RowVectorXd& der) {
 
-        m_assert(der.cols() == w.cols() && s.cols() == w.cols(), "Vectors must have the same length");
+        if (der.cols() != w.cols() || s.cols() != w.cols())
+            throw std::invalid_argument("Vectors must have the same length");
 
         // iterate over vector
         for(int i = 1; i < w.cols(); ++i) {
 
             // check s
-            m_assert(s(i - 1) < s(i), "s must increase strict monotonically");
+            if (s(i - 1) >= s(i))
+                throw std::invalid_argument("s must increase strict monotonically");
 
             // create element such that derivatives are zero and values are as given
             sequence::emplace(s(i - 1), base::poly1::order3_fromValueAndDerivative(0.0,

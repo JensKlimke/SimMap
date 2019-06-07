@@ -1,5 +1,3 @@
-#include <utility>
-
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "hicpp-use-equals-delete"
 #pragma clang diagnostic ignored "-Wunknown-pragmas"
@@ -9,7 +7,7 @@
 // Created by Jens Klimke on 2019-01-03.
 //
 
-#include <utility>
+#include <memory>
 #include <vector>
 #include <gtest/gtest.h>
 #include <graph/Path.h>
@@ -61,7 +59,9 @@ struct BasicPathEdge : public ::graph::Edge {
 
     double _len;
     def::Orientation _ori;
-    std::vector<std::pair<double, BasicPathObject>> _objs{};
+
+    std::vector<std::shared_ptr<BasicPathObject>> _objVector{};
+    ObjectsList _objs{};
 
     BasicPathEdge(double len, def::Orientation ori) : _len(len), _ori(ori) {}
 
@@ -69,9 +69,18 @@ struct BasicPathEdge : public ::graph::Edge {
 
     def::Orientation orientation() const override { return _ori; }
 
-    void addObject(double s, BasicPathObject obj) { _objs.push_back({s, std::move(obj)}); };
+    void addObject(double s, BasicPathObject &&obj) {
 
-    ObjectsList objects() const override { return _objects(_objs); }
+        // create shared pointer
+        auto ptr = std::make_shared<BasicPathObject>(obj);
+
+        // add to lists
+        _objVector.emplace_back(ptr);
+        _objs.emplace_back(s, ptr.get());
+
+    };
+
+    ObjectsList objects() const override { return _objs; }
 
 };
 
