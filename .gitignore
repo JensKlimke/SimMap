@@ -12,4 +12,4 @@ backup
 .DS_Store
 .idea
 tools/*.json
-
+doc
