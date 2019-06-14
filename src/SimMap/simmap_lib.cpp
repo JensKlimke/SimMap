@@ -783,7 +783,7 @@ namespace simmap {
             *n = 0;
 
             // iterate over objects
-            // TODO: save neighbored lanes to efficiently search for targets (recaluclate intelligently on position update)
+            // TODO: save neighbored lanes to efficiently search for targets (recalculate intelligently on position update)
             for (const auto &p : ag->path.neighboredPaths(ag->track)) {
 
                 // check if lanes have same direction
@@ -802,6 +802,7 @@ namespace simmap {
                              ? (p.first.allowed ? Access::ALLOWED : Access::NOT_ALLOWED)
                              : Access::ALLOWED;
                 li->direction = sd ? Direction::FORWARDS : Direction::BACKWARDS;
+                li->id = p.second.position().edge()->id().c_str();
 
                 // check length
                 if (++*n == max)
