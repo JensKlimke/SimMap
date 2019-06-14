@@ -68,6 +68,7 @@ namespace simmap {
         double lengthOnTrack;
         double lengthToClosed;
         enum Access access;
+        double s;
         const char* id;
     };
 

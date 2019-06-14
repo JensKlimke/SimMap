@@ -793,6 +793,9 @@ namespace simmap {
                 lanes[*n] = LaneInformation{};
                 auto li = &lanes[*n];
 
+                // get edge
+                auto pos = p.second.position();
+
                 // save information
                 li->width = p.second.position().width();
                 li->index = p.first.index;
@@ -802,7 +805,8 @@ namespace simmap {
                              ? (p.first.allowed ? Access::ALLOWED : Access::NOT_ALLOWED)
                              : Access::ALLOWED;
                 li->direction = sd ? Direction::FORWARDS : Direction::BACKWARDS;
-                li->id = p.second.position().edge()->id().c_str();
+                li->id = pos.edge()->id().c_str();
+                li->s  = pos.s();
 
                 // check length
                 if (++*n == max)
