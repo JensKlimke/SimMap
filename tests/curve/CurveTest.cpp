@@ -130,7 +130,8 @@ public:
     static bool compareCurvePointVectors(const std::vector<def::CurvePoint> &p0, const std::vector<def::CurvePoint> &p1,
             double eps, double angle_offset = 0.0, double curvature_factor = 1.0) {
 
-        m_assert(p0.size() == p1.size(), "vector sizes not equal");
+        if (p0.size() != p1.size())
+            throw std::invalid_argument("vector sizes not equal");
 
         // iterate over elements
         for(size_t i = 0; i < p0.size(); ++i)
@@ -283,8 +284,8 @@ TEST_F(CurveTest, Curve) {
     EXPECT_TRUE(CurveTest::compareCurvePoints(def::CurvePoint({RowVector3d(100.0, 0.0, 0.0), 0.0, 0.0}), crv1(100.0), 1e-12));
 
     // test bounds
-    EXPECT_DEATH(crv1(-1.0),  ".*"); // error
-    EXPECT_DEATH(crv1(101.0), ".*"); // error
+    EXPECT_THROW(crv1(-1.0), std::invalid_argument); // error
+    EXPECT_THROW(crv1(101.0), std::invalid_argument); // error
 
     // create test points
     createTestPoints();

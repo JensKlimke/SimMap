@@ -17,13 +17,28 @@ namespace server {
      */
     struct LaneSeparation {
 
+        /** An enumeration for the separation type */
         enum class SeparationType { NONE, AREA, LINE, STRUCTURAL };
+
+
+        /** An enumeration for crossing rule */
         enum class CrossingRule { ALLOWED, RESTRICTED, CAUTION };
 
-        double width = 0.0;
-        SeparationType type = SeparationType::NONE;
 
+        double width = 0.0; //!< The width of the separation area
+        SeparationType type = SeparationType::NONE; //!< The type of the separation
+        CrossingRule  rule = CrossingRule::ALLOWED; //!< The rule to cross the separation
+
+
+        /**
+         * Default constructor
+         */
         LaneSeparation() = default;
+
+
+        /**
+         * Default destructor
+         */
         virtual ~LaneSeparation() = default;
 
     };

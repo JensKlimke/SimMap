@@ -20,14 +20,17 @@ namespace graph {
 
     public:
 
+        /** Type definition for pairs of a contact point and a oriented element */
         typedef std::pair<def::ContactPoint, Oriented *> OPair;
+
+        /** Type definition for a vector of contact points with regarding oriented elements */
         typedef std::vector<OPair> Connections;
 
 
     protected:
 
-        Connections _nexts;
-        Connections _prevs;
+        Connections _nexts; //!< The following elements (with contact points)
+        Connections _prevs; //!< The previous elements (with contact points)
 
 
     public:

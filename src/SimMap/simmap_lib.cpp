@@ -783,7 +783,7 @@ namespace simmap {
             *n = 0;
 
             // iterate over objects
-            // TODO: save neighbored lanes to efficiently search for targets (recaluclate intelligently on position update)
+            // TODO: save neighbored lanes to efficiently search for targets (recalculate intelligently on position update)
             for (const auto &p : ag->path.neighboredPaths(ag->track)) {
 
                 // check if lanes have same direction
@@ -792,6 +792,9 @@ namespace simmap {
                 // create lane information
                 lanes[*n] = LaneInformation{};
                 auto li = &lanes[*n];
+
+                // get edge
+                auto pos = p.second.position();
 
                 // save information
                 li->width = p.second.position().width();
@@ -802,6 +805,8 @@ namespace simmap {
                              ? (p.first.allowed ? Access::ALLOWED : Access::NOT_ALLOWED)
                              : Access::ALLOWED;
                 li->direction = sd ? Direction::FORWARDS : Direction::BACKWARDS;
+                li->id = pos.edge()->id().c_str();
+                li->s  = pos.s();
 
                 // check length
                 if (++*n == max)
@@ -866,10 +871,9 @@ namespace simmap {
             _getTargetsOnPath(pool, tars, ag->path, 0, true);
 
             // iterate over neighbored paths
-            for (const auto &p : ag->path.neighboredPaths(ag->track)) {
-                _getTargetsOnPath(pool, tars, p.second, p.first.index, p.second.position().edge()->isForward() == ag->path.position().edge()->isForward());
-            }
-
+            for (const auto &p : ag->path.neighboredPaths(ag->track))
+                _getTargetsOnPath(pool, tars, p.second, p.first.index,
+                                  p.second.position().edge()->isForward() == ag->path.position().edge()->isForward());
 
             // sort results by distance
             sort(tars.begin(), tars.end(),

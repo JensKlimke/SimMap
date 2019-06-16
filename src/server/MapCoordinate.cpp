@@ -40,7 +40,9 @@ namespace server {
 
     void MapCoordinate::s(double s) {
 
-        m_assert(s >= 0 && s <= _edge->length(), "s out of bounds");
+        if (s < 0 || s > _edge->length())
+            throw std::invalid_argument("s out of bounds");
+
         _s = s;
 
     }

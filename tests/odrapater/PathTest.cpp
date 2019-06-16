@@ -21,15 +21,15 @@ public:
     const double R = 100.0;
     const double W = 3.75;
 
-    simmap::server::Map *map;
+    simmap::server::Map *map = nullptr;
     simmap::server::Track track{};
 
     // get edges
-    ODREdge *e_R1_LS1_R1;
-    ODREdge *e_R2_LS1_L1;
+    ODREdge *e_R1_LS1_R1 = nullptr;
+    ODREdge *e_R2_LS1_L1 = nullptr;
 
-    ODRRoad *rd1;
-    ODRRoad *rd2;
+    ODRRoad *rd1 = nullptr;
+    ODRRoad *rd2 = nullptr;
 
 
     void SetUp() override {
@@ -67,7 +67,8 @@ public:
 
     void createPath(double len, double s0) {
 
-        m_assert(fabs(s0) <= len * 0.5 && len >= 0.0, "|s0| must be smaller than len * 0.5");
+        if (fabs(s0) > len * 0.5 || len < 0.0)
+            throw std::invalid_argument("abs(s0) must be smaller than len * 0.5 and len must be larger than zero");
 
         // map coordinate for path start
         simmap::server::MapCoordinate mc(e_R1_LS1_R1, 0.0, 0.0);

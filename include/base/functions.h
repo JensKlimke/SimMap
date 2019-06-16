@@ -37,7 +37,6 @@
 #include <fstream>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
-#include "m_assert.h"
 #include "definitions.h"
 
 
@@ -53,7 +52,8 @@ namespace base {
      */
     inline Eigen::RowVectorXd maxspace(double a, double b, double ds) {
 
-        m_assert((b - a) * ds >= 0.0, "(b-a)*ds must pe positive");
+        if ((b - a) * ds < 0.0)
+            throw std::invalid_argument("(b-a)*ds must pe positive");
 
         // get number of elements
         unsigned long n = static_cast<unsigned long>(ceil((b - a) / ds) + 1);
@@ -118,8 +118,11 @@ namespace base {
      */
     inline void addValueToVector(Eigen::RowVectorXd &vec, size_t i, double val) {
 
-        m_assert(vec.cols() != 0, "Vector must not be empty");
-        m_assert(i <= vec.cols() - 1, "i out of bounds");
+        if (vec.cols() == 0)
+            throw std::invalid_argument("Vector must not be empty");
+
+        if (i >= vec.cols())
+            throw std::invalid_argument("i out of bounds");
 
         // check if i is last position
         if (i == vec.cols() - 1) {
@@ -144,8 +147,11 @@ namespace base {
      */
     inline void removeElementFromVector(Eigen::RowVectorXd &vec, size_t i) {
 
-        m_assert(vec.cols() != 0, "Vector must not be empty");
-        m_assert(i <= vec.cols() - 1, "i out of bounds");
+        if (vec.cols() == 0)
+            throw std::invalid_argument("Vector must not be empty");
+
+        if (i > vec.cols() - 1)
+            throw std::invalid_argument("i out of bounds");
 
         // get head
         if (i == vec.cols() - 1) {

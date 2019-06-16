@@ -12,4 +12,6 @@ backup
 .DS_Store
 .idea
 tools/*.json
+doc/html
+doc/latex
 

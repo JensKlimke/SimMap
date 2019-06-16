@@ -16,10 +16,13 @@ namespace graph {
      */
     class Neighbored {
 
+        /** A typedef to store a sequence of Element  of implementing Neighbored,
+         * @see: base::sequence
+         */
         typedef base::sequence<const Neighbored*> NeighborSeq;
 
-        NeighborSeq _right;
-        NeighborSeq _left;
+        NeighborSeq _right; //!< The sequence of right hand side neighbors
+        NeighborSeq _left;  //!< The sequence of left hand side neighbors
 
 
     public:
@@ -37,7 +40,7 @@ namespace graph {
 
 
         /**
-         * Destructor
+         * Default destructor
          */
         virtual ~Neighbored() = default;
 
