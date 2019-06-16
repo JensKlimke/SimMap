@@ -42,7 +42,7 @@ else ()
 endif ()
 
 
-set(odr_INCLUDE_DIR ${odr_SOURCE_DIR}/include/ CACHE DIRECTORY "Include Directory of the OpneDRIVE parser" FORCE)
+set(odr_INCLUDE_DIR ${odr_SOURCE_DIR}/include/ CACHE DIRECTORY "Include Directory of the OpenDRIVE parser" FORCE)
 include_directories(${odr_INCLUDE_DIR})
 
 

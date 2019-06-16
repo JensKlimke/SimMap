@@ -471,6 +471,7 @@ TEST_F(LibraryTest, GetLaneInformation) {
     EXPECT_DOUBLE_EQ(700.0, info[2].lengthToClosed);
     EXPECT_EQ(Access::ALLOWED, info[2].access);
 
+
 }
 
 
