@@ -47,13 +47,13 @@ public:
 
         id_type_t id;
 
-        EXPECT_EQ(0, _loadMap("tests/tracks/CircleR100.xodr", &id));
+        EXPECT_EQ(0, _loadMap(base::string_format("%s/CircleR100.xodr", TRACKS_DIR), &id));
         EXPECT_EQ(1, id);
 
-        EXPECT_EQ(26, _loadMap("tests/tracks/not_existing_map.xodr", &id));
+        EXPECT_EQ(26, _loadMap(base::string_format("%s/not_existing_map.xodr", TRACKS_DIR), &id));
         EXPECT_EQ(0, id);
 
-        EXPECT_EQ(0, _loadMap("tests/tracks/map.xodr", &id));
+        EXPECT_EQ(0, _loadMap(base::string_format("%s/map.xodr", TRACKS_DIR), &id));
         EXPECT_EQ(2, id);
 
 

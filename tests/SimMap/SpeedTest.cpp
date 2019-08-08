@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <SimMap/lib.h>
+#include <base/functions.h>
 
 class SpeedTest : public testing::Test {
 
@@ -25,7 +26,7 @@ TEST_F(SpeedTest, Targets) {
 
     // load map
     unsigned int id;
-    simmap::loadMap("tests/tracks/CircleR100.xodr", &id);
+    simmap::loadMap(base::string_format("%s/CircleR100.xodr", TRACKS_DIR).c_str(), &id);
 
     // define track
     std::vector<const char*> track = {"1", "-2"};

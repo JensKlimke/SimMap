@@ -10,6 +10,7 @@
 #include <server/MapCoordinate.h>
 #include <server/LaneEdge.h>
 #include <ODRRoad.h>
+#include <base/functions.h>
 
 
 class SimplePathTest : public testing::Test, public simmap::server::Path {
@@ -29,7 +30,7 @@ public:
 
         // create map and segment
         map = new ODRAdapter;
-        map->loadFile("./tests/tracks/example_simple.xodr");
+        map->loadFile(base::string_format("%s/example_simple.xodr", TRACKS_DIR));
 
         // get roads
         ODRRoad *rd1 = dynamic_cast<ODRRoad *>(map->_roadNetwork.at("1").get());

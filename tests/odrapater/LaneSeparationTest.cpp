@@ -16,7 +16,7 @@ TEST(LaneSeparationTest, LaneSeparation) {
 
     /*// create map and segment
     ODRAdapter map{};
-    map.loadFile("./tests/tracks/example_simple.xodr");
+    map.loadFile(base::string_format("%s/example_simple.xodr", TRACKS_DIR));
 
     // get edges
     auto e_r2 = dynamic_cast<const ODREdge *>(map.getEdge("R1-LS2-R3"));

@@ -11,4 +11,6 @@ target_link_libraries(CurveTest PRIVATE curve)
 
 
 # add tests
-add_gtest(CurveTest)
+target_link_libraries(CurveTest PUBLIC gtest gmock gtest_main)
+add_test(CurveTest CurveTest)
+set_target_properties(CurveTest PROPERTIES FOLDER "Tests")

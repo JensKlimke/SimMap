@@ -1,5 +1,3 @@
-include(AddOdrLib)
-
 # add subdirectories
 add_subdirectory(curve)
 add_subdirectory(graph)

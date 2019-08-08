@@ -6,6 +6,7 @@
 #include <odradapter/ODRAdapter.h>
 #include <graph/Edge.h>
 #include <ODRRoad.h>
+#include <base/functions.h>
 
 class JunctionTest : public ::testing::Test {
 
@@ -27,7 +28,7 @@ public:
     void SetUp() override {
 
         // create map
-        map.loadFile("./tests/tracks/junction1.xodr");
+        map.loadFile(base::string_format("%s/junction1.xodr", TRACKS_DIR));
 
         // get objects
         ASSERT_NO_THROW(r1 = dynamic_cast<ODRRoad *>(map._roadNetwork.at("1").get()));

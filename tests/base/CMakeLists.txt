@@ -16,4 +16,6 @@ add_executable(BaseTest ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(BaseTest PRIVATE ${SIMMAP_INCL_DIR})
 
 # add tests
-add_gtest(BaseTest)
+target_link_libraries(BaseTest PUBLIC gtest gmock gtest_main)
+add_test(BaseTest BaseTest)
+set_target_properties(BaseTest PROPERTIES FOLDER "Tests")

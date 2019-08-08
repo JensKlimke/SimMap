@@ -11,7 +11,7 @@ cmake-*
 backup
 .DS_Store
 .idea
-tools/*.json
+tests/tracks/*.json
 doc/html
 doc/latex
 

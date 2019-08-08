@@ -11,4 +11,6 @@ target_include_directories(GraphTest PRIVATE ${SIMMAP_INCL_DIR})
 target_link_libraries(GraphTest PRIVATE graph)
 
 # add tests
-add_gtest(GraphTest)
+target_link_libraries(GraphTest PUBLIC gtest gmock gtest_main)
+add_test(GraphTest GraphTest)
+set_target_properties(GraphTest PROPERTIES FOLDER "Tests")

@@ -9,11 +9,12 @@ set(SOURCE_FILES
         LaneSeparationTest.cpp
         )
 
-
 # build test executable
 add_executable(AdapterTest ${SOURCE_FILES})
 target_include_directories(AdapterTest PRIVATE ${SIMMAP_INCL_DIR} ${odr_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/src/odradapter)
 target_link_libraries(AdapterTest PRIVATE odradapter)
 
 # add tests
-add_gtest(AdapterTest)
+target_link_libraries(AdapterTest PUBLIC gtest gmock gtest_main)
+add_test(AdapterTest AdapterTest)
+set_target_properties(AdapterTest PROPERTIES FOLDER "Tests")

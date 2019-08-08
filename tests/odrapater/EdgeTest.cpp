@@ -7,6 +7,7 @@
 #include <graph/Edge.h>
 #include <server/MapCoordinate.h>
 #include <ODRRoad.h>
+#include <base/functions.h>
 
 static const double R = 100.0;
 
@@ -18,7 +19,7 @@ TEST(EdgeNetworkTest, LinksAndObjects) {
 
     // create map and segment
     ODRAdapter map{};
-    map.loadFile("./tests/tracks/CircleR100.xodr");
+    map.loadFile(base::string_format("%s/CircleR100.xodr", TRACKS_DIR));
 
     // check network
     ASSERT_EQ(15, map._laneNetwork.size());
@@ -321,7 +322,7 @@ TEST(EdgeNetworkTest, EdgeNeighbors) {
 
     // create map and segment
     ODRAdapter map{};
-    map.loadFile("./tests/tracks/LaneSections.xodr");
+    map.loadFile(base::string_format("%s/LaneSections.xodr", TRACKS_DIR));
 
     // road and lane section
     auto *road = dynamic_cast<ODRRoad *>(map._roadNetwork.at("1").get());
@@ -537,7 +538,7 @@ TEST(EdgeTest, CurveAndLaneOffset) {
 
     // create map and segment
     ODRAdapter map{};
-    map.loadFile("./tests/tracks/CircleR100.xodr");
+    map.loadFile(base::string_format("%s/CircleR100.xodr", TRACKS_DIR));
 
     // check network
     ASSERT_EQ(2, map._roadNetwork.size());
@@ -577,7 +578,7 @@ TEST(EdgeTest, LanePositions) {
 
     // create map and segment
     ODRAdapter map{};
-    map.loadFile("./tests/tracks/example_simple.xodr");
+    map.loadFile(base::string_format("%s/example_simple.xodr", TRACKS_DIR));
 
     // check coordinates
     MapCoordinate mc(map.getEdge("R1-LS1-R2"), 0.0, 0.0);

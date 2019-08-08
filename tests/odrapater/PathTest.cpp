@@ -39,7 +39,7 @@ public:
 
         // create map and segment
         auto mp = new ODRAdapter;
-        mp->loadFile("./tests/tracks/CircleR100.xodr");
+        mp->loadFile(base::string_format("%s/CircleR100.xodr", TRACKS_DIR));
 
         // get roads
         rd1 = dynamic_cast<ODRRoad *>(mp->_roadNetwork.at("1").get());
@@ -411,7 +411,7 @@ TEST(PathMapTest, createPath) {
 
     // create map and segment
     auto map = new simmap::odra::ODRAdapter;
-    map->loadFile("./tests/tracks/map.xodr");
+    map->loadFile(base::string_format("%s/map.xodr", TRACKS_DIR));
 
     // create start position
     auto *lane = map->getEdge("R4-LS1-L4");
@@ -453,7 +453,7 @@ TEST(PathMapTest, generatePaths) {
 
     // create map and segment
     auto map = new simmap::odra::ODRAdapter;
-    map->loadFile("./tests/tracks/junction1.xodr");
+    map->loadFile(base::string_format("%s/junction1.xodr", TRACKS_DIR));
 
     // define start points
     std::vector<const LaneEdge*> startingPoints = {
@@ -513,7 +513,7 @@ TEST(PathMatchTest, Algo) {
 
     // create map and segment
     ODRAdapter map;
-    map.loadFile("./tests/tracks/LaneSections.xodr");
+    map.loadFile(base::string_format("%s/LaneSections.xodr", TRACKS_DIR));
 
     // get road
     auto rd1 = dynamic_cast<ODRRoad*>(map._roadNetwork.at("1").get());
