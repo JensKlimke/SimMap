@@ -8,6 +8,9 @@ project(SimMap VERSION 0.1
 set(CMAKE_CXX_STANDARD 14)
 
 
+# unset testing for libs
+set(ODRLIB_ENABLE_TESTING OFF CACHE BOOL "Unset testing for odrparser")
+
 # add libraries
 include_directories(lib/Eigen)
 add_subdirectory(lib/odrparser)
