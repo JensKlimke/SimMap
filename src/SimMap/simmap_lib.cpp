@@ -558,10 +558,6 @@ namespace simmap {
             // get doubled travel distance
             double ds2 = fabs(ds) * MATCH_WIDTH_FACTOR;
 
-            // check if path is long enough
-            if (ag->path.distanceToBack() < ds2 || ag->path.distanceToHead() < ds2)
-                return ERR + 5;
-
             // matching
             Eigen::Vector3d vec(pos.x, pos.y, pos.z);
             ag->path.match(vec, ds, ds2);

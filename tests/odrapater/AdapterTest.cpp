@@ -23,8 +23,6 @@ TEST(AdapterTest, LoadMap2) {
     simmap::odra::ODRAdapter odr;
     odr.loadFile(base::string_format("%s/CircleR100.xodr", TRACKS_DIR));
 
-    std::fstream file(base::string_format("%s/map.json", TRACKS_DIR), std::ios::out);
-    odr.streamTo(file);
 
 }
 
@@ -41,5 +39,8 @@ TEST(AdapterTest, LoadMap5) {
 
     simmap::odra::ODRAdapter odr;
     odr.loadFile(base::string_format("%s/sample1.1.xodr", TRACKS_DIR));
+
+    std::fstream file(base::string_format("%s/map.json", TRACKS_DIR), std::ios::out);
+    odr.streamTo(file);
 
 }
