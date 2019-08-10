@@ -6,6 +6,7 @@
 #define SIMMAP_LIB_H
 
 #include <cstdint>
+#include "types.h"
 
 #ifdef _WIN32
 #ifdef SHARED_EXPORT
@@ -23,62 +24,9 @@ extern "C" {
 
 namespace simmap {
 
+    // typedefs
     typedef unsigned int id_type_t;
     typedef unsigned int err_type_t;
-
-    enum ObjectType {
-        STOP_SIGN, SPEED_LIMIT, UNKNOWN
-    };
-    enum Direction {
-        FORWARDS, BACKWARDS
-    };
-    enum Access {
-        ALLOWED, NOT_ALLOWED, NOT_POSSIBLE
-    };
-
-
-    struct Position {
-        double x;
-        double y;
-        double z;
-        double phi;
-        double kappa;
-    };
-
-
-    struct MapPosition {
-        const char* edgeID;
-        double longPos;
-        double latPos;
-    };
-
-
-    struct ObjectInformation {
-        const char* id;
-        double distance;
-        enum ObjectType type;
-        int value;
-    };
-
-
-    struct LaneInformation {
-        int index;
-        double width;
-        enum Direction direction;
-        double lengthOnTrack;
-        double lengthToClosed;
-        enum Access access;
-        double s;
-        const char* id;
-    };
-
-
-    struct TargetInformation {
-        id_type_t id;
-        double distance;
-        double latOffset;
-        int lane;
-    };
 
 
     // C compatibility
@@ -201,11 +149,11 @@ namespace simmap {
      * Calculates the horizon
      * @param agentID Agent ID
      * @param knots Knots where the horizon shall be calculated (relative to current position)
-     * @param horizon Horizon to be calculated (must allocate 8*n elements)
+     * @param horizon Horizon to be calculated, an array of n entries
      * @param n Number of knots
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT horizon(id_type_t agentID, const double *knots, double *horizon, unsigned long n);
+    err_type_t SHARED_EXPORT horizon(id_type_t agentID, const double *knots, HorizonInformation *horizon, unsigned long n);
 
 
     /**

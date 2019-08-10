@@ -296,7 +296,7 @@ TEST_F(LibraryTest, MatchAndUpdatePosition) {
         knots[i] = pow((double) i * 20.0 / 19.0, 2);
 
     // create horizon
-    double horData[160];
+    HorizonInformation horData[20];
 
     // initialize ds
     double ds = 1.0;
@@ -357,23 +357,23 @@ TEST_F(LibraryTest, MatchAndUpdatePosition) {
         EXPECT_EQ(0, horizon(1, knots.data(), horData, knots.size()));
 
         // get horizon data
-        double dsh = horData[8] - horData[0];
-        double x0 = horData[1];
-        double x1 = horData[9];
-        double y0 = horData[2];
-        double y1 = horData[10];
-        double p0 = horData[3];
-        double p1 = horData[11];
-        double k0 = horData[4];
+        double dsh = horData[1].s - horData[0].s;
+        double x0 = horData[0].x;
+        double x1 = horData[1].x;
+        double y0 = horData[0].y;
+        double y1 = horData[1].y;
+        double p0 = horData[0].psi;
+        double p1 = horData[1].psi;
+        double k0 = horData[0].kappa;
 
         EXPECT_DOUBLE_EQ(101.875, 1.0 / k0);
-        EXPECT_DOUBLE_EQ(3.75, horData[5]);
-        EXPECT_DOUBLE_EQ(3.5,  horData[6]);
-        EXPECT_DOUBLE_EQ(3.75, horData[7]);
+        EXPECT_DOUBLE_EQ(3.75, horData[0].laneWidth);
+        EXPECT_DOUBLE_EQ(3.5,  horData[0].rightWidth);
+        EXPECT_DOUBLE_EQ(3.75, horData[0].leftWidth);
 
-        EXPECT_DOUBLE_EQ(3.75, horData[19 * 8 + 5]);
-        EXPECT_DOUBLE_EQ(3.5,  horData[19 * 8 + 6]);
-        EXPECT_DOUBLE_EQ(3.75, horData[19 * 8 + 7]);
+        EXPECT_DOUBLE_EQ(3.75, horData[19].laneWidth);
+        EXPECT_DOUBLE_EQ(3.5,  horData[19].rightWidth);
+        EXPECT_DOUBLE_EQ(3.75, horData[19].leftWidth);
 
         // update position
         pos.x = x0 + ds * (x1 - x0) / dsh;

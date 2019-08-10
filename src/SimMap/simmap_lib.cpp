@@ -631,7 +631,7 @@ namespace simmap {
     }
 
 
-    err_type_t horizon(id_type_t agentID, const double *knots, double *horizon, unsigned long n) {
+    err_type_t horizon(id_type_t agentID, const double *knots, HorizonInformation *horizon, unsigned long n) {
 
         const int ERR = 120;
 
@@ -643,9 +643,6 @@ namespace simmap {
             if (err != 0)
                 return ERR + err;
 
-            // define entry size
-            const size_t N = 8;
-
             // get agent position
             auto pos = ag->path.position().absolutePosition();
 
@@ -654,7 +651,7 @@ namespace simmap {
 
                 // save knots
                 auto s = knots[i];
-                horizon[i * N + 0] = s;
+                horizon[i].s = s;
 
                 // check if distance to head is reached
                 if (s > ag->path.distanceToHead())
@@ -689,15 +686,15 @@ namespace simmap {
                 }
 
                 // position angle and curvature
-                horizon[i * N + 1] = mp.position.x();
-                horizon[i * N + 2] = mp.position.y();
-                horizon[i * N + 3] = mp.angle;
-                horizon[i * N + 4] = mp.curvature;
+                horizon[i].x     = mp.position.x();
+                horizon[i].y     = mp.position.y();
+                horizon[i].psi   = mp.angle;
+                horizon[i].kappa = mp.curvature;
 
-                // widths of lanes
-                horizon[i * N + 5] = mc.width();
-                horizon[i * N + 6] = mcr.outOfRoad() ? 0.0 : mcr.width();
-                horizon[i * N + 7] = mcl.outOfRoad() ? 0.0 : mcl.width();
+                // widths of lanes, TODO: move that paths
+                horizon[i].laneWidth  = mc.width();
+                horizon[i].rightWidth = mcr.outOfRoad() ? 0.0 : mcr.width();
+                horizon[i].leftWidth  = mcl.outOfRoad() ? 0.0 : mcl.width();
 
             }
 
