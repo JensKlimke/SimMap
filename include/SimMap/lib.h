@@ -35,6 +35,7 @@ namespace simmap {
     typedef struct ObjectInformation ObjectInformation;
     typedef struct LaneInformation LaneInformation;
     typedef struct TargetInformation TargetInformation;
+    typedef struct HorizonInformation HorizonInformation;
 
 
     // TODO: error codes
