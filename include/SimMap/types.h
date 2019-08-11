@@ -5,6 +5,8 @@
 #ifndef SIMMAP_TYPES_H
 #define SIMMAP_TYPES_H
 
+#include <iostream>
+
 enum ObjectType {
     STOP_SIGN, SPEED_LIMIT, UNKNOWN
 };
@@ -72,5 +74,16 @@ struct TargetInformation {
     double latOffset;
     int lane;
 };
+
+
+inline std::ostream &operator<< (std::ostream &os, const Position& pos) {
+    os << "xyz=(" << pos.x << "," << pos.y << "," << pos.z << "),psi=" << pos.phi << ",kappa=" << pos.kappa;
+    return os;
+}
+
+inline std::ostream &operator<< (std::ostream &os, const MapPosition& pos) {
+    os << "edge:" << pos.edgeID << ",s=" << pos.longPos << ",d=" << pos.latPos;
+    return os;
+}
 
 #endif //SIMMAP_TYPES_H
