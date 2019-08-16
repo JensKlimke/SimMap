@@ -56,6 +56,9 @@ public:
         EXPECT_EQ(0, _loadMap(base::string_format("%s/map.xodr", TRACKS_DIR), &id));
         EXPECT_EQ(2, id);
 
+        EXPECT_EQ(0, _loadMap(base::string_format("%s/example_simple.xodr", TRACKS_DIR), &id));
+        EXPECT_EQ(3, id);
+
 
         // register agents
 
@@ -63,15 +66,16 @@ public:
         EXPECT_EQ(45, registerAgent(1, 1)); // try to re-register agent 1 again
         EXPECT_EQ(0,  registerAgent(2, 1));
         EXPECT_EQ(0,  registerAgent(3, 2)); // register agent 3 on different map
-        EXPECT_EQ(46, registerAgent(4, 3)); // try to register agent on non-existing map
+        EXPECT_EQ(46, registerAgent(4, 4)); // try to register agent on non-existing map
         EXPECT_EQ(0,  registerAgent(5, 1));
         EXPECT_EQ(0,  registerAgent(6, 1));
         EXPECT_EQ(0,  registerAgent(7, 1));
+        EXPECT_EQ(0,  registerAgent(8, 3)); // register agent 8 to simple map
 
 
         // set tracks
 
-        std::vector<std::vector<const char*>> ra = {{"1", "-2"}, {"2", "-1"}, {"10", "5"}};
+        std::vector<std::vector<const char*>> ra = {{"1", "-2"}, {"2", "-1"}, {"10", "5"}, {"1"}};
 
         EXPECT_EQ(0,  setTrack(1, ra[0].data(), 2));
         EXPECT_EQ(0,  setTrack(2, ra[1].data(), 2));
@@ -79,6 +83,7 @@ public:
         EXPECT_EQ(0,  setTrack(5, ra[0].data(), 2));
         EXPECT_EQ(0,  setTrack(6, ra[0].data(), 2));
         EXPECT_EQ(0,  setTrack(7, ra[0].data(), 2));
+        EXPECT_EQ(0,  setTrack(8, ra[3].data(), 1));
 
 
     }
@@ -111,6 +116,11 @@ public:
         EXPECT_EQ(200.0, lenFront);
         EXPECT_EQ(100.0, lenBack);
 
+        lenFront = 165.0; lenBack = 10.0;
+        EXPECT_EQ(0, setMapPosition(8, {"R1-LS1-R1", 0.0, 0.0}, &lenFront, &lenBack));
+        EXPECT_EQ(165.0, lenFront);
+        EXPECT_EQ(  0.0, lenBack);
+
     }
 
 
@@ -126,7 +136,8 @@ public:
 
         EXPECT_EQ(0,  unloadMap(1));
         EXPECT_EQ(0,  unloadMap(2));
-        EXPECT_EQ(35, unloadMap(3));
+        EXPECT_EQ(0,  unloadMap(3));
+        EXPECT_EQ(35, unloadMap(4));
 
     }
 
@@ -536,5 +547,45 @@ TEST_F(LibraryTest, GetTargetInformation) {
     EXPECT_EQ(0,           info[6].lane);
     EXPECT_DOUBLE_EQ(0.0,  info[6].latOffset);
     EXPECT_DOUBLE_EQ(ds,   info[6].distance);
+
+}
+
+
+TEST_F(LibraryTest, HorizonInformation) {
+
+    // init
+    init();
+    initPaths();
+
+    unsigned long n = 20;
+    HorizonInformation hor[20];
+
+    std::vector<double> s(n);
+    for(unsigned int i = 0; i < n; ++i)
+        s[i] = ((double) i - 1.0) * 10.0;
+
+    // get lane information
+    horizon(8, s.data(), hor, n);
+
+    EXPECT_DOUBLE_EQ(-INFINITY, hor[0].s);
+    EXPECT_NEAR( 0.0, hor[1].s, 1e-6);
+    EXPECT_NEAR(10.0, hor[2].s, 1e-6);
+    EXPECT_NEAR(20.0, hor[3].s, 1e-6);
+    EXPECT_DOUBLE_EQ(INFINITY, hor[18].s);
+    EXPECT_DOUBLE_EQ(INFINITY, hor[19].s);
+
+    EXPECT_NEAR(0.0,   hor[0].x, 1e-6);
+    EXPECT_NEAR(1.875, hor[1].x, 1e-6);
+    EXPECT_NEAR(3.45703125, hor[5].x, 1e-6);
+    EXPECT_NEAR(3.75,  hor[8].x, 1e-6);
+    EXPECT_NEAR(0.0,   hor[18].x, 1e-6);
+    EXPECT_NEAR(0.0,   hor[19].x, 1e-6);
+
+    EXPECT_NEAR( 0.0, hor[0].y, 1e-6);
+    EXPECT_NEAR( 0.0, hor[1].y, 1e-6);
+    EXPECT_NEAR(10.0, hor[2].y, 1e-6);
+    EXPECT_NEAR(20.0, hor[3].y, 1e-6);
+    EXPECT_NEAR( 0.0, hor[18].y, 1e-6);
+    EXPECT_NEAR( 0.0, hor[19].y, 1e-6);
 
 }

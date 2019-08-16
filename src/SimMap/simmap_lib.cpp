@@ -653,12 +653,26 @@ namespace simmap {
                 auto s = knots[i];
                 horizon[i].s = s;
 
-                // check if distance to head is reached
-                if (s > ag->path.distanceToHead())
-                    return ERR + 5;
+                // preset (in case it is aborted)
+                horizon[i].x          = 0.0;
+                horizon[i].y          = 0.0;
+                horizon[i].psi        = 0.0;
+                horizon[i].kappa      = 0.0;
+                horizon[i].laneWidth  = 0.0;
+                horizon[i].rightWidth = 0.0;
+                horizon[i].leftWidth  = 0.0;
 
-                if (s < -ag->path.distanceToBack())
-                    return ERR + 5;
+                // check if distance to head is reached
+                if (s > ag->path.distanceToHead()) {
+                    horizon[i].s = INFINITY;
+                    continue;
+                }
+
+                // check if the distance to back is reached
+                if (s < -ag->path.distanceToBack()) {
+                    horizon[i].s = -INFINITY;
+                    continue;
+                }
 
                 // calculate position
                 MapCoordinate mc{};
