@@ -51,10 +51,10 @@ TEST(AdapterTest, LoadMap6) {
 }
 
 
-TEST(AdapterTest, LoadMap6) {
+TEST(AdapterTest, LoadMap7) {
 
     simmap::odra::ODRAdapter odr;
-    odr.loadFile(base::string_format("%s/Straight10000.xodr", TRACKS_DIR));
+    odr.loadFile(base::string_format("%s/Straight1000.xodr", TRACKS_DIR));
 
     std::fstream file(base::string_format("%s/map.json", TRACKS_DIR), std::ios::out);
     odr.streamTo(file);
