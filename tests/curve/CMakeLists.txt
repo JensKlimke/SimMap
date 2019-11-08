@@ -6,11 +6,8 @@ set(SOURCE_FILES
 
 # build test executable
 add_executable(CurveTest ${SOURCE_FILES})
-target_include_directories(CurveTest PRIVATE ${SIMMAP_INCL_DIR})
 target_link_libraries(CurveTest PRIVATE curve)
+target_include_directories(CurveTest PRIVATE ${PROJECT_SOURCE_DIR}/src ${Eigen_INCLUDE_DIR})
 
-
-# add tests
-target_link_libraries(CurveTest PUBLIC gtest gmock gtest_main)
-add_test(CurveTest CurveTest)
-set_target_properties(CurveTest PROPERTIES FOLDER "Tests")
+# add test
+add_gtest(CurveTest)

@@ -6,7 +6,7 @@
 #include <odradapter/ODRAdapter.h>
 #include <graph/Edge.h>
 #include <server/MapCoordinate.h>
-#include <ODRRoad.h>
+#include <odradapter/ODRRoad.h>
 #include <base/functions.h>
 
 static const double R = 100.0;

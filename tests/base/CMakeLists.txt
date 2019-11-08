@@ -1,7 +1,3 @@
-# get all header files (only done to register the headers to the project)
-file(GLOB HEADER_FILES
-            ${SIMMAP_INCL_DIR}/base/*.h
-        )
 
 # source files
 set(SOURCE_FILES
@@ -12,10 +8,8 @@ set(SOURCE_FILES
         )
 
 # build test executable
-add_executable(BaseTest ${SOURCE_FILES} ${HEADER_FILES})
-target_include_directories(BaseTest PRIVATE ${SIMMAP_INCL_DIR})
+add_executable(BaseTest ${SOURCE_FILES})
+include_directories(BaseTest PRIVATE ${PROJECT_SOURCE_DIR}/src ${Eigen_INCLUDE_DIR})
 
-# add tests
-target_link_libraries(BaseTest PUBLIC gtest gmock gtest_main)
-add_test(BaseTest BaseTest)
-set_target_properties(BaseTest PROPERTIES FOLDER "Tests")
+# add test
+add_gtest(BaseTest)
