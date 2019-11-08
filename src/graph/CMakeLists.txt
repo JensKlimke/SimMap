@@ -1,6 +1,6 @@
 # get all header files
 file(GLOB HEADER_FILES
-        ${SIMMAP_INCL_DIR}/graph/*.h
+        ${simmap_INCLUDE_DIR}/graph/*.h
         )
 
 set(SOURCE_FILES
@@ -12,4 +12,4 @@ set(SOURCE_FILES
         )
 
 add_library(graph STATIC ${SOURCE_FILES})
-target_include_directories(graph PRIVATE ${SIMMAP_INCL_DIR} ${SIMMAP_INCL_DIR}/graph)
+target_include_directories(graph PRIVATE ${simmap_INCLUDE_DIR} ${simmap_INCLUDE_DIR}/graph)

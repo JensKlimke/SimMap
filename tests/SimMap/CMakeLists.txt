@@ -5,7 +5,7 @@ set(SOURCE_FILES
 
 
 add_executable(LibTest ${SOURCE_FILES})
-target_include_directories(LibTest PRIVATE ${SIMMAP_INCL_DIR})
+target_include_directories(LibTest PRIVATE ${simmap_INCLUDE_DIR})
 target_link_libraries(LibTest PRIVATE simmap)
 
 # add test

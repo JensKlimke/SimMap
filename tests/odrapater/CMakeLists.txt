@@ -11,7 +11,7 @@ set(SOURCE_FILES
 
 # build test executable
 add_executable(AdapterTest ${SOURCE_FILES})
-target_include_directories(AdapterTest PRIVATE ${SIMMAP_INCL_DIR} ${odr_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/src/odradapter)
+target_include_directories(AdapterTest PRIVATE ${simmap_INCLUDE_DIR} ${odr_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/src/odradapter)
 target_link_libraries(AdapterTest PRIVATE odradapter)
 
 # add tests

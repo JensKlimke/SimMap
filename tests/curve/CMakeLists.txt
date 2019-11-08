@@ -6,7 +6,7 @@ set(SOURCE_FILES
 
 # build test executable
 add_executable(CurveTest ${SOURCE_FILES})
-target_include_directories(CurveTest PRIVATE ${SIMMAP_INCL_DIR})
+target_include_directories(CurveTest PRIVATE ${simmap_INCLUDE_DIR})
 target_link_libraries(CurveTest PRIVATE curve)
 
 

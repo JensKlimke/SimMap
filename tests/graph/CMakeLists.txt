@@ -7,7 +7,7 @@ set(SOURCE_FILES
 
 # build test executable
 add_executable(GraphTest ${SOURCE_FILES})
-target_include_directories(GraphTest PRIVATE ${SIMMAP_INCL_DIR})
+target_include_directories(GraphTest PRIVATE ${simmap_INCLUDE_DIR})
 target_link_libraries(GraphTest PRIVATE graph)
 
 # add tests

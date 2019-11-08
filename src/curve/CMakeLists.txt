@@ -1,6 +1,6 @@
 # get all header files
 file(GLOB HEADER_FILES
-        ${SIMMAP_INCL_DIR}/curve/*.h
+        ${simmap_INCLUDE_DIR}/curve/*.h
         )
 
 set(SOURCE_FILES
@@ -12,4 +12,4 @@ set(SOURCE_FILES
         )
 
 add_library(curve STATIC ${SOURCE_FILES})
-target_include_directories(curve PRIVATE ${SIMMAP_INCL_DIR} ${SIMMAP_INCL_DIR}/curve)
+target_include_directories(curve PRIVATE ${simmap_INCLUDE_DIR})
