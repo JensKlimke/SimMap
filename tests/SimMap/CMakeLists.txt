@@ -1,15 +1,15 @@
 set(SOURCE_FILES
         LibTest.cpp
         LoadLibTest.cpp
-        SpeedTest.cpp )
+        SpeedTest.cpp
+        )
 
 
+# build test executable
 add_executable(LibTest ${SOURCE_FILES})
-target_include_directories(LibTest PRIVATE ${simmap_INCLUDE_DIR})
 target_link_libraries(LibTest PRIVATE simmap)
+target_include_directories(LibTest PRIVATE ${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR}/include ${Eigen_INCLUDE_DIR})
 
 # add test
-target_link_libraries(LibTest PUBLIC gtest gmock gtest_main)
-add_test(LibTest LibTest)
-set_target_properties(LibTest PROPERTIES FOLDER "Tests")
+add_gtest(LibTest)
 

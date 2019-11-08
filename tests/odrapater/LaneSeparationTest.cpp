@@ -6,7 +6,7 @@
 #include <odradapter/ODRAdapter.h>
 #include <graph/Edge.h>
 #include <server/MapCoordinate.h>
-#include <ODRRoad.h>
+#include <odradapter/ODRRoad.h>
 
 
 TEST(LaneSeparationTest, LaneSeparation) {

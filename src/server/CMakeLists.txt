@@ -12,4 +12,4 @@ set(SOURCE_FILES
 
 add_library(server STATIC ${SOURCE_FILES})
 target_link_libraries(server PRIVATE graph)
-target_include_directories(server PRIVATE ${simmap_INCLUDE_DIR} ${simmap_INCLUDE_DIR}/server)
+target_include_directories(server PRIVATE ${PROJECT_SOURCE_DIR}/src ${Eigen_INCLUDE_DIR})

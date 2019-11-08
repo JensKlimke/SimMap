@@ -7,10 +7,8 @@ set(SOURCE_FILES
 
 # build test executable
 add_executable(GraphTest ${SOURCE_FILES})
-target_include_directories(GraphTest PRIVATE ${simmap_INCLUDE_DIR})
 target_link_libraries(GraphTest PRIVATE graph)
+target_include_directories(GraphTest PRIVATE ${PROJECT_SOURCE_DIR}/src ${Eigen_INCLUDE_DIR})
 
-# add tests
-target_link_libraries(GraphTest PUBLIC gtest gmock gtest_main)
-add_test(GraphTest GraphTest)
-set_target_properties(GraphTest PROPERTIES FOLDER "Tests")
+# add test
+add_gtest(GraphTest)

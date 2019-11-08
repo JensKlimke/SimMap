@@ -9,8 +9,8 @@
 #include <odradapter/ODRAdapter.h>
 #include <server/MapCoordinate.h>
 #include <server/LaneEdge.h>
-#include <ODRRoad.h>
-#include <ODRObject.h>
+#include <odradapter/ODRRoad.h>
+#include <odradapter/ODRObject.h>
 
 
 class PathTest : public testing::Test, public simmap::server::Path {

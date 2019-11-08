@@ -11,10 +11,8 @@ set(SOURCE_FILES
 
 # build test executable
 add_executable(AdapterTest ${SOURCE_FILES})
-target_include_directories(AdapterTest PRIVATE ${simmap_INCLUDE_DIR} ${odr_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/src/odradapter)
 target_link_libraries(AdapterTest PRIVATE odradapter)
+target_include_directories(AdapterTest PRIVATE ${PROJECT_SOURCE_DIR}/src ${odrparser_INCLUDE_DIR} ${Eigen_INCLUDE_DIR})
 
-# add tests
-target_link_libraries(AdapterTest PUBLIC gtest gmock gtest_main)
-add_test(AdapterTest AdapterTest)
-set_target_properties(AdapterTest PROPERTIES FOLDER "Tests")
+# add test
+add_gtest(AdapterTest)

@@ -1,8 +1,3 @@
-# get all header files
-file(GLOB HEADER_FILES
-        ${simmap_INCLUDE_DIR}/graph/*.h
-        )
-
 set(SOURCE_FILES
         Neighbored.cpp
         Oriented.cpp
@@ -12,4 +7,4 @@ set(SOURCE_FILES
         )
 
 add_library(graph STATIC ${SOURCE_FILES})
-target_include_directories(graph PRIVATE ${simmap_INCLUDE_DIR} ${simmap_INCLUDE_DIR}/graph)
+target_include_directories(graph PRIVATE ${PROJECT_SOURCE_DIR}/src ${Eigen_INCLUDE_DIR})
