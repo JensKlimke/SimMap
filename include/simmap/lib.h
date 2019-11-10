@@ -22,6 +22,14 @@
 // Created by Jens Klimke on 06.08.18.
 //
 
+/**
+ * @file lib.h
+ *
+ * Collection of publicly accessible function of the SimMap framework.
+ *
+ * This header file defines the access to the library functions.
+ */
+
 #ifndef SIMMAP_LIB_H
 #define SIMMAP_LIB_H
 

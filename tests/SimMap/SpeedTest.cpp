@@ -24,7 +24,7 @@
 
 #include <gtest/gtest.h>
 #include <string>
-#include <SimMap/lib.h>
+#include <simmap/lib.h>
 #include <base/functions.h>
 
 class SpeedTest : public testing::Test {

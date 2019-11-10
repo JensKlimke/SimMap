@@ -33,7 +33,7 @@
 #include <cmath>
 #include <vector>
 
-#include <SimMap/lib.h>
+#include <simmap/lib.h>
 #include <base/functions.h>
 #include <base/definitions.h>
 

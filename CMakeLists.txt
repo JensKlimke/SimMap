@@ -7,9 +7,11 @@ project(SimMap VERSION 0.1
 
 set(CMAKE_CXX_STANDARD 14)
 
-
 # add ./cmake to CMAKE_MODULE_PATH
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+
+# load macros for docs
+include(GenerateDocs)
 
 # unset testing for libs
 option(BUILD_TESTS "Sets or unsets the option to generate the test target" OFF)
