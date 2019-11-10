@@ -90,3 +90,4 @@ inline std::ostream &operator<< (std::ostream &os, const simmap::MapPosition& po
 }
 
 #endif //SIMMAP_TYPES_H
+
