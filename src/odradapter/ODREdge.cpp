@@ -19,7 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-// Created by Jens Klimke on 10.05.2019.
+// Created by Jens Klimke on 2019/05/10
 //
 
 #include <base/functions.h>

@@ -19,7 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-// Created by Jens Klimke on 07.05.2019.
+// Created by Jens Klimke on 2019/05/07
 //
 
 #ifndef SIMMAP_ODRADAPTER_ODRROAD_H

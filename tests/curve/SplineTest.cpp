@@ -19,7 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-// Created by Jens Klimke on 20.11.2018.
+// Created by Jens Klimke on 2018/11/20
 //
 
 #include <gtest/gtest.h>
