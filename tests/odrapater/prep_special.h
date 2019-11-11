@@ -5,7 +5,7 @@
 #ifndef SIMMAP_TESTS_PREP_SPECIAL_H
 #define SIMMAP_TESTS_PREP_SPECIAL_H
 
-#include <LaneSectionSequence.h>
+#include <odradapter/LaneSectionSequence.h>
 
 void addLanes(LaneSection::LanesVector *lns, const std::vector<double> &widths) {
 

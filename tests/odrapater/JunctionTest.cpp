@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 #include <odradapter/ODRAdapter.h>
 #include <graph/Edge.h>
-#include <ODRRoad.h>
+#include <odradapter/ODRRoad.h>
 #include <base/functions.h>
 
 class JunctionTest : public ::testing::Test {

@@ -8,32 +8,38 @@ project(SimMap VERSION 0.1
 set(CMAKE_CXX_STANDARD 14)
 
 
+# add ./cmake to CMAKE_MODULE_PATH
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+
 # unset testing for libs
 option(BUILD_TESTS "Sets or unsets the option to generate the test target" OFF)
 
 # set include dir
-set(simmap_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
-set(simmap_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 set(Eigen_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/lib/Eigen)
-set(odrparser_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/lib/odrparser)
-
-# add odrparser
-add_subdirectory(lib/odrparser)
+set(odrparser_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/lib/odrparser/include)
 
 # add source folder
 add_subdirectory(src)
 
-
 ### GTEST
 if(BUILD_TESTS)
 
-    # add gtest
+    message("-- Testing of SimCore enabled")
+
+    # enable testing
+    enable_testing()
+
+    # add subdirector (gtest)
     add_subdirectory(lib/gtest)
 
-    ### GTEST
-    enable_testing()
+    # load macros for tests
+    include(AddGoogleTest)
 
     ### TESTS
     add_subdirectory(tests)
 
 endif()
+
+# add odrparser
+SET(BUILD_TESTS OFF)
+add_subdirectory(lib/odrparser)
