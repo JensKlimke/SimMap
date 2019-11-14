@@ -29,8 +29,6 @@
 #include <iostream>
 #include <base/definitions.h>
 
-
-
 namespace simmap {
 namespace server {
 

@@ -1,8 +1,3 @@
-# get all header files
-file(GLOB HEADER_FILES
-        ${simmap_INCLUDE_DIR}/server/*.h
-        )
-
 set(SOURCE_FILES
         MapCoordinate.cpp
         LaneEdge.cpp

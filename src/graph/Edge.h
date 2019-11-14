@@ -38,8 +38,9 @@ namespace graph {
      * class Edge
      * @author Jens Klimke jens.klimke@rwth-aachen.de
      */
-    struct Edge : public Oriented, public Neighbored {
+    class Edge : public Oriented, public Neighbored {
 
+    public:
 
         /** The short type name for a vector of position-object pairs */
         typedef std::vector<std::pair<double, const Object *>> ObjectsList;

@@ -36,19 +36,9 @@
 #include <cstdint>
 #include "types.h"
 
-#ifdef _WIN32
-#ifdef SHARED_EXPORT
-        #define SHARED_EXPORT __declspec(dllexport)
-    #else
-        #define SHARED_EXPORT __declspec(dllimport)
-    #endif
-#else
-#define SHARED_EXPORT
-#endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#define SHARED_EXPORT
+
 
 namespace simmap {
 
@@ -74,7 +64,7 @@ namespace simmap {
      * right loaded
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT clear();
+    SHARED_EXPORT err_type_t clear();
 
 
     /**
@@ -83,7 +73,7 @@ namespace simmap {
      * @param id ID of the segment
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT loadMap(const char *filename, id_type_t *id);
+    SHARED_EXPORT err_type_t loadMap(const char *filename, id_type_t *id);
 
 
     /**
@@ -91,7 +81,7 @@ namespace simmap {
      * @param id Map ID
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT unloadMap(id_type_t id);
+    SHARED_EXPORT err_type_t unloadMap(id_type_t id);
 
 
     /**
@@ -100,7 +90,7 @@ namespace simmap {
      * @param mapID ID of the associated map segment
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT registerAgent(id_type_t agentID, id_type_t mapID);
+    SHARED_EXPORT err_type_t registerAgent(id_type_t agentID, id_type_t mapID);
 
 
     /**
@@ -108,7 +98,7 @@ namespace simmap {
      * @param agentID ID of the agent
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT unregisterAgent(id_type_t agentID);
+    SHARED_EXPORT err_type_t unregisterAgent(id_type_t agentID);
 
 
     /**
@@ -118,7 +108,7 @@ namespace simmap {
      * @param n Number of roads in track
      * @return Error code
      */
-    err_type_t SHARED_EXPORT setTrack(id_type_t agentID, const char **roadIds, unsigned long n);
+    SHARED_EXPORT err_type_t setTrack(id_type_t agentID, const char **roadIds, unsigned long n);
 
 
     /**
@@ -128,7 +118,7 @@ namespace simmap {
      * @param pos Position in global coordinates (will be updated)
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT getPosition(id_type_t agentID, Position *pos);
+    SHARED_EXPORT err_type_t getPosition(id_type_t agentID, Position *pos);
 
 
     /**
@@ -139,7 +129,7 @@ namespace simmap {
      * @param lenBack Length to the back of the path (value is used for update)
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT setMapPosition(id_type_t agentID, MapPosition mapPos, double *lenFront, double *lenBack);
+    SHARED_EXPORT err_type_t setMapPosition(id_type_t agentID, MapPosition mapPos, double *lenFront, double *lenBack);
 
 
     /**
@@ -148,7 +138,7 @@ namespace simmap {
      * @param mapPos Map position
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT getMapPosition(id_type_t agentID, MapPosition *mapPos);
+    SHARED_EXPORT err_type_t getMapPosition(id_type_t agentID, MapPosition *mapPos);
 
 
     /**
@@ -159,7 +149,7 @@ namespace simmap {
      * @param mapPos New position in path
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT match(id_type_t agentID, Position pos, double ds, MapPosition *mapPos);
+    SHARED_EXPORT err_type_t match(id_type_t agentID, Position pos, double ds, MapPosition *mapPos);
 
 
     /**
@@ -171,7 +161,7 @@ namespace simmap {
      * @param lenBack Length to the back of the path (value is used for update)
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT move(id_type_t agentID, double ds, double t, double *lenFront, double *lenBack);
+    SHARED_EXPORT err_type_t move(id_type_t agentID, double ds, double t, double *lenFront, double *lenBack);
 
 
     /**
@@ -182,7 +172,7 @@ namespace simmap {
      * @param n Number of knots
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT horizon(id_type_t agentID, const double *knots, HorizonInformation *horizon, unsigned long n);
+    SHARED_EXPORT err_type_t horizon(id_type_t agentID, const double *knots, HorizonInformation *horizon, unsigned long n);
 
 
     /**
@@ -192,7 +182,7 @@ namespace simmap {
      * @param n Number of objects (pre-set for maximum number)
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT objects(id_type_t agentID, ObjectInformation *obj, unsigned long *n);
+    SHARED_EXPORT err_type_t objects(id_type_t agentID, ObjectInformation *obj, unsigned long *n);
 
 
     /**
@@ -202,7 +192,7 @@ namespace simmap {
      * @param n Number of lanes (pre-set for maximum number)
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT lanes(id_type_t agentID, LaneInformation *lanes, unsigned long *n);
+    SHARED_EXPORT err_type_t lanes(id_type_t agentID, LaneInformation *lanes, unsigned long *n);
 
 
     /**
@@ -212,13 +202,9 @@ namespace simmap {
      * @param n Number of targets (pre-set for maximum number)
      * @return Error code (0 = no error)
      */
-    err_type_t SHARED_EXPORT targets(id_type_t agentID, TargetInformation *targets, unsigned long *n);
+    SHARED_EXPORT err_type_t targets(id_type_t agentID, TargetInformation *targets, unsigned long *n);
 
 }
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif // SIMMAP_LIB_H
 

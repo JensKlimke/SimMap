@@ -30,8 +30,9 @@ namespace graph {
      * An interface to define objects
      * @author Jens Klimke jens.klimke@rwth-aachen.de
      */
-    struct Object {
+    class Object {
 
+    public:
 
         /**
          * Default constructor
