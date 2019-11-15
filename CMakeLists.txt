@@ -1,47 +1,106 @@
-cmake_minimum_required(VERSION 3.10)
-# based on https://cliutils.gitlab.io/modern-cmake/
+cmake_minimum_required(VERSION 3.5)
 
-project(SimMap VERSION 0.1
-        DESCRIPTION "A traffic simulation map framework"
-        LANGUAGES C CXX)
+# set project title
+project(SimMap)
 
+# set C++ standard
 set(CMAKE_CXX_STANDARD 14)
+
+# set options
+option(BUILD_APPS "Build the executables of the project" ON)
+option(BUILD_TESTS "Sets or unsets the option to generate the test target" OFF)
+option(ENABLE_COVERAGE "Enable the coverage check of the module" OFF)
 
 # add ./cmake to CMAKE_MODULE_PATH
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
+# update submodules
+include(UpdateGitSubmodules)
+set(GIT_SUBMODULE OFF)
+
 # load macros for docs
+set(DOC_SOURCE_FOLDERS "${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/src")
 include(GenerateDocs)
 
-# unset testing for libs
-option(BUILD_TESTS "Sets or unsets the option to generate the test target" OFF)
+# create and set binary directory
+set(BIN_DIR ${PROJECT_SOURCE_DIR}/bin CACHE PATH "BIN_DIR")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 
-# set include dir
-set(Eigen_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/lib/Eigen)
+
+# ------------------------------------------------------------------------------
+# variables
+# ------------------------------------------------------------------------------
+
+if(WIN32)
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+endif(WIN32)
+
+
+# ------------------------------------------------------------------------------
+# libraries
+# ------------------------------------------------------------------------------
+
+# cache build tests
+set(MAIN_BUILD_TESTS ${BUILD_TESTS})
+set(BUILD_TESTS OFF)
+
+# load library
+add_subdirectory(lib/odrparser)
+
+set(Eigen_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/lib/Eigen/)
 set(odrparser_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/lib/odrparser/include)
 
-# add source folder
+# reset build tests
+set(BUILD_TESTS ${MAIN_BUILD_TESTS})
+
+
+
+# ------------------------------------------------------------------------------
+# core sources
+# ------------------------------------------------------------------------------
+
+# add sources
 add_subdirectory(src)
 
-### GTEST
+
+
+# ------------------------------------------------------------------------------
+# Apps
+# ------------------------------------------------------------------------------
+
+# enable apps of the project
+if(BUILD_APPS)
+
+    # add subdirectory for apps
+    add_subdirectory(apps)
+
+endif(BUILD_APPS)
+
+
+
+# ------------------------------------------------------------------------------
+# Tests
+# ------------------------------------------------------------------------------
+
+# enable google testing for project
 if(BUILD_TESTS)
 
-    message("-- Testing of SimCore enabled")
+    message("-- Testing enabled")
 
     # enable testing
     enable_testing()
 
-    # add subdirector (gtest)
+    # unset for all subprojects
+    set(BUILD_TESTS OFF)
+
+    # add gtest sources
     add_subdirectory(lib/gtest)
 
-    # load macros for tests
+    # load macros for test
     include(AddGoogleTest)
 
-    ### TESTS
-    add_subdirectory(tests)
+    # add test folder
+    add_subdirectory(test)
 
 endif()
-
-# add odrparser
-SET(BUILD_TESTS OFF)
-add_subdirectory(lib/odrparser)

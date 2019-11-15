@@ -32,7 +32,7 @@
 namespace simmap {
 namespace server {
 
-class LaneEdge;
+struct LaneEdge;
 
 
 class MapCoordinate {
