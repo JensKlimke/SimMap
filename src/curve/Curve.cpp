@@ -113,7 +113,7 @@ namespace curve {
         // set end point
         length(s(s.cols() - 1));
 
-        // iterate over knots to create elements
+        // iterate over grid points to create elements
         for (int i = 0; i < s.size() - 1; ++i)
             _addElement(s(i), s(i + 1) - s(i), kappa(i), kappa(i + 1));
 
@@ -129,7 +129,7 @@ namespace curve {
         // set end point
         length(s(s.cols() - 1));
 
-        // iterate over knots to create elements
+        // iterate over grid points to create elements
         for (int i = 0; i < s.size() - 1; ++i)
             _addElement(s(i), s(i + 1) - s(i), kappa0(i), kappa1(i));
 

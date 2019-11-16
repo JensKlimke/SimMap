@@ -335,7 +335,7 @@ TEST_F(CurveTest, CurveReverse) {
     Line lr{};
     l.reverse(&lr);
 
-    // create test knots
+    // create test sample points
     auto s = base::maxspace(0.0, l.length(), 1.0 / 3.0);
     auto sr = (l.length() * Eigen::RowVectorXd::Ones(s.size()) - s).eval();
 
@@ -355,7 +355,7 @@ TEST_F(CurveTest, CurveReverse) {
     Curve crv;
     createCurve(&crv, 100.0, -200.0, -1.1112, s_sC, s_kC);
 
-    // create test knots
+    // create sample points
     auto sc = base::maxspace(0.0, crv.length(), 1.0 / 3.0);
     auto scr = (crv.length() * Eigen::RowVectorXd::Ones(sc.size()) - sc).eval();
 

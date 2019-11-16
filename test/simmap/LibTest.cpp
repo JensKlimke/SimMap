@@ -321,10 +321,10 @@ TEST_F(LibraryTest, MatchAndUpdatePosition) {
     init();
     initPaths();
 
-    // create knots
-    std::vector<double> knots(20);
+    // create sample points
+    std::vector<double> samplePoints(20);
     for(size_t i = 0; i < 20; ++i)
-        knots[i] = pow((double) i * 20.0 / 19.0, 2);
+        samplePoints[i] = pow((double) i * 20.0 / 19.0, 2);
 
     // create horizon
     HorizonInformation horData[20];
@@ -385,7 +385,7 @@ TEST_F(LibraryTest, MatchAndUpdatePosition) {
         EXPECT_NEAR(20.0, lenBack, 1e-9);
 
         // get horizon
-        EXPECT_EQ(0, horizon(1, knots.data(), horData, knots.size()));
+        EXPECT_EQ(0, horizon(1, samplePoints.data(), horData, samplePoints.size()));
 
         // get horizon data
         double dsh = horData[1].s - horData[0].s;

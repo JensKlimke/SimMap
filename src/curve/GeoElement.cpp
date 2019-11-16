@@ -78,7 +78,7 @@ namespace curve {
         // create result vector
         std::vector<def::CurvePoint> r(static_cast<size_t>(v.size()));
 
-        // iterate over knots
+        // iterate over grid point
         for (int i = 0; i < v.size(); ++i)
             r[i] = pos(v(i));
 

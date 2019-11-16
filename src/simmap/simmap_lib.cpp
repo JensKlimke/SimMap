@@ -650,7 +650,7 @@ namespace simmap {
     }
 
 
-    err_type_t horizon(id_type_t agentID, const double *knots, HorizonInformation *horizon, unsigned long n) {
+    err_type_t horizon(id_type_t agentID, const double *gridPoints, HorizonInformation *horizon, unsigned long n) {
 
         const int ERR = 120;
 
@@ -668,8 +668,8 @@ namespace simmap {
             // calculate horizon
             for (size_t i = 0; i < n; ++i) {
 
-                // save knots
-                auto s = knots[i];
+                // save grid points
+                auto s = gridPoints[i];
                 horizon[i].s = s;
 
                 // preset (in case it is aborted)

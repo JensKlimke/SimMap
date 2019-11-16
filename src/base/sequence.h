@@ -347,7 +347,7 @@ namespace base {
 
 
         /**
-         * Returns teh list of the knots of the sequence. Don't use this (except you are stupid or perfom testing)
+         * Returns the list of the grid points of the sequence. Don't use this (except you are stupid or perfom testing)
          * @return Vector of points
          */
         std::vector<double> points() const {

@@ -167,12 +167,12 @@ namespace simmap {
     /**
      * Calculates the horizon
      * @param agentID Agent ID
-     * @param knots Knots where the horizon shall be calculated (relative to current position)
+     * @param gridPoints Grid points where the horizon shall be calculated (relative to current position)
      * @param horizon Horizon to be calculated, an array of n entries
-     * @param n Number of knots
+     * @param n Number of grid points
      * @return Error code (0 = no error)
      */
-    SHARED_EXPORT err_type_t horizon(id_type_t agentID, const double *knots, HorizonInformation *horizon, unsigned long n);
+    SHARED_EXPORT err_type_t horizon(id_type_t agentID, const double *gridPoints, HorizonInformation *horizon, unsigned long n);
 
 
     /**
