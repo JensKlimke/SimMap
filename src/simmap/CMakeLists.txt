@@ -8,4 +8,6 @@ target_include_directories(simmap PRIVATE
         ${odrparser_INCLUDE_DIR}
         )
 
+
 target_link_libraries(simmap PRIVATE server odradapter)
+set_target_properties(simmap PROPERTIES POSITION_INDEPENDENT_CODE ON)
