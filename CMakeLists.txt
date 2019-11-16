@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 # set project title
-project(SimMap)
+project(SimMap VERSION 1.0 DESCRIPTION "A library to access map data and organize traffic simulation agents")
 
 # set C++ standard
 set(CMAKE_CXX_STANDARD 14)
@@ -17,17 +17,23 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 include(UpdateGitSubmodules)
 set(GIT_SUBMODULE OFF)
 
-# load macros for docs
-set(DOC_SOURCE_FOLDERS "${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/src")
-include(GenerateDocs)
-
 # create and set binary directory
 set(BIN_DIR ${PROJECT_SOURCE_DIR}/bin CACHE PATH "BIN_DIR")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 
 
 # ------------------------------------------------------------------------------
-# variables
+# documentation
+# ------------------------------------------------------------------------------
+
+# load macros for docs
+set(DOC_SOURCE_FOLDERS "${PROJECT_SOURCE_DIR}/include")
+include(GenerateDocs)
+
+
+
+# ------------------------------------------------------------------------------
+# shared library for windows (todo)
 # ------------------------------------------------------------------------------
 
 if(WIN32)

@@ -56,7 +56,7 @@ namespace simmap {
     typedef struct HorizonInformation HorizonInformation;
 
 
-    // TODO: error codes
+    // \todo: error codes
 
 
     /**

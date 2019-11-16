@@ -1,5 +1,5 @@
 
-add_library(simmap STATIC simmap_lib.cpp)
+add_library(simmap SHARED simmap_lib.cpp)
 
 target_include_directories(simmap PRIVATE
         ${PROJECT_SOURCE_DIR}/include/simmap
