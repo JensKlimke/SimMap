@@ -7,7 +7,6 @@ project(SimMap)
 set(CMAKE_CXX_STANDARD 14)
 
 # set options
-option(BUILD_APPS "Build the executables of the project" ON)
 option(BUILD_TESTS "Sets or unsets the option to generate the test target" OFF)
 option(ENABLE_COVERAGE "Enable the coverage check of the module" OFF)
 
@@ -62,20 +61,6 @@ set(BUILD_TESTS ${MAIN_BUILD_TESTS})
 
 # add sources
 add_subdirectory(src)
-
-
-
-# ------------------------------------------------------------------------------
-# Apps
-# ------------------------------------------------------------------------------
-
-# enable apps of the project
-if(BUILD_APPS)
-
-    # add subdirectory for apps
-    add_subdirectory(apps)
-
-endif(BUILD_APPS)
 
 
 
