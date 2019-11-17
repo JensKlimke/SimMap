@@ -258,7 +258,7 @@ TEST_F(LibraryTest, UpdatePosition) {
     double R = LibraryTest::R;
     double dPhi = 0.1, phi = 10.0 / R;
     double lf = 100.0, lb = 100.0;
-    for(size_t i = 0; i < 10; ++i) {
+    for(size_t i = 0; i < 100; ++i) {
 
         auto x = cos(phi) * (R + 1.875);
         auto y = sin(phi) * (R + 1.875);
@@ -269,7 +269,7 @@ TEST_F(LibraryTest, UpdatePosition) {
         // check positions
         EXPECT_NEAR(x, pos.x, 1e-6);
         EXPECT_NEAR(y, pos.y, 1e-6);
-        EXPECT_NEAR(phi + M_PI_2, pos.phi, 1e-6);
+        EXPECT_NEAR(0.0, base::angleDiff(phi + M_PI_2, pos.phi), 1e-6);
 
         // move by one step
         EXPECT_EQ(0, move(1, dPhi * R, 0.0, &lf, &lb));
@@ -282,6 +282,80 @@ TEST_F(LibraryTest, UpdatePosition) {
 
 
 }
+
+
+TEST_F(LibraryTest, UpdatePositionWithLaneChange) {
+
+    init();
+    initPaths();
+
+    MapPosition mapPos{};
+    Position pos{};
+
+    // get position
+    getMapPosition(1, &mapPos);
+    getPosition(1, &pos);
+
+    double R = LibraryTest::R;
+    double dPhi = 1.0, phi = 10.0 / R;
+    double lf = 100.0, lb = 100.0;
+
+    int l = -1;
+
+    for(size_t i = 0; i < 7; ++i) {
+
+        auto x = cos(phi) * (R + (l < 0 ? 1.875 : 5.5));
+        auto y = sin(phi) * (R + (l < 0 ? 1.875 : 5.5));
+
+        // get positions
+        getPosition(1, &pos);
+
+        // check positions
+        EXPECT_NEAR(x, pos.x, 1e-6);
+        EXPECT_NEAR(y, pos.y, 1e-6);
+        EXPECT_NEAR(0.0, base::angleDiff(phi + M_PI_2, pos.phi), 1e-6);
+
+        // get map position
+        getMapPosition(1, &mapPos);
+
+        if(i < 2) {
+
+            // check map position
+            EXPECT_EQ((l < 0 ? "R1-LS1-R1" : "R1-LS1-R2"), std::string(mapPos.edgeID));
+            EXPECT_NEAR(mapPos.longPos, R * phi, 1e-6);
+            EXPECT_NEAR(mapPos.latPos, 0.0, 1e-6);
+
+        } else if(i < 4) {
+
+            // check map position
+            EXPECT_EQ((l < 0 ? "R1-LS2-R1" : "R1-LS2-R2"), std::string(mapPos.edgeID));
+            EXPECT_NEAR(mapPos.longPos, R * (phi - M_PI_2), 1e-6);
+            EXPECT_NEAR(mapPos.latPos, 0.0, 1e-6);
+
+        } else if(i < 7) {
+
+            // check map position
+            EXPECT_EQ((l < 0 ? "R2-LS1-L1" : "R2-LS1-L2"), std::string(mapPos.edgeID));
+            EXPECT_NEAR(mapPos.longPos, R * (phi - M_PI), 1e-6);
+            EXPECT_NEAR(mapPos.latPos, 0.0, 1e-6);
+
+        }
+
+        // move by one step and switch lane
+        EXPECT_EQ(0, move(1, dPhi * R, 0.0, &lf, &lb));
+        EXPECT_EQ(0, switchLane(1, l));
+
+        // this should result in a error code
+        EXPECT_EQ((l > 0 ? 167 : 168), switchLane(1, l));
+
+        l *= -1;
+        phi += dPhi;
+
+    }
+
+
+}
+
 
 
 TEST_F(LibraryTest, MatchPosition) {

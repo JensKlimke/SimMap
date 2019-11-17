@@ -165,6 +165,15 @@ namespace simmap {
 
 
     /**
+     * Sets the lane of the agent (relatively to the current)
+     * @param agentID Agent ID
+     * @param laneOffset Lane offset (0: same lane, +n: n lanes to the right, -n: n lanes to the left)
+     * @return Error code (0 = no error)
+     */
+    SHARED_EXPORT err_type_t switchLane(id_type_t agentID, int laneOffset);
+
+
+    /**
      * Calculates the horizon
      * @param agentID Agent ID
      * @param gridPoints Grid points where the horizon shall be calculated (relative to current position)

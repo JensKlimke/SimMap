@@ -410,6 +410,7 @@ std::list<Path::Neighbor> Path::neighboredPaths(Track &track) const {
 
         // save information
         info.index      = j;
+        info.sameDir    = dir == mc.edge()->isForward();
         info.accessible = true; // TODO
         info.allowed    = true; // TODO
         info.offset     = sqrt((mc.absolutePosition().position - pos.absolutePosition().position).norm());
@@ -418,7 +419,7 @@ std::list<Path::Neighbor> Path::neighboredPaths(Track &track) const {
         ret.emplace_back(info, p);
 
         // when direction changes
-        if(dir == mc.edge()->isForward()) {
+        if(info.sameDir) {
 
             Path::create(ret.back().second, track, dh, db, mc);
             mc = mc.left();
@@ -452,6 +453,7 @@ std::list<Path::Neighbor> Path::neighboredPaths(Track &track) const {
 
         // save information
         info.index      = j;
+        info.sameDir    = dir == mc.edge()->isForward();
         info.accessible = true;
         info.allowed    = true;
         info.offset     = sqrt((mc.absolutePosition().position - pos.absolutePosition().position).norm());
@@ -460,7 +462,7 @@ std::list<Path::Neighbor> Path::neighboredPaths(Track &track) const {
         ret.emplace_back(info, p);
 
         // when direction changes
-        if(dir == mc.edge()->isForward()) {
+        if(info.sameDir) {
 
             Path::create(ret.back().second, track, dh, db, mc);
             mc = mc.right();
