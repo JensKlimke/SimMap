@@ -5,6 +5,7 @@ project(SimMap VERSION 1.0 DESCRIPTION "A library to access map data and organiz
 
 # set C++ standard
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # set options
 option(BUILD_TESTS "Sets or unsets the option to generate the test target" OFF)
