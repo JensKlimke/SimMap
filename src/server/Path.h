@@ -54,6 +54,7 @@ public:
         double offset;
         bool   accessible;
         bool   allowed;
+        bool   sameDir;
 
     };
 

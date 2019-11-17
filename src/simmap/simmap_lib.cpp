@@ -522,8 +522,7 @@ namespace simmap {
                 return ERR + 5;
             }
 
-            // get length and return 0
-            *lenFront = ag->path.distanceToHead();
+            // return 0
             return 0;
 
         } catch (...) {
@@ -648,6 +647,66 @@ namespace simmap {
         return 0;
 
     }
+
+
+    err_type_t switchLane(id_type_t agentID, int laneOffset) {
+
+        const int ERR = 160;
+
+        try {
+
+            // check if agent already registered
+            Agent *ag = nullptr;
+            auto err = _basicCheckAgent(agentID, &ag);
+            if (err != 0)
+                return ERR + err;
+
+            // iterate over neighbors
+            // TODO: save neighbored lanes to efficiently search for targets (recalculate intelligently on position update)
+            for (const auto &p : ag->path.neighboredPaths(ag->track)) {
+
+                if(p.first.index == laneOffset) {
+
+                    if(!p.first.sameDir)
+                        return ERR + 7;
+
+                    // not accessible
+                    if(!p.first.accessible)
+                        return ERR + 6;
+
+                    // set lengths
+                    double lenFront = ag->path.distanceToHead();
+                    double lenBack = ag->path.distanceToBack();
+
+                    // set new position
+                    ag->path = Path();
+
+                    try {
+
+                        // create path
+                        Path::create(ag->path, ag->track, lenFront, lenBack, p.second.position());
+
+                    } catch (...) {
+                        return ERR + 5;
+                    }
+
+                    return 0;
+
+                }
+
+            }
+
+            // no neighbor found
+            return ERR + 8;
+
+        } catch (...) {
+            return ERR + 9;
+        }
+
+        return 0;
+
+    }
+
 
 
     err_type_t horizon(id_type_t agentID, const double *gridPoints, HorizonInformation *horizon, unsigned long n) {
@@ -808,12 +867,12 @@ namespace simmap {
             auto max = *n;
             *n = 0;
 
-            // iterate over objects
+            // iterate over neighbors
             // TODO: save neighbored lanes to efficiently search for targets (recalculate intelligently on position update)
             for (const auto &p : ag->path.neighboredPaths(ag->track)) {
 
                 // check if lanes have same direction
-                bool sd = (p.second.position().edge()->isForward() == ag->path.position().edge()->isForward());
+                auto sd = p.first.sameDir;
 
                 // create lane information
                 lanes[*n] = LaneInformation{};
