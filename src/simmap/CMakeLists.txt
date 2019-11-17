@@ -9,5 +9,5 @@ target_include_directories(simmap PRIVATE
         )
 
 
-target_link_libraries(simmap PRIVATE server odradapter)
+target_link_libraries(simmap PRIVATE odradapter)
 set_target_properties(simmap PROPERTIES POSITION_INDEPENDENT_CODE ON)

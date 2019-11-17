@@ -35,3 +35,4 @@
 cmake-*
 build*
 bin/
+test/tracks/map.json
