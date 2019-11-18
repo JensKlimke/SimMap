@@ -36,8 +36,15 @@
 #include <cstdint>
 #include "types.h"
 
-
+#ifdef MAKE_SHARED
+#ifdef LIBRARY_EXPORT
+#define SHARED_EXPORT __declspec(dllexport)
+#else
+#define SHARED_EXPORT __declspec(dllimport)
+#endif
+#else
 #define SHARED_EXPORT
+#endif
 
 
 namespace simmap {
