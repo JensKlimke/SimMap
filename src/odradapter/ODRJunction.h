@@ -27,8 +27,8 @@
 
 #include <base/definitions.h>
 
-class ODREdge;
-class ODRRoad;
+struct ODREdge;
+struct ODRRoad;
 
 
 struct ODRJunction {

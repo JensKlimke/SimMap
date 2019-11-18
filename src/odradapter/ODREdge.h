@@ -33,7 +33,7 @@
 
 // TODO: for efficiency just calculate border by adding widths and border splines
 
-class ODRRoad;
+struct ODRRoad;
 
 struct ODREdge : public simmap::server::LaneEdge {
 

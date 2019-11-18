@@ -32,7 +32,7 @@
 
 class LaneSection;
 
-class ODRRoad;
+struct ODRRoad;
 
 class InterfaceLaneSection {
 
