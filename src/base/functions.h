@@ -27,12 +27,6 @@
 #ifndef SIMMAP_BASE_FUNCTIONS_H
 #define SIMMAP_BASE_FUNCTIONS_H
 
-
-#ifdef _WIN32
-#define _USE_MATH_DEFINES
-#include <math.h>
-#endif
-
 #include <cmath>
 #include <fstream>
 #include <Eigen/Core>
@@ -56,7 +50,7 @@ namespace base {
             throw std::invalid_argument("(b-a)*ds must pe positive");
 
         // get number of elements
-        unsigned long n = static_cast<unsigned long>(ceil((b - a) / ds) + 1);
+        auto n = static_cast<unsigned long>(ceil((b - a) / ds) + 1);
         return Eigen::RowVectorXd::LinSpaced(n, a, b);
 
     }
@@ -83,31 +77,31 @@ namespace base {
     }
 
 
-    /**
-     * Compares to files and returns the flag if the files are equal
-     * @param p1 File name of first file
-     * @param p2 File name of seconf file
-     * @return Flag (true when files are equal)
-     */
-    inline bool compareFiles(const std::string &p1, const std::string &p2) {
-
-        std::ifstream f1(p1, std::ifstream::binary | std::ifstream::ate);
-        std::ifstream f2(p2, std::ifstream::binary | std::ifstream::ate);
-
-        if (f1.fail() || f2.fail())
-            return false; //file problem
-
-        if (f1.tellg() != f2.tellg())
-            return false; //size mismatch
-
-        //seek back to beginning and use std::equal to compare contents
-        f1.seekg(0, std::ifstream::beg);
-        f2.seekg(0, std::ifstream::beg);
-
-        return std::equal(std::istreambuf_iterator<char>(f1.rdbuf()),
-                          std::istreambuf_iterator<char>(),
-                          std::istreambuf_iterator<char>(f2.rdbuf()));
-    }
+//    /**
+//     * Compares to files and returns the flag if the files are equal
+//     * @param p1 File name of first file
+//     * @param p2 File name of seconf file
+//     * @return Flag (true when files are equal)
+//     */
+//    inline bool compareFiles(const std::string &p1, const std::string &p2) {
+//
+//        std::ifstream f1(p1, std::ifstream::binary | std::ifstream::ate);
+//        std::ifstream f2(p2, std::ifstream::binary | std::ifstream::ate);
+//
+//        if (f1.fail() || f2.fail())
+//            return false; //file problem
+//
+//        if (f1.tellg() != f2.tellg())
+//            return false; //size mismatch
+//
+//        //seek back to beginning and use std::equal to compare contents
+//        f1.seekg(0, std::ifstream::beg);
+//        f2.seekg(0, std::ifstream::beg);
+//
+//        return std::equal(std::istreambuf_iterator<char>(f1.rdbuf()),
+//                          std::istreambuf_iterator<char>(),
+//                          std::istreambuf_iterator<char>(f2.rdbuf()));
+//    }
 
 
     /**
@@ -239,18 +233,18 @@ namespace base {
     }
 
 
-    /**
-     * Transfers the end point to the coordinate system of the base point
-     * @param base Start point
-     * @param end End point
-     * @return CurvePoint representing the end point in the coordinate system of the base point
-     */
-    inline def::CurvePoint toLocal(const def::CurvePoint &base, const def::CurvePoint &end) {
-
-        // create curve point and return
-        return def::CurvePoint{toLocal(base, end.position), base::angleDiff(end.angle, base.angle), end.curvature};
-
-    }
+//    /**
+//     * Transfers the end point to the coordinate system of the base point
+//     * @param base Start point
+//     * @param end End point
+//     * @return CurvePoint representing the end point in the coordinate system of the base point
+//     */
+//    inline def::CurvePoint toLocal(const def::CurvePoint &base, const def::CurvePoint &end) {
+//
+//        // create curve point and return
+//        return def::CurvePoint{toLocal(base, end.position), base::angleDiff(end.angle, base.angle), end.curvature};
+//
+//    }
 
 
     /**
