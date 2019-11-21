@@ -187,12 +187,26 @@ namespace base {
      */
     inline Eigen::Vector3d toGlobal(const def::CurvePoint &curvePoint, const Eigen::Vector3d &point) {
 
-        // create transformation
-        Eigen::Transform <double, 3, Eigen::Affine> t = Eigen::Transform <double, 3, Eigen::Affine>::Identity();
-        t.rotate(Eigen::AngleAxisd(curvePoint.angle, Eigen::Vector3d::UnitZ()));
 
-        // create curve point and return
-        return Eigen::Vector3d{t * point + curvePoint.position};
+        auto c = cos(curvePoint.angle);
+        auto s = sin(curvePoint.angle);
+
+        auto x = point.x();
+        auto y = point.y();
+        auto z = point.z();
+
+        return Eigen::Vector3d {
+            x * c - y * s + curvePoint.position.x(),
+            x * s + y * c + curvePoint.position.y(),
+            z + curvePoint.position.z()
+        };
+
+//        // create transformation
+//        Eigen::Transform <double, 3, Eigen::Affine> t = Eigen::Transform <double, 3, Eigen::Affine>::Identity();
+//        t.rotate(Eigen::AngleAxisd(curvePoint.angle, Eigen::Vector3d::UnitZ()));
+//
+//        // create curve point and return
+//        return Eigen::Vector3d{t * point + curvePoint.position};
 
     }
 
@@ -200,17 +214,27 @@ namespace base {
     /**
      * Transfers the given point to the coordinate system of the curve point
      * @param curvePoint Definition of the coordinate system
-     * @param point Point Point to be transfered
+     * @param point Point Point to be transferred
      * @return CurvePoint representing the point in the local coordinate system
      */
     inline Eigen::Vector3d toLocal(const def::CurvePoint &curvePoint, const Eigen::Vector3d &point) {
 
-        // create transformation
-        Eigen::Transform <double, 3, Eigen::Affine> t = Eigen::Transform <double, 3, Eigen::Affine>::Identity();
-        t.rotate(Eigen::AngleAxisd(-curvePoint.angle, Eigen::Vector3d::UnitZ()));
 
-        // create curve point and return
-        return Eigen::Vector3d{t * (point - curvePoint.position)};
+        auto c = cos(curvePoint.angle);
+        auto s = sin(curvePoint.angle);
+
+        auto x = point.x() - curvePoint.position.x();
+        auto y = point.y() - curvePoint.position.y();
+        auto z = point.z() - curvePoint.position.z();
+
+        return Eigen::Vector3d {x * c + y * s, -x * s + y * c, z};
+
+//        // create transformation
+//        Eigen::Transform <double, 3, Eigen::Affine> t = Eigen::Transform <double, 3, Eigen::Affine>::Identity();
+//        t.rotate(Eigen::AngleAxisd(-curvePoint.angle, Eigen::Vector3d::UnitZ()));
+//
+//        // create curve point and return
+//        return Eigen::Vector3d{t * (point - curvePoint.position)};
 
     }
 

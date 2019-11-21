@@ -141,3 +141,181 @@ TEST(FunctionTest, VectorManipulation) {
 //    EXPECT_EXIT(base::removeElementFromVector(b, 0), ::testing::KilledBySignal(SIGABRT), ".*");
 
 }
+
+
+TEST(FunctionTest, TransformationToGlobal) {
+
+    double err = 1e-9;
+
+    // all zero
+    def::CurvePoint curvePoint {{0.0, 0.0, 0.0}, 0.0, 0.0};
+    Eigen::Vector3d point {0.0, 0.0, 0.0};
+
+    auto pnt = base::toGlobal(curvePoint, point);
+    EXPECT_NEAR(0.0, pnt.x(), err);
+    EXPECT_NEAR(0.0, pnt.y(), err);
+    EXPECT_NEAR(0.0, pnt.z(), err);
+
+
+    // rotation in pos. direction
+    curvePoint = def::CurvePoint{{0.0, 0.0, 0.0}, M_PI_2, 0.0};
+    point = Eigen::Vector3d{1.0, 0.0, 0.0};
+
+    pnt = base::toGlobal(curvePoint, point);
+    EXPECT_NEAR(0.0, pnt.x(), err);
+    EXPECT_NEAR(1.0, pnt.y(), err);
+    EXPECT_NEAR(0.0, pnt.z(), err);
+
+
+    // rotation by pi
+    curvePoint = def::CurvePoint{{0.0, 0.0, 0.0}, M_PI, 0.0};
+    point = Eigen::Vector3d{1.0, 0.0, 0.0};
+
+    pnt = base::toGlobal(curvePoint, point);
+    EXPECT_NEAR(-1.0, pnt.x(), err);
+    EXPECT_NEAR(0.0, pnt.y(), err);
+    EXPECT_NEAR(0.0, pnt.z(), err);
+
+
+    // translation
+    curvePoint = def::CurvePoint{{1.0, 2.0, 3.0}, 0.0, 5.0};
+    point = Eigen::Vector3d{1.0, 0.0, 0.0};
+
+    pnt = base::toGlobal(curvePoint, point);
+    EXPECT_NEAR(2.0, pnt.x(), err);
+    EXPECT_NEAR(2.0, pnt.y(), err);
+    EXPECT_NEAR(3.0, pnt.z(), err);
+
+
+    // translation and rotation
+    curvePoint = def::CurvePoint{{1.0, 2.0, 3.0}, 2.0 * M_PI, 5.0};
+    point = Eigen::Vector3d{1.0, 0.0, 0.0};
+
+    pnt = base::toGlobal(curvePoint, point);
+    EXPECT_NEAR(2.0, pnt.x(), err);
+    EXPECT_NEAR(2.0, pnt.y(), err);
+    EXPECT_NEAR(3.0, pnt.z(), err);
+
+
+    // translation and neg. rotation
+    curvePoint = def::CurvePoint{{1.0, 2.0, 3.0}, -M_PI_2, 5.0};
+    point = Eigen::Vector3d{1.0, 0.0, 0.0};
+
+    pnt = base::toGlobal(curvePoint, point);
+    EXPECT_NEAR(1.0, pnt.x(), err);
+    EXPECT_NEAR(1.0, pnt.y(), err);
+    EXPECT_NEAR(3.0, pnt.z(), err);
+
+
+    // translation and rotation
+    curvePoint = def::CurvePoint{{1.0, 2.0, 3.0}, M_PI_2, 5.0};
+    point = Eigen::Vector3d{1.0, 1.0, 5.0};
+
+    pnt = base::toGlobal(curvePoint, point);
+    EXPECT_NEAR(0.0, pnt.x(), err);
+    EXPECT_NEAR(3.0, pnt.y(), err);
+    EXPECT_NEAR(8.0, pnt.z(), err);
+
+
+    // translation and neg. rotation
+    curvePoint = def::CurvePoint{{1.0, 2.0, 3.0}, -M_PI_2, 5.0};
+    point = Eigen::Vector3d{1.0, 1.0, 5.0};
+
+    pnt = base::toGlobal(curvePoint, point);
+    EXPECT_NEAR(2.0, pnt.x(), err);
+    EXPECT_NEAR(1.0, pnt.y(), err);
+    EXPECT_NEAR(8.0, pnt.z(), err);
+
+}
+
+
+TEST(FunctionTest, TransformationToLocal) {
+
+    double err = 1e-9;
+
+    // all zero
+    def::CurvePoint curvePoint {{0.0, 0.0, 0.0}, 0.0, 0.0};
+    Eigen::Vector3d point {0.0, 0.0, 0.0};
+
+    auto pnt = base::toLocal(curvePoint, point);
+    EXPECT_NEAR(0.0, pnt.x(), err);
+    EXPECT_NEAR(0.0, pnt.y(), err);
+    EXPECT_NEAR(0.0, pnt.z(), err);
+
+
+    // rotation in pos. direction
+    curvePoint = def::CurvePoint{{0.0, 0.0, 0.0}, M_PI_2, 0.0};
+    point = Eigen::Vector3d{0.0, 1.0, 0.0};
+
+    pnt = base::toLocal(curvePoint, point);
+    EXPECT_NEAR(1.0, pnt.x(), err);
+    EXPECT_NEAR(0.0, pnt.y(), err);
+    EXPECT_NEAR(0.0, pnt.z(), err);
+
+
+    // rotation by pi
+    curvePoint = def::CurvePoint{{0.0, 0.0, 0.0}, M_PI, 0.0};
+    point = Eigen::Vector3d{-1.0, 0.0, 0.0};
+
+    pnt = base::toLocal(curvePoint, point);
+    EXPECT_NEAR(1.0, pnt.x(), err);
+    EXPECT_NEAR(0.0, pnt.y(), err);
+    EXPECT_NEAR(0.0, pnt.z(), err);
+
+
+    // translation
+    curvePoint = def::CurvePoint{{1.0, 2.0, 3.0}, 0.0, 5.0};
+    point = Eigen::Vector3d{2.0, 2.0, 3.0};
+
+    pnt = base::toLocal(curvePoint, point);
+    EXPECT_NEAR(1.0, pnt.x(), err);
+    EXPECT_NEAR(0.0, pnt.y(), err);
+    EXPECT_NEAR(0.0, pnt.z(), err);
+
+
+    // translation and rotation
+    curvePoint = def::CurvePoint{{1.0, 2.0, 3.0}, 2.0 * M_PI, 5.0};
+    point = Eigen::Vector3d{2.0, 2.0, 3.0};
+
+    pnt = base::toLocal(curvePoint, point);
+    EXPECT_NEAR(1.0, pnt.x(), err);
+    EXPECT_NEAR(0.0, pnt.y(), err);
+    EXPECT_NEAR(0.0, pnt.z(), err);
+
+
+    // translation and neg. rotation
+    curvePoint = def::CurvePoint{{1.0, 2.0, 3.0}, -M_PI_2, 5.0};
+    point = Eigen::Vector3d{1.0, 1.0, 3.0};
+
+    pnt = base::toLocal(curvePoint, point);
+    EXPECT_NEAR(1.0, pnt.x(), err);
+    EXPECT_NEAR(0.0, pnt.y(), err);
+    EXPECT_NEAR(0.0, pnt.z(), err);
+
+}
+
+
+TEST(FunctionTest, SpeedTest) {
+
+    double err = 1e-9;
+
+    Eigen::Vector3d pntLocal  {0.0, 0.0, 0.0};
+    Eigen::Vector3d pntGlobal {1.0, 2.0, 3.0};
+
+    def::CurvePoint curvePoint {{1.0, -2.0, -5.0}, 0.0, 0.0};
+
+    // many steps
+    for(unsigned int i = 0; i < 100000; ++i) {
+
+        pntLocal = base::toLocal(curvePoint, pntGlobal);
+        auto tmp = base::toGlobal(curvePoint, pntLocal);
+
+        EXPECT_NEAR(pntGlobal.x(), tmp.x(), err);
+        EXPECT_NEAR(pntGlobal.y(), tmp.y(), err);
+        EXPECT_NEAR(pntGlobal.z(), tmp.z(), err);
+
+        curvePoint.angle += M_PI * 0.1;
+
+    }
+
+}
