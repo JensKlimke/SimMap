@@ -1,5 +1,3 @@
-#include <utility>
-
 /*
  * poly1.h
  *
