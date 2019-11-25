@@ -141,7 +141,7 @@ namespace base {
             Eigen::MatrixXd res(x.rows(), x.cols());
 
             // iterate over entries
-            for (int i = 0; i < x.size(); ++i)
+            for (unsigned int i = 0; i < x.size(); ++i)
                 res(i) = this->horner(x(i));
 
             return res;
@@ -175,8 +175,10 @@ namespace base {
          */
         poly1 shift(double d) const {
 
-            auto d2 = d * d;
+            if(_params.size() != 4)
+                throw std::runtime_error("Polynomial must be of order 3 to perform this operation.");
 
+            auto d2 = d * d;
             poly1 p = poly1(
                     _params(0),
                     -3.0 * _params(0) * d + _params(1),

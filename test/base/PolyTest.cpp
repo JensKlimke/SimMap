@@ -114,6 +114,11 @@ TEST_F(PolyTest, Shift) {
     for(unsigned long i = 0; i < x.rows(); ++i)
         EXPECT_NEAR(y(i), yc(i), 1e-3);
 
+    // error
+    poly1 p2;
+    p2.parameters(Eigen::Vector3d{0.0, 1.0, 2.0});
+    EXPECT_THROW(p2.shift(10.0), std::runtime_error);
+
 }
 
 
