@@ -230,6 +230,7 @@ namespace graph {
 
         // return container
         position_vector_t ret{};
+        ret.reserve(_segments.size());
 
         // throw error
         if (_segments.empty())
@@ -267,6 +268,7 @@ namespace graph {
 
         // return container
         position_vector_t ret{};
+        ret.reserve(_segments.size());
 
         // throw error
         if (_segments.empty())

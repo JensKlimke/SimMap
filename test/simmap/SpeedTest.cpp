@@ -41,8 +41,8 @@ class SpeedTest : public testing::Test {
 TEST_F(SpeedTest, Targets) {
 
     // define number of targets and number of steps
-    unsigned int n = 10;
-    unsigned int m = 1000;
+    unsigned int n = 100;
+    unsigned int m = 100;
 
     // load map
     unsigned int id;
