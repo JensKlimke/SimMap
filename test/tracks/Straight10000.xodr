@@ -12,10 +12,16 @@
         <lanes>
             <laneSection s="0.000000000000000" singleSide="false">
                 <left>
-                    <lane id="2" type="driving" level="true">
+                    <lane id="3" type="driving" level="true">
                         <link>
                         </link>
                         <roadMark sOffset="0.000000000000000" type="solid" weight="standard" color="standard" material="standard" laneChange="both" height="0.000000000000000" />
+                        <width sOffset="0.000000000000000" a="3.500000000000000" b="0.000000000000000" c="0.000000000000000" d="0.000000000000000" />
+                    </lane>
+                    <lane id="2" type="driving" level="true">
+                        <link>
+                        </link>
+                        <roadMark sOffset="0.000000000000000" type="broken" weight="standard" color="standard" material="standard" laneChange="both" height="0.000000000000000" />
                         <width sOffset="0.000000000000000" a="3.500000000000000" b="0.000000000000000" c="0.000000000000000" d="0.000000000000000" />
                     </lane>
                     <lane id="1" type="driving" level="true">
@@ -40,6 +46,12 @@
                         <width sOffset="0.000000000000000" a="3.750000000000000" b="0.000000000000000" c="0.000000000000000" d="0.000000000000000" />
                     </lane>
                     <lane id="-2" type="driving" level="true">
+                        <link>
+                        </link>
+                        <roadMark sOffset="0.000000000000000" type="broken" weight="standard" color="standard" material="standard" laneChange="both" height="0.000000000000000" />
+                        <width sOffset="0.000000000000000" a="3.500000000000000" b="0.000000000000000" c="0.000000000000000" d="0.000000000000000" />
+                    </lane>
+                    <lane id="-3" type="driving" level="true">
                         <link>
                         </link>
                         <roadMark sOffset="0.000000000000000" type="solid" weight="standard" color="standard" material="standard" laneChange="both" height="0.000000000000000" />

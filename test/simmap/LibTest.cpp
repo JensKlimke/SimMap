@@ -79,6 +79,9 @@ public:
         EXPECT_EQ(0, _loadMap(base::string_format("%s/example_simple.xodr", TRACKS_DIR), &id));
         EXPECT_EQ(3, id);
 
+        EXPECT_EQ(0, _loadMap(base::string_format("%s/Straight10000.xodr", TRACKS_DIR), &id));
+        EXPECT_EQ(4, id);
+
 
         // register agents
 
@@ -86,16 +89,17 @@ public:
         EXPECT_EQ(45, registerAgent(1, 1)); // try to re-register agent 1 again
         EXPECT_EQ(0,  registerAgent(2, 1));
         EXPECT_EQ(0,  registerAgent(3, 2)); // register agent 3 on different map
-        EXPECT_EQ(46, registerAgent(4, 4)); // try to register agent on non-existing map
+        EXPECT_EQ(46, registerAgent(4, 9)); // try to register agent on non-existing map
         EXPECT_EQ(0,  registerAgent(5, 1));
         EXPECT_EQ(0,  registerAgent(6, 1));
         EXPECT_EQ(0,  registerAgent(7, 1));
         EXPECT_EQ(0,  registerAgent(8, 3)); // register agent 8 to simple map
+        EXPECT_EQ(0,  registerAgent(9, 4));
 
 
         // set tracks
 
-        std::vector<std::vector<const char*>> ra = {{"1", "-2"}, {"2", "-1"}, {"10", "5"}, {"1"}};
+        std::vector<std::vector<const char*>> ra = {{"1", "-2"}, {"2", "-1"}, {"10", "5"}, {"1"}, {"-1"}};
 
         EXPECT_EQ(0,  setTrack(1, ra[0].data(), 2));
         EXPECT_EQ(0,  setTrack(2, ra[1].data(), 2));
@@ -104,6 +108,7 @@ public:
         EXPECT_EQ(0,  setTrack(6, ra[0].data(), 2));
         EXPECT_EQ(0,  setTrack(7, ra[0].data(), 2));
         EXPECT_EQ(0,  setTrack(8, ra[3].data(), 1));
+        EXPECT_EQ(0,  setTrack(9, ra[4].data(), 1));
 
 
     }
@@ -113,33 +118,41 @@ public:
 
         double lenFront = 700.0; double lenBack = 350.0;
         EXPECT_EQ(0, setMapPosition(1, {"R1-LS1-R1", 10.0, 0.0}, &lenFront, &lenBack));
-        EXPECT_EQ(700.0, lenFront);
-        EXPECT_EQ(350.0, lenBack);
+        EXPECT_NEAR(700.0,lenFront, 1e-6);
+        EXPECT_NEAR(350.0,lenBack,  1e-6);
 
         lenFront = 200.0; lenBack = 100.0;
         EXPECT_EQ(0, setMapPosition(2, {"R2-LS1-R1", 10.0, 0.0}, &lenFront, &lenBack));
-        EXPECT_EQ(200.0, lenFront);
-        EXPECT_EQ(100.0, lenBack);
+        EXPECT_NEAR(200.0,lenFront, 1e-6);
+        EXPECT_NEAR(100.0,lenBack,  1e-6);
 
         lenFront = 200.0; lenBack = 100.0;
         EXPECT_EQ(0, setMapPosition(5, {"R1-LS2-R2", 10.0, 0.0}, &lenFront, &lenBack));
-        EXPECT_EQ(200.0, lenFront);
-        EXPECT_EQ(100.0, lenBack);
+        EXPECT_NEAR(200.0,lenFront, 1e-6);
+        EXPECT_NEAR(100.0,lenBack,  1e-6);
 
         lenFront = 200.0; lenBack = 100.0;
         EXPECT_EQ(0, setMapPosition(6, {"R1-LS1-R1", 30.0, 0.0}, &lenFront, &lenBack));
-        EXPECT_EQ(200.0, lenFront);
-        EXPECT_EQ(100.0, lenBack);
+        EXPECT_NEAR(200.0,lenFront, 1e-6);
+        EXPECT_NEAR(100.0,lenBack,  1e-6);
 
         lenFront = 200.0; lenBack = 100.0;
         EXPECT_EQ(0, setMapPosition(7, {"R1-LS1-R1", 5.0, 0.0}, &lenFront, &lenBack));
-        EXPECT_EQ(200.0, lenFront);
-        EXPECT_EQ(100.0, lenBack);
+        EXPECT_NEAR(200.0,lenFront, 1e-6);
+        EXPECT_NEAR(100.0,lenBack,  1e-6);
 
         lenFront = 165.0; lenBack = 10.0;
         EXPECT_EQ(0, setMapPosition(8, {"R1-LS1-R1", 0.0, 0.0}, &lenFront, &lenBack));
-        EXPECT_EQ(165.0, lenFront);
-        EXPECT_EQ(  0.0, lenBack);
+        EXPECT_NEAR(165.0,lenFront, 1e-6);
+        EXPECT_NEAR(  0.0,lenBack,  1e-6);
+
+        lenFront = 1000.0; lenBack = 50.0;
+        double s = 0.06520992110916;
+        EXPECT_EQ(0, setMapPosition(9, {"R1-LS1-R1", s, 0.0}, &lenFront, &lenBack));
+        EXPECT_NEAR(1000.0,lenFront, 1e-6);
+        EXPECT_NEAR(     s,lenBack,  1e-6);
+
+
 
     }
 
@@ -157,7 +170,8 @@ public:
         EXPECT_EQ(0,  unloadMap(1));
         EXPECT_EQ(0,  unloadMap(2));
         EXPECT_EQ(0,  unloadMap(3));
-        EXPECT_EQ(35, unloadMap(4));
+        EXPECT_EQ(0,  unloadMap(4));
+        EXPECT_EQ(35, unloadMap(9));
 
     }
 
@@ -386,6 +400,31 @@ TEST_F(LibraryTest, MatchPosition) {
         phi += dPhi;
 
     }
+
+}
+
+
+TEST_F(LibraryTest, MatchPosition2) {
+
+    init();
+    initPaths();
+
+    MapPosition mapPos{};
+    Position pos{};
+
+    // get position
+    getMapPosition(9, &mapPos);
+    getPosition(9, &pos);
+
+    // set position
+    pos.x = 100.06520992110916;
+    pos.y = -1.875;
+    pos.z = 0.0;
+    pos.phi = 0.0;
+    pos.kappa = 0.0;
+
+    // match
+    EXPECT_EQ(0, match(9, pos, 2.0, &mapPos));
 
 }
 

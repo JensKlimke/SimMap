@@ -348,15 +348,19 @@ void Path::createRecursively(std::list<Path*> &paths, const LaneEdge *edge, doub
 
 double Path::match(const Eigen::Vector3d &xyz, double &s, double radius) const {
 
-    Matcher matcher;
+    Matcher matcher{};
     matcher.path = this;
     matcher.xyz = &xyz;
 
     // get bounds
     auto b = matcher.bounds();
 
+    // get bounds
+    double b0 = b(0) + 1e-12;
+    double b1 = b(1) - 1e-12;
+
     // calculate minimum on discrete steps
-    auto ss = base::maxspace(fmax(s - radius, b(0)), fmin(s + radius, b(1)), 10.0);
+    auto ss = base::maxspace(fmax(s - radius, b0), fmin(s + radius, b1), 10.0);
     double erro = INFINITY;
 
     for(size_t i = 0; i < ss.size(); ++i) {
