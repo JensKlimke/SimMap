@@ -547,26 +547,26 @@ TEST(PathMatchTest, Algo) {
     Path path;
     Path::create(path, track, 100.0, 0.0, mc);
 
-    EXPECT_DOUBLE_EQ(100.0, path.distanceToHead());
-    EXPECT_DOUBLE_EQ(0.0, path.distanceToBack());
+    EXPECT_NEAR(100.0, path.distanceToHead(), 1e-15);
+    EXPECT_NEAR(0.0, path.distanceToBack(), 1e-15);
 
     double s = 0.0;
     auto pos = MapCoordinate(edge, 0.0, 0.0).absolutePosition().position;
     double err = path.match(pos, s);
-    EXPECT_DOUBLE_EQ(0.0, s);
-    EXPECT_DOUBLE_EQ(0.0, err);
+    EXPECT_NEAR(0.0, s, 1e-15);
+    EXPECT_NEAR(0.0, err, 1e-15);
 
     s = 0.0;
     pos = MapCoordinate(edge, 0.0, 1.0).absolutePosition().position;
     err = path.match(pos, s);
-    EXPECT_DOUBLE_EQ(0.0, s);
-    EXPECT_DOUBLE_EQ(1.0, err);
+    EXPECT_NEAR(0.0, s, 1e-15);
+    EXPECT_NEAR(1.0, err, 1e-15);
 
     s = 0.0;
     pos = MapCoordinate(edge, 5.0, 1.0).absolutePosition().position;
     err = path.match(pos, s);
-    EXPECT_DOUBLE_EQ(5.0, s);
-    EXPECT_DOUBLE_EQ(1.0, err);
+    EXPECT_NEAR(5.0, s, 1e-15);
+    EXPECT_NEAR(1.0, err, 1e-15);
 
     // create path (lane -1)
     edge = map.getEdge("R1-LS1-R1");
@@ -576,8 +576,8 @@ TEST(PathMatchTest, Algo) {
     s = 0.0;
     pos = MapCoordinate(edge, 5.0, 0.0).absolutePosition().position;
     err = path.match(pos, s);
-    EXPECT_DOUBLE_EQ(5.0, s);
-    EXPECT_DOUBLE_EQ(0.0, err);
+    EXPECT_NEAR(5.0, s, 1e-15);
+    EXPECT_NEAR(0.0, err, 1e-15);
 
     // update path position
     path.position(5.0);
@@ -585,8 +585,8 @@ TEST(PathMatchTest, Algo) {
     s = -5.0;
     pos = MapCoordinate(edge, 5.0, 0.0).absolutePosition().position;
     err = path.match(pos, s);
-    EXPECT_DOUBLE_EQ(0.0, s);
-    EXPECT_DOUBLE_EQ(0.0, err);
+    EXPECT_NEAR(0.0, s, 1e-15);
+    EXPECT_NEAR(0.0, err, 1e-15);
 
 }
 
