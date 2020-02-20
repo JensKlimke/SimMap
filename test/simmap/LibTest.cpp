@@ -147,10 +147,9 @@ public:
         EXPECT_NEAR(  0.0,lenBack,  1e-6);
 
         lenFront = 1000.0; lenBack = 50.0;
-        double s = 0.06520992110916;
-        EXPECT_EQ(0, setMapPosition(9, {"R1-LS1-R1", s, 0.0}, &lenFront, &lenBack));
+        EXPECT_EQ(0, setMapPosition(9, {"R1-LS1-R1", 0.0, 0.0}, &lenFront, &lenBack));
         EXPECT_NEAR(1000.0,lenFront, 1e-6);
-        EXPECT_NEAR(     s,lenBack,  1e-6);
+        EXPECT_NEAR(   0.0,lenBack,  1e-6);
 
 
 
@@ -417,14 +416,14 @@ TEST_F(LibraryTest, MatchPosition2) {
     getPosition(9, &pos);
 
     // set position
-    pos.x = 100.06520992110916;
+    pos.x = 100.0;
     pos.y = -1.875;
     pos.z = 0.0;
     pos.phi = 0.0;
     pos.kappa = 0.0;
 
     // match
-    EXPECT_EQ(0, match(9, pos, 2.0, &mapPos));
+    EXPECT_EQ(0, match(9, pos, 0.0, &mapPos));
 
 }
 

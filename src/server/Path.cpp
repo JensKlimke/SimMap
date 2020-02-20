@@ -359,6 +359,9 @@ double Path::match(const Eigen::Vector3d &xyz, double &s, double radius) const {
     double b0 = b(0) + 1e-12;
     double b1 = b(1) - 1e-12;
 
+    // set radius at least to a minimum
+    radius = fmax(0.1, fabs(radius));
+
     // calculate minimum on discrete steps
     auto ss = base::maxspace(fmax(s - radius, b0), fmin(s + radius, b1), 10.0);
     double erro = INFINITY;
