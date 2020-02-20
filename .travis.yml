@@ -28,6 +28,6 @@ script:
   ######################
   # cmake and build
   ######################
-  - cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON -BUILD_DOCS=OFF ..
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON -DBUILD_DOCS=OFF ..
   - make
   - make test
