@@ -24,7 +24,6 @@
 
 #include <string>
 #include <map>
-#include <map>
 #include <list>
 
 #include <lib.h>
@@ -76,10 +75,9 @@ namespace simmap {
 
             return 0;
 
-        } catch (...) {
-
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return 4;
-
         }
 
     }
@@ -90,7 +88,8 @@ namespace simmap {
         // get edge
         try {
             *edge = ag->map->getEdge(edgeID);
-        } catch (...) {
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return 20;
         }
 
@@ -218,8 +217,8 @@ namespace simmap {
             // reset ID counter
             _seg_id_counter = 0;
 
-
-        } catch (...) {
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
         }
 
@@ -243,7 +242,8 @@ namespace simmap {
                 map = new odra::ODRAdapter;
                 _maps[++_seg_id_counter] = map;
 
-            } catch (...) {
+            } catch (const std::exception &e) {
+                std::cerr << e.what() << std::endl;
                 return ERR + 5;
             }
 
@@ -253,7 +253,10 @@ namespace simmap {
                 // create network
                 map->loadFile(filename);
 
-            } catch (...) {
+            }  catch (const std::exception &e) {
+
+                // print error
+                std::cerr << e.what() << std::endl;
 
                 // delete map
                 delete _maps[_seg_id_counter];
@@ -268,11 +271,9 @@ namespace simmap {
             // return segment id
             *id = _seg_id_counter;
 
-        } catch (...) {
-
-            // unknown error
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
-
         }
 
         return 0;
@@ -318,11 +319,9 @@ namespace simmap {
             delete seg;
             _maps.erase(id);
 
-        } catch (...) {
-
-            // unknown error
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
-
         }
 
         // return segment id
@@ -351,11 +350,9 @@ namespace simmap {
             _agents[agentID]->map = _maps.at(mapID);
 
 
-        } catch (...) {
-
-            // unknown error
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
-
         }
 
         // everything ok
@@ -380,11 +377,9 @@ namespace simmap {
             delete _agents[agentID];
             _agents.erase(agentID);
 
-        } catch (...) {
-
-            // unknown error
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
-
         }
 
         // everything ok
@@ -439,11 +434,9 @@ namespace simmap {
 
             }
 
-        } catch (...) {
-
-            // unknown error
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
-
         }
 
         return 0;
@@ -479,11 +472,9 @@ namespace simmap {
             pos->kappa = p.curvature;
 
 
-        } catch (...) {
-
-            // unknown error
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
-
         }
 
         return 0;
@@ -518,14 +509,16 @@ namespace simmap {
                 *lenFront = ag->path.distanceToHead();
                 *lenBack = ag->path.distanceToBack();
 
-            } catch (...) {
+            } catch (const std::exception &e) {
+                std::cerr << e.what() << std::endl;
                 return ERR + 5;
             }
 
             // return 0
             return 0;
 
-        } catch (...) {
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
         }
 
@@ -552,7 +545,8 @@ namespace simmap {
             mapPos->latPos = mc.d();
             mapPos->longPos = mc.s();
 
-        } catch (...) {
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
         }
 
@@ -592,7 +586,8 @@ namespace simmap {
             auto loc = base::toLocal(mc.absolutePosition(), vec);
             mapPos->latPos = loc.y();
 
-        } catch (...) {
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
         }
 
@@ -622,7 +617,8 @@ namespace simmap {
                 // set path
                 ag->path.position(ds, t);
 
-            } catch (...) {
+            } catch (const std::exception &e) {
+                std::cerr << e.what() << std::endl;
                 return ERR + 6;
             }
 
@@ -631,7 +627,8 @@ namespace simmap {
                 // update path
                 ag->path.updatePath(*lenFront, *lenBack, ag->track);
 
-            } catch (...) {
+            } catch (const std::exception &e) {
+                std::cerr << e.what() << std::endl;
                 return ERR + 7;
             }
 
@@ -640,7 +637,8 @@ namespace simmap {
             *lenBack = ag->path.distanceToBack();
 
 
-        } catch (...) {
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
         }
 
@@ -686,7 +684,8 @@ namespace simmap {
                         // create path
                         Path::create(ag->path, ag->track, lenFront, lenBack, p.second.position());
 
-                    } catch (...) {
+                    } catch (const std::exception &e) {
+                        std::cerr << e.what() << std::endl;
                         return ERR + 5;
                     }
 
@@ -699,11 +698,10 @@ namespace simmap {
             // no neighbor found
             return ERR + 8;
 
-        } catch (...) {
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
         }
-
-        return 0;
 
     }
 
@@ -748,7 +746,7 @@ namespace simmap {
 
                 // check if the distance to back is reached
                 if (s < -ag->path.distanceToBack()) {
-                    horizon[i].s = -INFINITY;
+                    horizon[i].s = -std::numeric_limits<double>::infinity();
                     continue;
                 }
 
@@ -761,7 +759,8 @@ namespace simmap {
                     mc = ag->path.positionAt(s);
                     mp = mc.absolutePosition();
 
-                } catch (...) {
+                } catch (const std::exception &e) {
+                    std::cerr << e.what() << std::endl;
                     return ERR + 6;
                 }
 
@@ -773,7 +772,8 @@ namespace simmap {
                     mcr = mc.right();
                     mcl = mc.left();
 
-                } catch (...) {
+                } catch (const std::exception &e) {
+                    std::cerr << e.what() << std::endl;
                     return ERR + 7;
                 }
 
@@ -790,7 +790,8 @@ namespace simmap {
 
             }
 
-        } catch (...) {
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
         }
 
@@ -837,7 +838,8 @@ namespace simmap {
             }
 
 
-        } catch (...) {
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
         }
 
@@ -900,7 +902,8 @@ namespace simmap {
             }
 
 
-        } catch (...) {
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
         }
 
@@ -972,7 +975,8 @@ namespace simmap {
                 targets[i] = tars.at(i);
 
 
-        } catch (...) {
+        } catch (const std::exception &e) {
+            std::cerr << e.what() << std::endl;
             return ERR + 9;
         }
 
