@@ -14,10 +14,6 @@ option(ENABLE_COVERAGE "Enable the coverage check of the module" OFF)
 # add ./cmake to CMAKE_MODULE_PATH
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
-# update submodules
-include(UpdateGitSubmodules)
-set(GIT_SUBMODULE OFF)
-
 # create and set binary directory
 set(BIN_DIR ${PROJECT_SOURCE_DIR}/bin CACHE PATH "BIN_DIR")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
