@@ -29,7 +29,6 @@
 #include "GeoElement.h"
 #include <base/sequence.h>
 #include <base/definitions.h>
-#include <Eigen/Core>
 
 
 namespace simmap {
@@ -51,22 +50,22 @@ public:
     ~Curve() override = default;
 
     GeoElement::Type type() const override;
-    Eigen::RowVectorXd parameters() const override;
+    base::VectorX parameters() const override;
 
     double startCurvature() const override;
     double endCurvature() const override;
     double curvature(double s) const override;
 
-    void curvature(const Eigen::RowVectorXd& s, const Eigen::RowVectorXd& kappa);
-    void curvature(const Eigen::RowVectorXd& s, const Eigen::RowVectorXd& kappa0, const Eigen::RowVectorXd& kappa1);
+    void curvature(const base::VectorX& s, const base::VectorX& kappa);
+    void curvature(const base::VectorX& s, const base::VectorX& kappa0, const base::VectorX& kappa1);
 
-    void startPoint(const def::CurvePoint &pos) override;
-    def::CurvePoint startPoint() const override;
+    void startPoint(const base::CurvePoint &pos) override;
+    base::CurvePoint startPoint() const override;
 
-    Eigen::RowVectorXd steps(double dPhi_max, double s_max) const override;
+    base::VectorX steps(double dPhi_max, double s_max) const override;
     double length() const override;
     void length(double len) override;
-    def::CurvePoint pos(double s) const override;
+    base::CurvePoint pos(double s) const override;
 
     void reverse(GeoElement *geo) const override;
     GeoElement* createBlank() const override;

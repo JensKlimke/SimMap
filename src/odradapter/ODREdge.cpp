@@ -26,25 +26,25 @@
 #include "ODRRoad.h"
 #include "ODREdge.h"
 
-double ODREdge::offset(double s, def::Reference ref, double d) const {
+double ODREdge::offset(double s, base::Reference ref, double d) const {
 
     // get offset
     auto o = border(s) + d;
-    if (ref == def::Reference::INNER)
+    if (ref == base::Reference::INNER)
         return o;
 
     // add width (half for center)
     auto w = -width(s);
-    if (ref == def::Reference::CENTER)
+    if (ref == base::Reference::CENTER)
         return o + w * 0.5;
-    else if (ref == def::Reference::OUTER)
+    else if (ref == base::Reference::OUTER)
         return o + w;
 
     return 0.0;
 
 }
 
-def::CurvePoint ODREdge::position(double s, def::Reference ref, double d) const {
+base::CurvePoint ODREdge::position(double s, base::Reference ref, double d) const {
 
     // calculate ref position and offset
     auto off = offset(s, ref, d);
@@ -74,7 +74,7 @@ double ODREdge::border(double s) const {
     if (_border)
         return _border->operator()(sRel(s)) - width(s); // check if border is set explicitly
     else if (in != nullptr)
-        return in->offset(s, def::Reference::OUTER, 0.0);
+        return in->offset(s, base::Reference::OUTER, 0.0);
 
     return (isForward() ? 1.0 : -1.0) * _road->_offset->operator()(sRoad(s)); // otherwise lane offset, when set
 
@@ -114,10 +114,10 @@ double ODREdge::sRel(double s) const {
 }
 
 
-def::Orientation ODREdge::orientation() const {
+base::Orientation ODREdge::orientation() const {
 
-    return _laneID == 0 ? def::Orientation::NONE :
-    _laneID > 0 ? def::Orientation::BACKWARDS : def::Orientation::FORWARDS;
+    return _laneID == 0 ? base::Orientation::NONE :
+    _laneID > 0 ? base::Orientation::BACKWARDS : base::Orientation::FORWARDS;
 
 }
 

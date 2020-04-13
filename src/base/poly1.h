@@ -27,8 +27,8 @@
 #ifndef SIMMAP_BASE_POLYNOMIAL1_H
 #define SIMMAP_BASE_POLYNOMIAL1_H
 
-#include <Eigen/Core>
-#include <Eigen/LU>
+#include <vector>
+#include "definitions.h"
 
 namespace base {
 
@@ -37,7 +37,7 @@ namespace base {
 
     private:
 
-        Eigen::VectorXd _params{};
+        VectorX _params{};
 
 
     public:
@@ -67,14 +67,14 @@ namespace base {
          * Copy constructor
          * @param p Polynomial
          */
-        explicit poly1(Eigen::VectorXd p) : _params(std::move(p)) {}
+        explicit poly1(VectorX &p) : _params(std::move(p)) {}
 
 
         /**
          * Returns the parameters of the polynomial
          * @return Parameters as vector
          */
-        Eigen::VectorXd parameters() const {
+        VectorX parameters() const {
 
             return _params;
 
@@ -85,7 +85,7 @@ namespace base {
          * Sets the parameters of the polynomial
          * @param params Parameters
          */
-        void parameters(const Eigen::VectorXd &params) {
+        void parameters(const VectorX &params) {
 
             _params = params;
 
@@ -101,7 +101,7 @@ namespace base {
          */
         void parameters(double p0, double p1, double p2, double p3) {
 
-            _params = Eigen::Vector4d(p0, p1, p2, p3);
+            _params = VectorX{p0, p1, p2, p3};
 
         }
 
@@ -113,7 +113,7 @@ namespace base {
          */
         double operator[](size_t i) const {
 
-            return _params(i);
+            return _params.at(i);
 
         }
 
@@ -135,14 +135,14 @@ namespace base {
          * @param x Position vector the polynomial will be evaluated at
          * @return Results
          */
-        Eigen::MatrixXd operator()(const Eigen::MatrixXd& x) const {
+        VectorX operator()(const VectorX &x) const {
 
             // create output
-            Eigen::MatrixXd res(x.rows(), x.cols());
+            VectorX res(x.size());
 
             // iterate over entries
             for (unsigned int i = 0; i < x.size(); ++i)
-                res(i) = this->horner(x(i));
+                res[i] = this->horner(x[i]);
 
             return res;
 
@@ -156,12 +156,12 @@ namespace base {
         poly1 der() const {
 
             // create result vector
-            Eigen::VectorXd res(_params.size() - 1);
+            VectorX res(_params.size() - 1);
 
             // iterate over elements
             long n = _params.size();
             while (--n > 0)
-                res(_params.size() - 1 - n) = _params(_params.size() - 1 - n) * n;
+                res[_params.size() - 1 - n] = _params[_params.size() - 1 - n] * n;
 
             return poly1(res);
 
@@ -180,10 +180,10 @@ namespace base {
 
             auto d2 = d * d;
             poly1 p = poly1(
-                    _params(0),
-                    -3.0 * _params(0) * d + _params(1),
-                    3.0 * _params(0) * d2 - 2.0 * _params(1) * d + _params(2),
-                    -1.0 * _params(0) * d2 * d + _params(1) * d2 - _params(2) * d + _params(3));
+                    _params[0],
+                    -3.0 * _params[0] * d        + _params[1],
+                     3.0 * _params[0] * d2 - 2.0 * _params[1] * d  + _params[2],
+                    -1.0 * _params[0] * d2 * d +   _params[1] * d2 - _params[2] * d + _params[3]);
 
             return p;
 
@@ -203,25 +203,14 @@ namespace base {
         static poly1 order3_fromValueAndDerivative(double x0, double x1, double y0, double dy0,
                                                    double y1, double dy1) {
 
-            // calculate s
-            Eigen::Vector2d t(x0, x1);
+            auto a = 1.0 / (x0 - x1);
+            auto a0 = -2.0 * a * y0 + 2.0 * a * y1 + dy0 + dy1;
+            auto a1 = -3.0 * a * (-x0 - x1) * y0 + 3.0 * a * (-x0 - x1) * y1 - (x0 + 2.0 * x1) * dy0 - (2.0 * x0 + x1) * dy1;
+            auto a2 = -6.0 * x0 * x1 * a * y0 + 6.0 * x0 * x1 * a * y1 + (x1 * x1 + 2.0 * x0 * x1) * dy0 + (x0 * x0 + 2.0 * x1 * x0) * dy1;
+            auto a3 = (3.0 * x0 * x1 * x1 - x1 * x1 * x1) * a * y0 + (x0 * x0 * x0 - 3.0 * x0 * x0 * x1) * a * y1 - x0 * x1 * x1 * dy0 - x0 * x0 * x1 * dy1;
 
-            // s^2 and s^3
-            Eigen::Vector2d t2 = t.array() * t.array();
-            Eigen::Vector2d t3 = t2.array() * t.array();
-
-            // define system matrix (matrix is stored transposed)
-            Eigen::Matrix4d M;
-            M <<    t3(0),       t2(0),  t(0),  1.0,
-                    t3(1),       t2(1),  t(1),  1.0,
-                    3.0 * t2(0),  2.0 * t(0),   1.0,  0.0,
-                    3.0 * t2(1),  2.0 * t(1),   1.0,  0.0;
-
-            // define lhs and solve
-            Eigen::Vector4d y(y0, y1, dy0, dy1);
-            Eigen::Vector4d x(M.inverse() * y);
-
-            return poly1(x);
+            auto det = (1.0 / ((x0 - x1) * (x0 - x1)));
+            return poly1({det * a0, det * a1, det * a2, det * a3});
 
         }
 
@@ -237,9 +226,9 @@ namespace base {
         double horner(double x) const {
 
             // horner scheme
-            double res = _params(0);
+            double res = _params[0];
             for (int i = 1; i < _params.size(); ++i)
-                res = res * x + _params(i);
+                res = res * x + _params[i];
 
             return res;
 

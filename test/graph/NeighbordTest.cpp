@@ -44,8 +44,8 @@ public:
         return graph::Edge::ObjectsList();
     }
 
-    def::Orientation orientation() const override {
-        return _forward ? def::Orientation::FORWARDS : def::Orientation::BACKWARDS;
+    base::Orientation orientation() const override {
+        return _forward ? base::Orientation::FORWARDS : base::Orientation::BACKWARDS;
     }
 
 

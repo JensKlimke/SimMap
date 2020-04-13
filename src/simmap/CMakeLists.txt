@@ -4,7 +4,6 @@ add_library(simmap SHARED simmap_lib.cpp)
 target_include_directories(simmap PRIVATE
         ${PROJECT_SOURCE_DIR}/include/simmap
         ${PROJECT_SOURCE_DIR}/src
-        ${Eigen_INCLUDE_DIR}
         ${odrparser_INCLUDE_DIR}
         )
 

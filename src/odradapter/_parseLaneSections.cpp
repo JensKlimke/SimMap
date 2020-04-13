@@ -63,7 +63,7 @@ void parseLaneSections(std::map<std::string, std::shared_ptr<ODREdge>> &edges,
         bool ss = lsElem._singleSide && *lsElem._singleSide == "true";
 
         // get side and create lane section
-        def::Side side = ss ? (rgtLns ? def::Side::RIGHT : def::Side::LEFT) : def::Side::BOTH;
+        base::Side side = ss ? (rgtLns ? base::Side::RIGHT : base::Side::LEFT) : base::Side::BOTH;
         auto ls = laneSections->create(*lsElem._s, side);
 
         // set lane section data

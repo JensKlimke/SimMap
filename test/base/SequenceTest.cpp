@@ -269,13 +269,13 @@ TEST_F(SequenceTest, AccessElements) {
 
     // check element and position with at spacial access
     EXPECT_EQ(7, this->atPos(1.0).element);
-    EXPECT_NEAR(0.0, this->atPos(1.0).position, def::EPS_DISTANCE);
+    EXPECT_NEAR(0.0, this->atPos(1.0).position, base::EPS_DISTANCE);
     EXPECT_EQ(2, this->atPos(3.999).element);
-    EXPECT_NEAR(0.999, this->atPos(3.999).position, def::EPS_DISTANCE);
+    EXPECT_NEAR(0.999, this->atPos(3.999).position, base::EPS_DISTANCE);
     EXPECT_EQ(5, this->atPos(4.001).element);
-    EXPECT_NEAR(0.001, this->atPos(4.001).position, def::EPS_DISTANCE);
+    EXPECT_NEAR(0.001, this->atPos(4.001).position, base::EPS_DISTANCE);
     EXPECT_EQ(6, this->atPos(7.0).element);
-    EXPECT_NEAR(1.0, this->atPos(7.0).position, def::EPS_DISTANCE);
+    EXPECT_NEAR(1.0, this->atPos(7.0).position, base::EPS_DISTANCE);
 
     // check wrong access
     EXPECT_THROW(this->atPos(0.999999), std::invalid_argument);

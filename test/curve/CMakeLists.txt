@@ -8,7 +8,7 @@ set(SOURCE_FILES
 add_executable(CurveTest ${SOURCE_FILES})
 
 # include directory
-target_include_directories(CurveTest PRIVATE ${Eigen_INCLUDE_DIR} ${PROJECT_SOURCE_DIR}/src)
+target_include_directories(CurveTest PRIVATE ${PROJECT_SOURCE_DIR}/src)
 
 # link library to target
 target_link_libraries(CurveTest PRIVATE curve)

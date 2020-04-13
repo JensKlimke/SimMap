@@ -41,7 +41,7 @@ void parseJunction(ODRJunction *junc, const odr1_5::t_junction &j,
         // get connection information (road, contact point and ID)
         auto rdIncId = *cElem._incomingRoad;
         auto rdConId = *cElem._connectingRoad;
-        auto cpInc = *cElem._contactPoint == "end" ? def::ContactPoint::END : def::ContactPoint::START;
+        auto cpInc = *cElem._contactPoint == "end" ? base::ContactPoint::END : base::ContactPoint::START;
 
         // check if roads exist
         if (roads.find(rdIncId) == roads.end() || roads.find(rdConId) == roads.end()) {
@@ -65,8 +65,8 @@ void parseJunction(ODRJunction *junc, const odr1_5::t_junction &j,
             int to = *lElem._to;
 
             // get contact point of connecting road
-            auto cs = rCon->lanes.crossSection(def::ContactPoint::START);
-            auto cpCon = !cs.right()->empty() ? def::ContactPoint::START : def::ContactPoint::END;
+            auto cs = rCon->lanes.crossSection(base::ContactPoint::START);
+            auto cpCon = !cs.right()->empty() ? base::ContactPoint::START : base::ContactPoint::END;
 
             // get lanes
             try {

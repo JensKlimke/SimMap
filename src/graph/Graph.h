@@ -47,7 +47,7 @@ namespace graph {
 
 
         /** A short definition of an orientation stored together with and edge */
-        typedef std::pair<def::Orientation, const graph::Edge *> OrientedEdge;
+        typedef std::pair<base::Orientation, const graph::Edge *> OrientedEdge;
 
         /** A typedef to store a list of oriented edges */
         typedef std::list<OrientedEdge> EdgeList;

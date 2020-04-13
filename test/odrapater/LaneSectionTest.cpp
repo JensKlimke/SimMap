@@ -65,39 +65,39 @@ TEST_F(LaneSectionTest, BasicEntries) {
 
     EXPECT_DOUBLE_EQ(0.0, entries.at(0).position);
     EXPECT_DOUBLE_EQ(10.0, entries.at(0).length);
-    EXPECT_EQ(def::Side::BOTH, entries.at(0).laneSection->side());
+    EXPECT_EQ(base::Side::BOTH, entries.at(0).laneSection->side());
 
     EXPECT_DOUBLE_EQ(10.0, entries.at(1).position);
     EXPECT_DOUBLE_EQ(15.0, entries.at(1).length);
-    EXPECT_EQ(def::Side::BOTH, entries.at(1).laneSection->side());
+    EXPECT_EQ(base::Side::BOTH, entries.at(1).laneSection->side());
 
     EXPECT_DOUBLE_EQ(25.0, entries.at(2).position);
     EXPECT_DOUBLE_EQ(50.0, entries.at(2).length);
-    EXPECT_EQ(def::Side::RIGHT, entries.at(2).laneSection->side());
+    EXPECT_EQ(base::Side::RIGHT, entries.at(2).laneSection->side());
 
     EXPECT_DOUBLE_EQ(25.0, entries.at(3).position);
     EXPECT_DOUBLE_EQ(5.0, entries.at(3).length);
-    EXPECT_EQ(def::Side::LEFT, entries.at(3).laneSection->side());
+    EXPECT_EQ(base::Side::LEFT, entries.at(3).laneSection->side());
 
     EXPECT_DOUBLE_EQ(30.0, entries.at(4).position);
     EXPECT_DOUBLE_EQ(30.0, entries.at(4).length);
-    EXPECT_EQ(def::Side::LEFT, entries.at(4).laneSection->side());
+    EXPECT_EQ(base::Side::LEFT, entries.at(4).laneSection->side());
 
     EXPECT_DOUBLE_EQ(60.0, entries.at(5).position);
     EXPECT_DOUBLE_EQ(15.0, entries.at(5).length);
-    EXPECT_EQ(def::Side::LEFT, entries.at(5).laneSection->side());
+    EXPECT_EQ(base::Side::LEFT, entries.at(5).laneSection->side());
 
     EXPECT_DOUBLE_EQ(75.0, entries.at(6).position);
     EXPECT_DOUBLE_EQ(15.0, entries.at(6).length);
-    EXPECT_EQ(def::Side::RIGHT, entries.at(6).laneSection->side());
+    EXPECT_EQ(base::Side::RIGHT, entries.at(6).laneSection->side());
 
     EXPECT_DOUBLE_EQ(75.0, entries.at(7).position);
     EXPECT_DOUBLE_EQ(15.0, entries.at(7).length);
-    EXPECT_EQ(def::Side::LEFT, entries.at(7).laneSection->side());
+    EXPECT_EQ(base::Side::LEFT, entries.at(7).laneSection->side());
 
     EXPECT_DOUBLE_EQ(90.0, entries.at(8).position);
     EXPECT_DOUBLE_EQ(10.0, entries.at(8).length);
-    EXPECT_EQ(def::Side::BOTH, entries.at(8).laneSection->side());
+    EXPECT_EQ(base::Side::BOTH, entries.at(8).laneSection->side());
 
 }
 
@@ -166,8 +166,8 @@ TEST_F(LaneSectionTest, CrossSections) {
     auto cs5 = laneSections->crossSection(76.0);
     auto cs6 = laneSections->crossSection(91.0);
 
-    auto css = laneSections->crossSection(def::ContactPoint::START);
-    auto cse = laneSections->crossSection(def::ContactPoint::END);
+    auto css = laneSections->crossSection(base::ContactPoint::START);
+    auto cse = laneSections->crossSection(base::ContactPoint::END);
 
 
     // check cross sections against lane sections
@@ -219,8 +219,8 @@ TEST_F(LaneSectionTest, RoadConnection) {
     auto ls1 = &(*laneSections->sections().atPos(0).element.first.begin()).element;
 
     // check different accesses
-    EXPECT_EQ(ls1->left().front(),  laneSections->lane(def::ContactPoint::START,  1));
-    EXPECT_EQ(ls1->right().front(), laneSections->lane(def::ContactPoint::START, -1));
+    EXPECT_EQ(ls1->left().front(),  laneSections->lane(base::ContactPoint::START,  1));
+    EXPECT_EQ(ls1->right().front(), laneSections->lane(base::ContactPoint::START, -1));
 
 
     // get lane information

@@ -27,7 +27,6 @@
 #include "Line.h"
 #include "Arc.h"
 #include "Spiral.h"
-#include "Poly3.h"
 
 #include <base/functions.h>
 #include <cmath>
@@ -43,14 +42,14 @@ namespace curve {
     }
 
 
-    Eigen::RowVectorXd Curve::parameters() const {
+    base::VectorX Curve::parameters() const {
 
         return {};
 
     }
 
 
-    void Curve::startPoint(const def::CurvePoint &pos) {
+    void Curve::startPoint(const base::CurvePoint &pos) {
 
         // check
         if (empty())
@@ -74,7 +73,7 @@ namespace curve {
     }
 
 
-    def::CurvePoint Curve::startPoint() const {
+    base::CurvePoint Curve::startPoint() const {
 
         // get start point of first element
         return begin()->startPoint();
@@ -104,34 +103,34 @@ namespace curve {
     }
 
 
-    void Curve::curvature(const Eigen::RowVectorXd &s, const Eigen::RowVectorXd &kappa) {
+    void Curve::curvature(const base::VectorX &s, const base::VectorX &kappa) {
 
         // check size
         if (s.size() != kappa.size())
             throw std::invalid_argument("sizes don't match");
 
         // set end point
-        length(s(s.cols() - 1));
+        length(s.back());
 
         // iterate over grid points to create elements
         for (int i = 0; i < s.size() - 1; ++i)
-            _addElement(s(i), s(i + 1) - s(i), kappa(i), kappa(i + 1));
+            _addElement(s[i], s[i + 1] - s[i], kappa[i], kappa[i + 1]);
 
     }
 
 
-    void Curve::curvature(const Eigen::RowVectorXd &s, const Eigen::RowVectorXd &kappa0, const Eigen::RowVectorXd &kappa1) {
+    void Curve::curvature(const base::VectorX &s, const base::VectorX &kappa0, const base::VectorX &kappa1) {
 
         // check size
         if (s.size() - 1 != kappa0.size() || kappa0.size() != kappa1.size())
             throw std::invalid_argument("sizes invalid");
 
         // set end point
-        length(s(s.cols() - 1));
+        length(s.back());
 
         // iterate over grid points to create elements
         for (int i = 0; i < s.size() - 1; ++i)
-            _addElement(s(i), s(i + 1) - s(i), kappa0(i), kappa1(i));
+            _addElement(s[i], s[i + 1] - s[i], kappa0[i], kappa1[i]);
 
     }
 
@@ -139,9 +138,9 @@ namespace curve {
     void Curve::_addElement(double s, double ds, double kappa0, double kappa1) {
 
         // check for element type
-        if(fabs(kappa1) < def::EPS_CURVATURE && fabs(kappa0) < def::EPS_CURVATURE)
+        if(fabs(kappa1) < base::EPS_CURVATURE && fabs(kappa0) < base::EPS_CURVATURE)
             emplace(s, new curve::Line(ds));
-        else if(fabs(kappa1 - kappa0) < def::EPS_CURVATURE)
+        else if(fabs(kappa1 - kappa0) < base::EPS_CURVATURE)
             emplace(s, new curve::Arc(ds, kappa0));
         else
             emplace(s, new curve::Spiral(ds, kappa0, kappa1));
@@ -149,7 +148,7 @@ namespace curve {
     }
 
 
-    def::CurvePoint Curve::pos(double s) const {
+    base::CurvePoint Curve::pos(double s) const {
 
         // get position
         auto e = atPos(s);
@@ -158,9 +157,9 @@ namespace curve {
     }
 
 
-    Eigen::RowVectorXd Curve::steps(double dPhi_max, double s_max) const {
+    base::VectorX Curve::steps(double dPhi_max, double s_max) const {
 
-        Eigen::RowVectorXd res(1); res << 0.0;
+        base::VectorX res{0.0};
         double s0 = 0.0;
 
         for(auto const &ee : *this) {
@@ -170,12 +169,11 @@ namespace curve {
 
             // get steps from element. The last element of the current vector is deleted to avoid doubled steps since the
             // end of the previous element is the start of the current element
-            Eigen::RowVectorXd t = ge->steps(dPhi_max, s_max);
+            base::VectorX t = ge->steps(dPhi_max, s_max);
 
-            // overwrite res
-            Eigen::RowVectorXd tmp(res.cols() + t.cols() - 1);
-            tmp << res.head(res.cols() - 1).eval(), t.array() + s0;
-            res = tmp;
+            // add elements to res
+            for(size_t i = 1; i < t.size(); ++i)
+                res.push_back(t[i] + s0);
 
             // update s0
             s0 += ge->length();

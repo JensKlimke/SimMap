@@ -67,10 +67,10 @@ protected:
     struct Matcher {
 
         const Path *path;
-        const Eigen::Vector3d *xyz;
+        const base::Vector3 *xyz;
 
-        def::CurvePoint operator()(double s, double &d) const;
-        Eigen::Vector2d bounds() const;
+        base::CurvePoint operator()(double s, double &d) const;
+        base::Vector3 bounds() const;
 
     };
 
@@ -187,7 +187,7 @@ public:
      * @param radius Sets the initial search radius around s
      * @return Error of the matching
      */
-    double match(const Eigen::Vector3d &xyz, double &s, double radius = INFINITY) const;
+    double match(const base::Vector3 &xyz, double &s, double radius = INFINITY) const;
 
 
     /**

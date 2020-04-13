@@ -53,9 +53,9 @@ struct ODRRoad : public graph::Edge {
     }
 
 
-    def::Orientation orientation() const override {
+    base::Orientation orientation() const override {
 
-        return def::Orientation::BOTH;
+        return base::Orientation::BOTH;
 
     }
 

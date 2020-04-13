@@ -60,15 +60,15 @@ struct ODREdge : public simmap::server::LaneEdge {
     ObjectsList _objs{};
 
 
-    double offset(double s, def::Reference ref, double d) const;
+    double offset(double s, base::Reference ref, double d) const;
 
-    def::CurvePoint position(double s, def::Reference ref, double d) const override;
+    base::CurvePoint position(double s, base::Reference ref, double d) const override;
 
     double width(double s) const override;
 
     double length() const override;
 
-    def::Orientation orientation() const override;
+    base::Orientation orientation() const override;
 
     ObjectsList objects() const override;
 

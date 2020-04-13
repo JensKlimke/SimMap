@@ -41,28 +41,29 @@ namespace curve {
 
     private:
 
-        void fromDefinition(const Eigen::RowVectorXd& s, const Eigen::Matrix<double, 4, Eigen::Dynamic>& p);
-        void fromValues(const Eigen::RowVectorXd& s, const Eigen::RowVectorXd& w);
-        void fromValuesAndDerivatives(const Eigen::RowVectorXd& s, const Eigen::RowVectorXd& w, const Eigen::RowVectorXd& der);
+        void fromDefinition(const base::VectorX& s, const std::vector<base::VectorX> &p);
+        void fromValues(const base::VectorX& s, const base::VectorX& w);
+        void fromValuesAndDerivatives(const base::VectorX& s, const base::VectorX& w, const base::VectorX& der);
 
     public:
 
         C3Spline() = default;
         C3Spline(const C3Spline& ps) = default;
-        C3Spline(const Eigen::RowVectorXd& s, const Eigen::MatrixXd& p);
+        C3Spline(const base::VectorX& s, const std::vector<base::VectorX>& p);
+        C3Spline(const base::VectorX& s, const base::VectorX& w);
         explicit C3Spline(double width);
 
         ~C3Spline() = default;
 
         void insert(double s, double p0, double p1, double p2, double p3);
 
-        Eigen::RowVectorXd operator() (const Eigen::RowVectorXd& s) const;
+        base::VectorX operator() (const base::VectorX& s) const;
         double operator() (double s) const;
 
-        Eigen::RowVectorXd der(const Eigen::RowVectorXd& s) const;
+        base::VectorX der(const base::VectorX& s) const;
         double der(double s) const;
 
-        Eigen::RowVectorXd steps(double dPhi_max, double s_max) const;
+        base::VectorX steps(double dPhi_max, double s_max) const;
 
     };
 

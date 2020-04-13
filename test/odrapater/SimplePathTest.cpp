@@ -54,10 +54,10 @@ public:
 
         // get roads
         ODRRoad *rd1 = dynamic_cast<ODRRoad *>(map->_roadNetwork.at("1").get());
-        edge = rd1->lanes.lane(def::ContactPoint::START, -1);
+        edge = rd1->lanes.lane(base::ContactPoint::START, -1);
 
         // create track
-        track = Track({{def::Orientation::FORWARDS, rd1}});
+        track = Track({{base::Orientation::FORWARDS, rd1}});
 
         MapCoordinate mc(edge, 0.0, 0.0);
         Path::create(*this, track, 200.0, 0.0, mc);
@@ -100,19 +100,19 @@ TEST_F(SimplePathTest, Positions) {
     EXPECT_DOUBLE_EQ(200.0, distanceToHead());
 
     auto pos = positionAt(0.0).absolutePosition().position;
-    EXPECT_NEAR(1.875, pos.x(), 1e-12);
-    EXPECT_NEAR(0.0, pos.y(), 1e-12);
+    EXPECT_NEAR(1.875, pos.x, 1e-12);
+    EXPECT_NEAR(0.0, pos.y, 1e-12);
 
     pos = positionAt(75.0).absolutePosition().position;
-    EXPECT_NEAR(3.75, pos.x(), 1e-12);
-    EXPECT_NEAR(75.0, pos.y(), 1e-12);
+    EXPECT_NEAR(3.75, pos.x, 1e-12);
+    EXPECT_NEAR(75.0, pos.y, 1e-12);
 
     pos = positionAt(120.0).absolutePosition().position;
-    EXPECT_NEAR(2.8125, pos.x(), 1e-12);
-    EXPECT_NEAR(120.0, pos.y(), 1e-12);
+    EXPECT_NEAR(2.8125, pos.x, 1e-12);
+    EXPECT_NEAR(120.0, pos.y, 1e-12);
 
     pos = positionAt(200.0).absolutePosition().position;
-    EXPECT_NEAR(1.875, pos.x(), 1e-12);
-    EXPECT_NEAR(200.0, pos.y(), 1e-12);
+    EXPECT_NEAR(1.875, pos.x, 1e-12);
+    EXPECT_NEAR(200.0, pos.y, 1e-12);
 
 }

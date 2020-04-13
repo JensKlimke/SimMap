@@ -30,7 +30,7 @@ namespace graph {
     bool Oriented::isForward() const {
 
         auto o = orientation();
-        return o != def::Orientation::BACKWARDS;
+        return o != base::Orientation::BACKWARDS;
 
     }
 
@@ -38,7 +38,7 @@ namespace graph {
     bool Oriented::isBackwards() const {
 
         auto o = orientation();
-        return o == def::Orientation::BACKWARDS;
+        return o == base::Orientation::BACKWARDS;
 
     }
 
@@ -53,7 +53,7 @@ namespace graph {
     }
 
 
-    void Oriented::next(Oriented *obj, def::ContactPoint contactPoint, bool bi) {
+    void Oriented::next(Oriented *obj, base::ContactPoint contactPoint, bool bi) {
 
         // set successor for this road
         if(!isNext(obj, contactPoint))
@@ -64,15 +64,15 @@ namespace graph {
             return;
 
         // bi-directional connection
-        if(contactPoint == def::ContactPoint::START)
-            obj->prev(this, def::ContactPoint::END, false);
+        if(contactPoint == base::ContactPoint::START)
+            obj->prev(this, base::ContactPoint::END, false);
         else
-            obj->next(this, def::ContactPoint::END, false);
+            obj->next(this, base::ContactPoint::END, false);
 
     }
 
 
-    void Oriented::prev(Oriented *obj, def::ContactPoint contactPoint, bool bi) {
+    void Oriented::prev(Oriented *obj, base::ContactPoint contactPoint, bool bi) {
 
         // set predecessor for this road
         if(!isPrev(obj, contactPoint))
@@ -83,10 +83,10 @@ namespace graph {
             return;
 
         // bi-directional connection
-        if(contactPoint == def::ContactPoint::START)
-            obj->prev(this, def::ContactPoint::START, false);
+        if(contactPoint == base::ContactPoint::START)
+            obj->prev(this, base::ContactPoint::START, false);
         else
-            obj->next(this, def::ContactPoint::START, false);
+            obj->next(this, base::ContactPoint::START, false);
 
     }
 
@@ -104,7 +104,7 @@ namespace graph {
     }
 
 
-    bool Oriented::isNext(graph::Oriented *obj, def::ContactPoint contactPoint) const {
+    bool Oriented::isNext(graph::Oriented *obj, base::ContactPoint contactPoint) const {
 
         // iterate over connections to find the given object
         for(const auto &e : _nexts)
@@ -117,7 +117,7 @@ namespace graph {
     }
 
 
-    bool Oriented::isPrev(graph::Oriented *obj, def::ContactPoint contactPoint) const {
+    bool Oriented::isPrev(graph::Oriented *obj, base::ContactPoint contactPoint) const {
 
         // iterate over connections to find the given object
         for(const auto &e : _prevs)

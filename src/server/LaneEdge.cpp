@@ -37,25 +37,25 @@ namespace server {
 
 
 
-    def::CurvePoint LaneEdge::startPoint() const {
+    base::CurvePoint LaneEdge::startPoint() const {
 
-        return position(0.0, def::Reference::CENTER, 0.0);
-
-    }
-
-
-
-    def::CurvePoint LaneEdge::endPoint() const {
-
-        return position(length(), def::Reference::CENTER, 0.0);
+        return position(0.0, base::Reference::CENTER, 0.0);
 
     }
 
 
 
-    def::CurvePoint LaneEdge::position(double s) const {
+    base::CurvePoint LaneEdge::endPoint() const {
 
-        return position(s, def::Reference::CENTER, 0.0);
+        return position(length(), base::Reference::CENTER, 0.0);
+
+    }
+
+
+
+    base::CurvePoint LaneEdge::position(double s) const {
+
+        return position(s, base::Reference::CENTER, 0.0);
 
     }
 

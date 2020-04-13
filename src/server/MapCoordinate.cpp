@@ -93,9 +93,9 @@ namespace server {
 
 
 
-    def::CurvePoint MapCoordinate::absolutePosition() const {
+    base::CurvePoint MapCoordinate::absolutePosition() const {
 
-        return _edge->position(_s, def::Reference::CENTER, _d);
+        return _edge->position(_s, base::Reference::CENTER, _d);
 
     }
 

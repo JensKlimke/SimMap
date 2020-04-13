@@ -50,7 +50,7 @@ void parseLinks(const odr1_5::OpenDRIVE *odr,
 
                 // get road and start lane section
                 auto pr = roads.at(*pred->_elementId).get();
-                auto ls = road->lanes.crossSection(def::ContactPoint::START);
+                auto ls = road->lanes.crossSection(base::ContactPoint::START);
 
                 // iterate over lanes
                 for (auto ln : *ls.laneSectionRight()->right()) {
@@ -59,7 +59,7 @@ void parseLinks(const odr1_5::OpenDRIVE *odr,
                     for (auto lid : ln->_pred) {
 
                         // get contact point and lane
-                        auto cp = *pred->_contactPoint == "end" ? def::ContactPoint::END : def::ContactPoint::START;
+                        auto cp = *pred->_contactPoint == "end" ? base::ContactPoint::END : base::ContactPoint::START;
                         auto lsc = pr->lanes.lane(cp, lid);
 
                         // link lane
@@ -80,11 +80,11 @@ void parseLinks(const odr1_5::OpenDRIVE *odr,
                     for (auto lid : ln->_pred) {
 
                         // get contact point and lane
-                        auto cp = *pred->_contactPoint == "end" ? def::ContactPoint::END : def::ContactPoint::START;
+                        auto cp = *pred->_contactPoint == "end" ? base::ContactPoint::END : base::ContactPoint::START;
                         auto lsc = pr->lanes.lane(cp, lid);
 
                         // link lane
-                        ln->prev(lsc, def::ContactPoint::START, false);
+                        ln->prev(lsc, base::ContactPoint::START, false);
 
                     }
 
@@ -98,7 +98,7 @@ void parseLinks(const odr1_5::OpenDRIVE *odr,
                     for (auto lid : ln->_pred) {
 
                         // get contact point and lane
-                        auto cp = *pred->_contactPoint == "end" ? def::ContactPoint::END : def::ContactPoint::START;
+                        auto cp = *pred->_contactPoint == "end" ? base::ContactPoint::END : base::ContactPoint::START;
                         auto lsc = pr->lanes.lane(cp, lid);
 
                         // link lane
@@ -125,7 +125,7 @@ void parseLinks(const odr1_5::OpenDRIVE *odr,
 
                 // get road and start lane section
                 auto pr = roads.at(*succ->_elementId).get();
-                auto ls = road->lanes.crossSection(def::ContactPoint::END);
+                auto ls = road->lanes.crossSection(base::ContactPoint::END);
 
                 // iterate over lanes
                 for (auto ln : *ls.laneSectionRight()->right()) {
@@ -134,7 +134,7 @@ void parseLinks(const odr1_5::OpenDRIVE *odr,
                     for (auto lid : ln->_succ) {
 
                         // get contact point and lane
-                        auto cp = *succ->_contactPoint == "end" ? def::ContactPoint::END : def::ContactPoint::START;
+                        auto cp = *succ->_contactPoint == "end" ? base::ContactPoint::END : base::ContactPoint::START;
                         auto lsc = pr->lanes.lane(cp, lid);
 
                         // link lane
@@ -155,11 +155,11 @@ void parseLinks(const odr1_5::OpenDRIVE *odr,
                     for (auto lid : ln->_succ) {
 
                         // get contact point and lane
-                        auto cp = *succ->_contactPoint == "end" ? def::ContactPoint::END : def::ContactPoint::START;
+                        auto cp = *succ->_contactPoint == "end" ? base::ContactPoint::END : base::ContactPoint::START;
                         auto lsc = pr->lanes.lane(cp, lid);
 
                         // link lane
-                        ln->next(lsc, def::ContactPoint::END, false);
+                        ln->next(lsc, base::ContactPoint::END, false);
 
                     }
 
@@ -173,7 +173,7 @@ void parseLinks(const odr1_5::OpenDRIVE *odr,
                     for (auto lid : ln->_succ) {
 
                         // get contact point and lane
-                        auto cp = *succ->_contactPoint == "end" ? def::ContactPoint::END : def::ContactPoint::START;
+                        auto cp = *succ->_contactPoint == "end" ? base::ContactPoint::END : base::ContactPoint::START;
                         auto lsc = pr->lanes.lane(cp, lid);
 
                         // link lane

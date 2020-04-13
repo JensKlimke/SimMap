@@ -27,6 +27,7 @@
 
 #include <vector>
 #include <tuple>
+#include <string>
 #include "Oriented.h"
 #include "Neighbored.h"
 

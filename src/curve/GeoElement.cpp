@@ -26,16 +26,15 @@
 
 #include <cmath>
 #include <algorithm>
-#include <Eigen/Geometry>
-#include <Eigen/Core>
 #include <base/definitions.h>
+#include <base/functions.h>
 
 
 namespace simmap {
 namespace curve {
 
 
-    void GeoElement::startPoint(const def::CurvePoint &pos) {
+    void GeoElement::startPoint(const base::CurvePoint &pos) {
 
         r0 = pos.position;
         phi0 = pos.angle;
@@ -43,14 +42,14 @@ namespace curve {
     }
 
 
-    def::CurvePoint GeoElement::startPoint() const {
+    base::CurvePoint GeoElement::startPoint() const {
 
         return {r0, phi0, startCurvature()};
 
     }
 
 
-    def::CurvePoint GeoElement::endPoint() const {
+    base::CurvePoint GeoElement::endPoint() const {
 
         return pos(length());
 
@@ -73,46 +72,42 @@ namespace curve {
     }
 
 
-    std::vector<def::CurvePoint> GeoElement:: positions(const Eigen::RowVectorXd &v) const {
+    std::vector<base::CurvePoint> GeoElement:: positions(const base::VectorX &v) const {
 
         // create result vector
-        std::vector<def::CurvePoint> r(static_cast<size_t>(v.size()));
+        std::vector<base::CurvePoint> r(static_cast<size_t>(v.size()));
 
         // iterate over grid point
         for (int i = 0; i < v.size(); ++i)
-            r[i] = pos(v(i));
+            r[i] = pos(v[i]);
 
         return r;
 
     }
 
 
-    std::vector<def::CurvePoint> GeoElement::operator()(const Eigen::RowVectorXd &v) const {
+    std::vector<base::CurvePoint> GeoElement::operator()(const base::VectorX &v) const {
 
         return positions(v);
 
     }
 
 
-    def::CurvePoint GeoElement::operator()(double s) const {
+    base::CurvePoint GeoElement::operator()(double s) const {
 
         return pos(s);
 
     }
 
 
-    def::CurvePoint GeoElement::pos(double s, double d) const {
+    base::CurvePoint GeoElement::pos(double s, double d) const {
 
-        def::CurvePoint p = pos(s);
-
-        // rotate offset
-        Eigen::Transform <double, 3, Eigen::Affine> t = Eigen::Transform <double, 3, Eigen::Affine>::Identity();
-        t.translate(p.position);
-        t.rotate(Eigen::AngleAxisd(p.angle, Eigen::Vector3d::UnitZ()));
+        // get curve position
+        base::CurvePoint p = pos(s);
 
         // translate and rotate position
-        Eigen::Vector3d y(0.0, d, 0.0);
-        p.position = t * y;
+        base::Vector3 y{0.0, d, 0.0};
+        base::toGlobal(p, y);
 
         // recalculate curvature
         auto c = p.curvature;
@@ -123,10 +118,10 @@ namespace curve {
     }
 
 
-    Eigen::RowVectorXd GeoElement::steps(double dPhi_max, double s_max) const {
+    base::VectorX GeoElement::steps(double dPhi_max, double s_max) const {
 
         // create vector
-        std::vector<double> stps;
+        base::VectorX stps{};
 
         // calculate change of curvature
         double sigma = fabs((endCurvature() - startCurvature()) / length());
@@ -142,7 +137,7 @@ namespace curve {
 
             // calculate step
             auto t0 = dPhi_max / k0;
-            if(sigma > def::EPS_CURVATURE)
+            if(sigma > base::EPS_CURVATURE)
                 t0 = (1.0 / sigma) * (-1.0 * k0 + sqrt(k0 * k0 + 2.0 * dPhi_max * sigma));
 
             // calculate step
@@ -152,12 +147,9 @@ namespace curve {
         }
 
         // add last s
-        stps.push_back(length() - def::EPS_DISTANCE);
+        stps.push_back(length() - base::EPS_DISTANCE);
 
-        // put values to vector
-        Eigen::RowVectorXd res = Eigen::RowVectorXd::Map(stps.data(), stps.size());
-
-        return res;
+        return stps;
 
     }
 

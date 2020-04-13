@@ -78,16 +78,16 @@ struct BasicPath : ::graph::Path {
 struct BasicPathEdge : public ::graph::Edge {
 
     double _len;
-    def::Orientation _ori;
+    base::Orientation _ori;
 
     std::vector<std::shared_ptr<BasicPathObject>> _objVector{};
     ObjectsList _objs{};
 
-    BasicPathEdge(double len, def::Orientation ori) : _len(len), _ori(ori) {}
+    BasicPathEdge(double len, base::Orientation ori) : _len(len), _ori(ori) {}
 
     double length() const override { return _len; }
 
-    def::Orientation orientation() const override { return _ori; }
+    base::Orientation orientation() const override { return _ori; }
 
     void addObject(double s, BasicPathObject &&obj) {
 
@@ -107,8 +107,8 @@ struct BasicPathEdge : public ::graph::Edge {
 
 TEST_F(BasicPathTest, Copy) {
 
-    const def::Orientation fw = def::Orientation::FORWARDS;
-    const def::Orientation bw = def::Orientation::BACKWARDS;
+    const base::Orientation fw = base::Orientation::FORWARDS;
+    const base::Orientation bw = base::Orientation::BACKWARDS;
 
     auto e1 = new BasicPathEdge(2.0, fw);
     auto e2 = new BasicPathEdge(1.0, bw);
@@ -130,8 +130,8 @@ TEST_F(BasicPathTest, Copy) {
 
 TEST_F(BasicPathTest, OperationsHeadBack) {
 
-    const def::Orientation fw = def::Orientation::FORWARDS;
-    const def::Orientation bw = def::Orientation::BACKWARDS;
+    const base::Orientation fw = base::Orientation::FORWARDS;
+    const base::Orientation bw = base::Orientation::BACKWARDS;
 
     auto e1 = new BasicPathEdge(2.0, fw);
     auto e2 = new BasicPathEdge(1.0, bw);
@@ -181,8 +181,8 @@ TEST_F(BasicPathTest, OperationsHeadBack) {
 
 TEST_F(BasicPathTest, FindPosition) {
 
-    const def::Orientation fw = def::Orientation::FORWARDS;
-    const def::Orientation bw = def::Orientation::BACKWARDS;
+    const base::Orientation fw = base::Orientation::FORWARDS;
+    const base::Orientation bw = base::Orientation::BACKWARDS;
 
     auto e1 = new BasicPathEdge(2.0, fw);
     auto e2 = new BasicPathEdge(1.0, bw);
@@ -339,8 +339,8 @@ TEST_F(BasicPathTest, FindPosition) {
 TEST_F(BasicPathTest, Objects) {
 
     // define constants
-    const def::Orientation fw = def::Orientation::FORWARDS;
-    const def::Orientation bw = def::Orientation::BACKWARDS;
+    const base::Orientation fw = base::Orientation::FORWARDS;
+    const base::Orientation bw = base::Orientation::BACKWARDS;
 
     // create edges
     auto e1 = new BasicPathEdge(2.0, fw);

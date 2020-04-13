@@ -61,21 +61,21 @@ TEST(EdgeNetworkTest, LinksAndObjects) {
     auto R2_LS1_C  = dynamic_cast<ODREdge *>(map._laneNetwork.at("R2-LS1-C").get());
 
 
-    EXPECT_EQ(def::Orientation::BACKWARDS, R1_LS1_L2->orientation());
-    EXPECT_EQ(def::Orientation::BACKWARDS, R1_LS1_L1->orientation());
-    EXPECT_EQ(def::Orientation::FORWARDS, R1_LS1_R1->orientation());
-    EXPECT_EQ(def::Orientation::FORWARDS, R1_LS1_R2->orientation());
-    EXPECT_EQ(def::Orientation::BACKWARDS, R1_LS2_L2->orientation());
-    EXPECT_EQ(def::Orientation::BACKWARDS, R1_LS2_L1->orientation());
-    EXPECT_EQ(def::Orientation::FORWARDS, R1_LS2_R1->orientation());
-    EXPECT_EQ(def::Orientation::FORWARDS, R1_LS2_R2->orientation());
-    EXPECT_EQ(def::Orientation::BACKWARDS, R2_LS1_L2->orientation());
-    EXPECT_EQ(def::Orientation::BACKWARDS, R2_LS1_L1->orientation());
-    EXPECT_EQ(def::Orientation::FORWARDS, R2_LS1_R1->orientation());
-    EXPECT_EQ(def::Orientation::FORWARDS, R2_LS1_R2->orientation());
-    EXPECT_EQ(def::Orientation::NONE, R1_LS1_C->orientation());
-    EXPECT_EQ(def::Orientation::NONE, R1_LS2_C->orientation());
-    EXPECT_EQ(def::Orientation::NONE, R2_LS1_C->orientation());
+    EXPECT_EQ(base::Orientation::BACKWARDS, R1_LS1_L2->orientation());
+    EXPECT_EQ(base::Orientation::BACKWARDS, R1_LS1_L1->orientation());
+    EXPECT_EQ(base::Orientation::FORWARDS, R1_LS1_R1->orientation());
+    EXPECT_EQ(base::Orientation::FORWARDS, R1_LS1_R2->orientation());
+    EXPECT_EQ(base::Orientation::BACKWARDS, R1_LS2_L2->orientation());
+    EXPECT_EQ(base::Orientation::BACKWARDS, R1_LS2_L1->orientation());
+    EXPECT_EQ(base::Orientation::FORWARDS, R1_LS2_R1->orientation());
+    EXPECT_EQ(base::Orientation::FORWARDS, R1_LS2_R2->orientation());
+    EXPECT_EQ(base::Orientation::BACKWARDS, R2_LS1_L2->orientation());
+    EXPECT_EQ(base::Orientation::BACKWARDS, R2_LS1_L1->orientation());
+    EXPECT_EQ(base::Orientation::FORWARDS, R2_LS1_R1->orientation());
+    EXPECT_EQ(base::Orientation::FORWARDS, R2_LS1_R2->orientation());
+    EXPECT_EQ(base::Orientation::NONE, R1_LS1_C->orientation());
+    EXPECT_EQ(base::Orientation::NONE, R1_LS2_C->orientation());
+    EXPECT_EQ(base::Orientation::NONE, R2_LS1_C->orientation());
 
 
     // check successors and predecessors
@@ -572,14 +572,14 @@ TEST(EdgeTest, CurveAndLaneOffset) {
     EXPECT_EQ("2", road2->id());
 
     // check lengths
-    EXPECT_NEAR(M_PI * R, road1->_curve->length(), def::EPS_DISTANCE);
-    EXPECT_NEAR(M_PI * R, road2->_curve->length(), def::EPS_DISTANCE);
+    EXPECT_NEAR(M_PI * R, road1->_curve->length(), base::EPS_DISTANCE);
+    EXPECT_NEAR(M_PI * R, road2->_curve->length(), base::EPS_DISTANCE);
 
     // check positions
-    EXPECT_NEAR(R, road1->_curve->operator()(0.0).position.x(), def::EPS_DISTANCE);
-    EXPECT_NEAR(0.0, road1->_curve->operator()(0.0).position.y(), def::EPS_DISTANCE);
-    EXPECT_NEAR(0.0, road1->_curve->operator()(0.5 * M_PI * R).position.x(), def::EPS_DISTANCE);
-    EXPECT_NEAR(R, road1->_curve->operator()(0.5 * M_PI * R).position.y(), def::EPS_DISTANCE);
+    EXPECT_NEAR(R, road1->_curve->operator()(0.0).position.x, base::EPS_DISTANCE);
+    EXPECT_NEAR(0.0, road1->_curve->operator()(0.0).position.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(0.0, road1->_curve->operator()(0.5 * M_PI * R).position.x, base::EPS_DISTANCE);
+    EXPECT_NEAR(R, road1->_curve->operator()(0.5 * M_PI * R).position.y, base::EPS_DISTANCE);
 
     // check lane offset
     EXPECT_TRUE(road1->_offset);
@@ -603,80 +603,80 @@ TEST(EdgeTest, LanePositions) {
     // check coordinates
     MapCoordinate mc(map.getEdge("R1-LS1-R2"), 0.0, 0.0);
     auto pos = mc.absolutePosition();
-    EXPECT_NEAR(5.625, pos.position.x(), def::EPS_DISTANCE);
-    EXPECT_NEAR(0.0, pos.position.y(), def::EPS_DISTANCE);
-    EXPECT_NEAR(0.5 * M_PI, pos.angle, def::EPS_DISTANCE);
+    EXPECT_NEAR(5.625, pos.position.x, base::EPS_DISTANCE);
+    EXPECT_NEAR(0.0, pos.position.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(0.5 * M_PI, pos.angle, base::EPS_DISTANCE);
 
     mc = MapCoordinate(map.getEdge("R1-LS1-R1"), 0.0, 0.0);
     pos = mc.absolutePosition();
-    EXPECT_NEAR(1.875, pos.position.x(), def::EPS_DISTANCE);
-    EXPECT_NEAR(0.0, pos.position.y(), def::EPS_DISTANCE);
-    EXPECT_NEAR(0.5 * M_PI, pos.angle, def::EPS_DISTANCE);
+    EXPECT_NEAR(1.875, pos.position.x, base::EPS_DISTANCE);
+    EXPECT_NEAR(0.0, pos.position.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(0.5 * M_PI, pos.angle, base::EPS_DISTANCE);
 
     mc = MapCoordinate(map.getEdge("R1-LS1-L1"), 10.0, 0.0);
     pos = mc.absolutePosition();
-    EXPECT_NEAR(-1.75, pos.position.x(), def::EPS_DISTANCE);
-    EXPECT_NEAR(0.0, pos.position.y(), def::EPS_DISTANCE);
-    EXPECT_NEAR(1.5 * M_PI, pos.angle, def::EPS_DISTANCE);
+    EXPECT_NEAR(-1.75, pos.position.x, base::EPS_DISTANCE);
+    EXPECT_NEAR(0.0, pos.position.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(1.5 * M_PI, pos.angle, base::EPS_DISTANCE);
 
     mc = MapCoordinate(map.getEdge("R1-LS1-L2"), 10.0, 0.0);
     pos = mc.absolutePosition();
-    EXPECT_NEAR(-5.375, pos.position.x(), def::EPS_DISTANCE);
-    EXPECT_NEAR(0.0, pos.position.y(), def::EPS_DISTANCE);
-    EXPECT_NEAR(1.5 * M_PI, pos.angle, def::EPS_DISTANCE);
+    EXPECT_NEAR(-5.375, pos.position.x, base::EPS_DISTANCE);
+    EXPECT_NEAR(0.0, pos.position.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(1.5 * M_PI, pos.angle, base::EPS_DISTANCE);
 
 
 
     // check coordinates
     mc = MapCoordinate(map.getEdge("R1-LS6-R2"), 40.0, 0.0);
     pos = mc.absolutePosition();
-    EXPECT_NEAR(5.625, pos.position.x(), def::EPS_DISTANCE);
-    EXPECT_NEAR(200.0, pos.position.y(), def::EPS_DISTANCE);
-    EXPECT_NEAR(0.5 * M_PI, pos.angle, def::EPS_DISTANCE);
+    EXPECT_NEAR(5.625, pos.position.x, base::EPS_DISTANCE);
+    EXPECT_NEAR(200.0, pos.position.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(0.5 * M_PI, pos.angle, base::EPS_DISTANCE);
 
     mc = MapCoordinate(map.getEdge("R1-LS6-R1"), 40.0, 0.0);
     pos = mc.absolutePosition();
-    EXPECT_NEAR(1.875, pos.position.x(), def::EPS_DISTANCE);
-    EXPECT_NEAR(200.0, pos.position.y(), def::EPS_DISTANCE);
-    EXPECT_NEAR(0.5 * M_PI, pos.angle, def::EPS_DISTANCE);
+    EXPECT_NEAR(1.875, pos.position.x, base::EPS_DISTANCE);
+    EXPECT_NEAR(200.0, pos.position.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(0.5 * M_PI, pos.angle, base::EPS_DISTANCE);
 
     mc = MapCoordinate(map.getEdge("R1-LS6-L1"), 0.0, 0.0);
     pos = mc.absolutePosition();
-    EXPECT_NEAR(-1.75, pos.position.x(), def::EPS_DISTANCE);
-    EXPECT_NEAR(200.0, pos.position.y(), def::EPS_DISTANCE);
-    EXPECT_NEAR(1.5 * M_PI, pos.angle, def::EPS_DISTANCE);
+    EXPECT_NEAR(-1.75, pos.position.x, base::EPS_DISTANCE);
+    EXPECT_NEAR(200.0, pos.position.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(1.5 * M_PI, pos.angle, base::EPS_DISTANCE);
 
     mc = MapCoordinate(map.getEdge("R1-LS6-L2"), 0.0, 0.0);
     pos = mc.absolutePosition();
-    EXPECT_NEAR(-5.375, pos.position.x(), def::EPS_DISTANCE);
-    EXPECT_NEAR(200.0, pos.position.y(), def::EPS_DISTANCE);
-    EXPECT_NEAR(1.5 * M_PI, pos.angle, def::EPS_DISTANCE);
+    EXPECT_NEAR(-5.375, pos.position.x, base::EPS_DISTANCE);
+    EXPECT_NEAR(200.0, pos.position.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(1.5 * M_PI, pos.angle, base::EPS_DISTANCE);
 
     mc = MapCoordinate(map.getEdge("R1-LS6-L3"), 0.0, 0.0);
     pos = mc.absolutePosition();
-    EXPECT_NEAR(-9.125, pos.position.x(), def::EPS_DISTANCE);
-    EXPECT_NEAR(200.0, pos.position.y(), def::EPS_DISTANCE);
-    EXPECT_NEAR(1.5 * M_PI, pos.angle, def::EPS_DISTANCE);
+    EXPECT_NEAR(-9.125, pos.position.x, base::EPS_DISTANCE);
+    EXPECT_NEAR(200.0, pos.position.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(1.5 * M_PI, pos.angle, base::EPS_DISTANCE);
 
 
 
     // check coordinate
     mc = MapCoordinate(map.getEdge("R1-LS2-L2"), 2.0, 0.0);
     pos = mc.absolutePosition();
-    EXPECT_NEAR(-7.055, pos.position.x(), 0.01);
-    EXPECT_NEAR(108.0, pos.position.y(), def::EPS_DISTANCE);
-    EXPECT_NEAR(1.5 * M_PI, pos.angle, def::EPS_DISTANCE);
+    EXPECT_NEAR(-7.055, pos.position.x, 0.01);
+    EXPECT_NEAR(108.0, pos.position.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(1.5 * M_PI, pos.angle, base::EPS_DISTANCE);
 
     mc = MapCoordinate(map.getEdge("R1-LS3-R2"), 5.0, 0.0);
     pos = mc.absolutePosition();
-    EXPECT_NEAR(3.157, pos.position.x(), 0.01);
-    EXPECT_NEAR(115.0, pos.position.y(), def::EPS_DISTANCE);
-    EXPECT_NEAR(0.5 * M_PI, pos.angle, def::EPS_DISTANCE);
+    EXPECT_NEAR(3.157, pos.position.x, 0.01);
+    EXPECT_NEAR(115.0, pos.position.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(0.5 * M_PI, pos.angle, base::EPS_DISTANCE);
 
     mc = MapCoordinate(map.getEdge("R1-LS5-L4"), 8.0, 0.0);
     pos = mc.absolutePosition();
-    EXPECT_NEAR(-8.611, pos.position.x(), 0.01);
-    EXPECT_NEAR(152.0, pos.position.y(), def::EPS_DISTANCE);
-    EXPECT_NEAR(1.5 * M_PI, pos.angle, def::EPS_DISTANCE);
+    EXPECT_NEAR(-8.611, pos.position.x, 0.01);
+    EXPECT_NEAR(152.0, pos.position.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(1.5 * M_PI, pos.angle, base::EPS_DISTANCE);
 
 }

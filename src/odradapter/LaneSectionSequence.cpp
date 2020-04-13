@@ -24,7 +24,7 @@
 
 #include "LaneSectionSequence.h"
 
-LaneSection* LaneSectionSequence::create(double s, def::Side side) {
+LaneSection* LaneSectionSequence::create(double s, base::Side side) {
 
     if(nestedseq::sections().empty()) {
 
@@ -35,29 +35,29 @@ LaneSection* LaneSectionSequence::create(double s, def::Side side) {
 
         // get last element
         auto entry = at(s);
-        auto both = entry.first.element != nullptr && entry.first.element->side() == def::Side::BOTH;
+        auto both = entry.first.element != nullptr && entry.first.element->side() == base::Side::BOTH;
 
         LaneSection *ls = nullptr;
 
         // get element
-        if (both != (side == def::Side::BOTH)) {
+        if (both != (side == base::Side::BOTH)) {
 
             // create sub-section and add lane section
             auto res = nestedseq::create(s);
 
             // differ between right/both and left
-            if(side == def::Side::BOTH || side == def::Side::RIGHT)
+            if(side == base::Side::BOTH || side == base::Side::RIGHT)
                 ls = res->first.emplace(s, LaneSection(side));
             else
                 ls = res->second.emplace(s, LaneSection(side));
 
-        } else if(side == def::Side::RIGHT || side == def::Side::BOTH) {
+        } else if(side == base::Side::RIGHT || side == base::Side::BOTH) {
 
             // add lane section to the right side
             auto sec = nestedseq::sections().atPos(s);
             ls = sec.element.first.emplace(s, LaneSection(side));
 
-        } else if(side == def::Side::LEFT) {
+        } else if(side == base::Side::LEFT) {
 
             // add lane section to the left side
             auto sec = nestedseq::sections().atPos(s);
@@ -83,7 +83,7 @@ LaneSectionSequence::LaneEntry LaneSectionSequence::lane(const ODREdge *lane) co
 }
 
 
-ODREdge* LaneSectionSequence::lane(def::ContactPoint cp, int id) const {
+ODREdge* LaneSectionSequence::lane(base::ContactPoint cp, int id) const {
 
     auto cs = crossSection(cp);
     return cs.lane(id);
@@ -144,10 +144,10 @@ CrossSection LaneSectionSequence::crossSection(double s) const {
 }
 
 
-CrossSection LaneSectionSequence::crossSection(def::ContactPoint cp) const {
+CrossSection LaneSectionSequence::crossSection(base::ContactPoint cp) const {
 
     lane_section_sequence_t::EntryPair entries;
-    if(cp == def::ContactPoint::START)
+    if(cp == base::ContactPoint::START)
         entries = lane_section_sequence_t::front();
     else
         entries = lane_section_sequence_t::back();
@@ -236,7 +236,7 @@ void LaneSectionSequence::index(bool generateIDs) const {
         auto side = sub.element->side();
 
         // both sides
-        if(side == def::Side::BOTH) {
+        if(side == base::Side::BOTH) {
 
             // iterate over left lanes
             int i = 0;
@@ -264,7 +264,7 @@ void LaneSectionSequence::index(bool generateIDs) const {
 
             }
 
-        } else if(side == def::Side::LEFT) {
+        } else if(side == base::Side::LEFT) {
 
             // iterate over lanes
             int i = 0;
@@ -279,7 +279,7 @@ void LaneSectionSequence::index(bool generateIDs) const {
 
             }
 
-        }  else if(side == def::Side::RIGHT) {
+        }  else if(side == base::Side::RIGHT) {
 
             // iterate over lanes
             int i = 0;
@@ -326,7 +326,7 @@ void LaneSectionSequence::index(bool generateIDs) const {
 
 
         // link lefts
-        if(ls.laneSection->side() == def::Side::LEFT || ls.laneSection->side() == def::Side::BOTH) {
+        if(ls.laneSection->side() == base::Side::LEFT || ls.laneSection->side() == base::Side::BOTH) {
 
             // link predecessor
             ls.laneSection->links().predecessorLeft = prevLeft;
@@ -342,7 +342,7 @@ void LaneSectionSequence::index(bool generateIDs) const {
 
 
         // link rights
-        if(ls.laneSection->side() == def::Side::RIGHT || ls.laneSection->side() == def::Side::BOTH) {
+        if(ls.laneSection->side() == base::Side::RIGHT || ls.laneSection->side() == base::Side::BOTH) {
 
             // link predecessor
             ls.laneSection->links().predecessorRight = prevRight;

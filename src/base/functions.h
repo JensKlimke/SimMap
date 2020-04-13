@@ -29,12 +29,32 @@
 
 #include <cmath>
 #include <fstream>
-#include <Eigen/Core>
-#include <Eigen/Geometry>
 #include "definitions.h"
 
 
 namespace base {
+
+
+    /**
+     * Creates a vector with n equal-sized elements between the bounds a and b
+     * @param a Lower bound
+     * @param b Upper bound
+     * @param n Number of elements
+     * @return
+     */
+    inline VectorX linspace(double a, double b, size_t n) {
+
+        // create vector
+        VectorX v(n);
+        double d = (b - a) / ((double)n - 1.0);
+
+        // set elements
+        for(size_t i = 0; i < n; ++i)
+            v[i] = a + i * d;
+
+        return v;
+
+    }
 
 
     /**
@@ -44,14 +64,14 @@ namespace base {
      * @param ds Maximum distance
      * @return
      */
-    inline Eigen::RowVectorXd maxspace(double a, double b, double ds) {
+    inline VectorX maxspace(double a, double b, double ds) {
 
         if ((b - a) * ds < 0.0)
             throw std::invalid_argument("(b-a)*ds must pe positive");
 
         // get number of elements
         auto n = static_cast<unsigned long>(ceil((b - a) / ds) + 1);
-        return Eigen::RowVectorXd::LinSpaced(n, a, b);
+        return linspace(a, b, n);
 
     }
 
@@ -77,98 +97,21 @@ namespace base {
     }
 
 
-//    /**
-//     * Compares to files and returns the flag if the files are equal
-//     * @param p1 File name of first file
-//     * @param p2 File name of seconf file
-//     * @return Flag (true when files are equal)
-//     */
-//    inline bool compareFiles(const std::string &p1, const std::string &p2) {
-//
-//        std::ifstream f1(p1, std::ifstream::binary | std::ifstream::ate);
-//        std::ifstream f2(p2, std::ifstream::binary | std::ifstream::ate);
-//
-//        if (f1.fail() || f2.fail())
-//            return false; //file problem
-//
-//        if (f1.tellg() != f2.tellg())
-//            return false; //size mismatch
-//
-//        //seek back to beginning and use std::equal to compare contents
-//        f1.seekg(0, std::ifstream::beg);
-//        f2.seekg(0, std::ifstream::beg);
-//
-//        return std::equal(std::istreambuf_iterator<char>(f1.rdbuf()),
-//                          std::istreambuf_iterator<char>(),
-//                          std::istreambuf_iterator<char>(f2.rdbuf()));
-//    }
-
-
     /**
-     * Adds an value to the given point of the vector and moves all other elements
-     * @param vec Vector to be updated
-     * @param i Position of new value
-     * @param val Value to be set
+     * Calculates the difference between the single vector elements
+     * @param v Vector
+     * @return Diffs
      */
-    inline void addValueToVector(Eigen::RowVectorXd &vec, size_t i, double val) {
+    inline VectorX diff(const VectorX &v) {
 
-        if (vec.cols() == 0)
-            throw std::invalid_argument("Vector must not be empty");
+        // create vector
+        VectorX r(v.size() - 1);
 
-        if (i >= vec.cols())
-            throw std::invalid_argument("i out of bounds");
+        // set elements
+        for(size_t i = 0; i < r.size(); ++i)
+            r[i] = v[i + 1] - v[i];
 
-        // check if i is last position
-        if (i == vec.cols() - 1) {
-            vec(i) = val;
-            return;
-        }
-
-        // move tail by one position
-        size_t n = vec.cols() - i - 1;
-        vec.tail(n) = vec.segment(i, n).eval();
-
-        // set value
-        vec(i) = val;
-
-    }
-
-
-    /**
-     * Removes the i-th element from the given vector
-     * @param vec Vector to be updated
-     * @param i Index of the element to be removed
-     */
-    inline void removeElementFromVector(Eigen::RowVectorXd &vec, size_t i) {
-
-        if (vec.cols() == 0)
-            throw std::invalid_argument("Vector must not be empty");
-
-        if (i > vec.cols() - 1)
-            throw std::invalid_argument("i out of bounds");
-
-        // get head
-        if (i == vec.cols() - 1) {
-
-            vec = vec.head(vec.cols() - 1).eval();
-            return;
-
-        }
-
-        // get tail
-        if (i == 0) {
-
-            vec = vec.tail(vec.cols() - 1).eval();
-            return;
-
-        }
-
-        // copy vector and reallocate
-        Eigen::RowVectorXd tmp = vec;
-        vec = Eigen::RowVectorXd(tmp.cols() - 1);
-
-        // save values
-        vec << tmp.head(i).eval(), tmp.tail(tmp.cols() - i - 1).eval();
+        return r;
 
     }
 
@@ -179,28 +122,21 @@ namespace base {
      * @param point Point Point to be transfered
      * @return CurvePoint representing the point in the global coordinate system
      */
-    inline Eigen::Vector3d toGlobal(const def::CurvePoint &curvePoint, const Eigen::Vector3d &point) {
+    inline Vector3 toGlobal(const base::CurvePoint &curvePoint, const Vector3 &point) {
 
 
         auto c = cos(curvePoint.angle);
         auto s = sin(curvePoint.angle);
 
-        auto x = point.x();
-        auto y = point.y();
-        auto z = point.z();
+        auto x = point.x;
+        auto y = point.y;
+        auto z = point.z;
 
-        return Eigen::Vector3d {
-            x * c - y * s + curvePoint.position.x(),
-            x * s + y * c + curvePoint.position.y(),
-            z + curvePoint.position.z()
+        return Vector3 {
+            x * c - y * s + curvePoint.position.x,
+            x * s + y * c + curvePoint.position.y,
+            z + curvePoint.position.z
         };
-
-//        // create transformation
-//        Eigen::Transform <double, 3, Eigen::Affine> t = Eigen::Transform <double, 3, Eigen::Affine>::Identity();
-//        t.rotate(Eigen::AngleAxisd(curvePoint.angle, Eigen::Vector3d::UnitZ()));
-//
-//        // create curve point and return
-//        return Eigen::Vector3d{t * point + curvePoint.position};
 
     }
 
@@ -211,40 +147,19 @@ namespace base {
      * @param point Point Point to be transferred
      * @return CurvePoint representing the point in the local coordinate system
      */
-    inline Eigen::Vector3d toLocal(const def::CurvePoint &curvePoint, const Eigen::Vector3d &point) {
+    inline Vector3 toLocal(const base::CurvePoint &curvePoint, const Vector3 &point) {
 
 
         auto c = cos(curvePoint.angle);
         auto s = sin(curvePoint.angle);
 
-        auto x = point.x() - curvePoint.position.x();
-        auto y = point.y() - curvePoint.position.y();
-        auto z = point.z() - curvePoint.position.z();
+        auto x = point.x - curvePoint.position.x;
+        auto y = point.y - curvePoint.position.y;
+        auto z = point.z - curvePoint.position.z;
 
-        return Eigen::Vector3d {x * c + y * s, -x * s + y * c, z};
-
-//        // create transformation
-//        Eigen::Transform <double, 3, Eigen::Affine> t = Eigen::Transform <double, 3, Eigen::Affine>::Identity();
-//        t.rotate(Eigen::AngleAxisd(-curvePoint.angle, Eigen::Vector3d::UnitZ()));
-//
-//        // create curve point and return
-//        return Eigen::Vector3d{t * (point - curvePoint.position)};
+        return Vector3 {x * c + y * s, -x * s + y * c, z};
 
     }
-
-
-//    /**
-//     * Transfers the end point to the coordinate system of the base point
-//     * @param base Start point
-//     * @param end End point
-//     * @return CurvePoint representing the end point in the coordinate system of the base point
-//     */
-//    inline def::CurvePoint toLocal(const def::CurvePoint &base, const def::CurvePoint &end) {
-//
-//        // create curve point and return
-//        return def::CurvePoint{toLocal(base, end.position), base::angleDiff(end.angle, base.angle), end.curvature};
-//
-//    }
 
 
     /**
@@ -252,11 +167,11 @@ namespace base {
      * @param ori Orientation to be flipped
      * @return Flipped orientation
      */
-    inline def::Orientation flip(def::Orientation ori) {
+    inline base::Orientation flip(base::Orientation ori) {
 
-        return ori == def::Orientation::FORWARDS ? def::Orientation::BACKWARDS :
-               (ori == def::Orientation::BACKWARDS ? def::Orientation::FORWARDS :
-                (ori == def::Orientation::BOTH ? def::Orientation::BOTH : def::Orientation::NONE));
+        return ori == base::Orientation::FORWARDS ? base::Orientation::BACKWARDS :
+               (ori == base::Orientation::BACKWARDS ? base::Orientation::FORWARDS :
+                (ori == base::Orientation::BOTH ? base::Orientation::BOTH : base::Orientation::NONE));
 
     }
 

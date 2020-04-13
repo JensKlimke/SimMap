@@ -62,7 +62,7 @@ namespace curve {
          * Returns the parameters of the geo element
          * @return Parameters
          */
-        Eigen::RowVectorXd parameters() const override { return Eigen::RowVectorXd(0); };
+        base::VectorX parameters() const override { return base::VectorX(0); };
 
 
         /**
@@ -92,9 +92,9 @@ namespace curve {
          * @param v Positions
          * @return Curve positions
          */
-        def::CurvePoint pos(double s) const override {
-            def::CurvePoint pos(startPoint());
-            return {Eigen::Vector3d{cos(pos.angle) * s, sin(pos.angle) * s, 0.0} + pos.position, pos.angle, 0.0};
+        base::CurvePoint pos(double s) const override {
+            base::CurvePoint pos(startPoint());
+            return {base::Vector3{cos(pos.angle) * s, sin(pos.angle) * s, 0.0} + pos.position, pos.angle, 0.0};
         }
 
 

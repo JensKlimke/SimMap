@@ -36,7 +36,7 @@ namespace graph {
 
     bool Edge::isForward() const {
 
-        return !(orientation() == def::Orientation::BACKWARDS);
+        return !(orientation() == base::Orientation::BACKWARDS);
 
     }
 

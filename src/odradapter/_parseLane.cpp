@@ -63,7 +63,7 @@ std::shared_ptr<ODREdge> parseGenericLane(LaneSection *ls, const T &def, int lid
 
     // save road
     edge->_road = ls->_road;
-    edge->_trackElement = Track::TrackElement{def::Orientation::BACKWARDS, edge->_road};
+    edge->_trackElement = Track::TrackElement{base::Orientation::BACKWARDS, edge->_road};
 
 
     // parse links
@@ -110,21 +110,23 @@ std::shared_ptr<ODREdge> parseLane(LaneSection *ls, const odr1_5::t_road_lanes_l
     // if width is not defined, is border defined?
     if (widthDef.empty() && borderDef.empty()) {
 
-        Eigen::RowVector2d s{0.0, INFINITY};
-        edge->_width = std::make_unique<C3Spline>(s, Eigen::Matrix2d::Zero());
+        base::VectorX s{0.0, INFINITY};
+        edge->_width = std::make_unique<C3Spline>(s, base::VectorX{0.0, 0.0});
 
     } else if (!widthDef.empty()) {
 
-        Eigen::RowVectorXd s(widthDef.size() + 1);
-        s(widthDef.size()) = INFINITY;
+        base::VectorX s(widthDef.size() + 1);
+        s[widthDef.size()] = INFINITY;
+
+        std::vector<base::VectorX> m(widthDef.size());
 
         // create matrix
-        auto m = Eigen::Matrix<double, 4, Eigen::Dynamic>(4, widthDef.size());
-        size_t i = 0;
-        for (const auto &w : widthDef) {
+        for (size_t i = 0; i < widthDef.size(); ++i) {
 
-            s(i) = *w._sOffset;
-            m.col(i++) = Eigen::Vector4d(*w._d, *w._c, *w._b, *w._a);
+            auto w = widthDef[i];
+
+            s[i] = *w._sOffset;
+            m[i] = base::VectorX{*w._d, *w._c, *w._b, *w._a};
 
         }
 
@@ -133,16 +135,18 @@ std::shared_ptr<ODREdge> parseLane(LaneSection *ls, const odr1_5::t_road_lanes_l
 
     } else {
 
-        Eigen::RowVectorXd s(borderDef.size() + 1);
-        s(borderDef.size()) = INFINITY;
+        base::VectorX s(borderDef.size() + 1);
+        s[borderDef.size()] = INFINITY;
+
+        std::vector<base::VectorX> m(borderDef.size());
 
         // create matrix
-        auto m = Eigen::Matrix<double, 4, Eigen::Dynamic>(4, borderDef.size());
-        size_t i = 0;
-        for (const auto &w : borderDef) {
+        for (size_t i = 0; i < borderDef.size(); ++i) {
 
-            s(i) = *w._sOffset;
-            m.col(i++) = Eigen::Vector4d(*w._d, *w._c, *w._b, *w._a);
+            auto w = borderDef[i];
+
+            s[i] = *w._sOffset;
+            m[i] = base::VectorX{*w._d, *w._c, *w._b, *w._a};
 
         }
 

@@ -90,7 +90,7 @@ public:
      * Returns the side of the lane section
      * @return Side of the lane section
      */
-    virtual def::Side side() const = 0;
+    virtual base::Side side() const = 0;
 
 
     /**
@@ -132,7 +132,7 @@ private:
 
     ODREdge *_center = nullptr;
 
-    def::Side _side = def::Side::NONE;
+    base::Side _side = base::Side::NONE;
     Linkage _links{};
 
 
@@ -150,7 +150,7 @@ public:
      * Creates a lane section for the given side and creates the required vectors
      * @param side Side to be set
      */
-    explicit LaneSection(def::Side side) { _side = side; }
+    explicit LaneSection(base::Side side) { _side = side; }
 
 
     const LanesVector* right() const override { return &_lanesRight; };
@@ -162,7 +162,7 @@ public:
     ODREdge * center() const override { return _center; };
 
 
-    def::Side side() const override { return _side; };
+    base::Side side() const override { return _side; };
 
 
     Linkage links() const override { return _links; }
@@ -274,16 +274,16 @@ public:
     ODREdge * center() const override { return _lanesCenter->center(); };
 
 
-    def::Side side() const override {
+    base::Side side() const override {
 
         if(_lanesLeft != nullptr && _lanesRight != nullptr)
-            return def::Side::BOTH;
+            return base::Side::BOTH;
         else if(_lanesRight != nullptr)
-            return def::Side::RIGHT;
+            return base::Side::RIGHT;
         else if(_lanesLeft != nullptr)
-            return def::Side::LEFT;
+            return base::Side::LEFT;
         else
-            return def::Side::NONE;
+            return base::Side::NONE;
 
     };
 

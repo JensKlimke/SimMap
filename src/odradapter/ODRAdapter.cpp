@@ -154,14 +154,14 @@ namespace odra {
             for (const auto &pt : pts) {
 
                 // write position
-                os << (j++ == 0 ? "" : ", ") << "{ \"x\" : " << pt.position.x() << ", \"y\" : " << pt.position.y()
+                os << (j++ == 0 ? "" : ", ") << "{ \"x\" : " << pt.position.x << ", \"y\" : " << pt.position.y
                    << ", \"phi\" : " << pt.angle << " }\n";
 
                 // save boundaries
-                xMin = xMin <= pt.position.x() ? xMin : pt.position.x();
-                xMax = xMax >= pt.position.x() ? xMax : pt.position.x();
-                yMin = yMin <= pt.position.y() ? yMin : pt.position.y();
-                yMax = yMax >= pt.position.y() ? yMax : pt.position.y();
+                xMin = xMin <= pt.position.x ? xMin : pt.position.x;
+                xMax = xMax >= pt.position.x ? xMax : pt.position.x;
+                yMin = yMin <= pt.position.y ? yMin : pt.position.y;
+                yMax = yMax >= pt.position.y ? yMax : pt.position.y;
 
             }
 
@@ -184,20 +184,20 @@ namespace odra {
             // iterate over points
             for (size_t j = 0; j < pts.size(); ++j) {
 
-                auto s = pts(j);
+                auto s = pts[j];
 
                 // inner line
-                auto pt = edge->position(s, def::Reference::INNER, 0.0);
+                auto pt = edge->position(s, base::Reference::INNER, 0.0);
 
                 // write position
-                os << (j++ == 0 ? "" : ", ") << "{ \"x\" : " << pt.position.x() << ", \"y\" : " << pt.position.y()
+                os << (j++ == 0 ? "" : ", ") << "{ \"x\" : " << pt.position.x << ", \"y\" : " << pt.position.y
                    << ", \"phi\" : " << pt.angle << " }\n";
 
                 // save boundaries
-                xMin = xMin <= pt.position.x() ? xMin : pt.position.x();
-                xMax = xMax >= pt.position.x() ? xMax : pt.position.x();
-                yMin = yMin <= pt.position.y() ? yMin : pt.position.y();
-                yMax = yMax >= pt.position.y() ? yMax : pt.position.y();
+                xMin = xMin <= pt.position.x ? xMin : pt.position.x;
+                xMax = xMax >= pt.position.x ? xMax : pt.position.x;
+                yMin = yMin <= pt.position.y ? yMin : pt.position.y;
+                yMax = yMax >= pt.position.y ? yMax : pt.position.y;
 
             }
 
@@ -210,20 +210,20 @@ namespace odra {
             // iterate over points
             for (size_t j = 0; j < pts.size(); ++j) {
 
-                auto s = pts(j);
+                auto s = pts[j];
 
                 // outer line
-                auto pt = edge->position(s, def::Reference::OUTER, 0.0);
+                auto pt = edge->position(s, base::Reference::OUTER, 0.0);
 
                 // write position
-                os << (j++ == 0 ? "" : ", ") << "{ \"x\" : " << pt.position.x() << ", \"y\" : " << pt.position.y()
+                os << (j++ == 0 ? "" : ", ") << "{ \"x\" : " << pt.position.x << ", \"y\" : " << pt.position.y
                    << ", \"phi\" : " << pt.angle << " }\n";
 
                 // save boundaries
-                xMin = xMin <= pt.position.x() ? xMin : pt.position.x();
-                xMax = xMax >= pt.position.x() ? xMax : pt.position.x();
-                yMin = yMin <= pt.position.y() ? yMin : pt.position.y();
-                yMax = yMax >= pt.position.y() ? yMax : pt.position.y();
+                xMin = xMin <= pt.position.x ? xMin : pt.position.x;
+                xMax = xMax >= pt.position.x ? xMax : pt.position.x;
+                yMin = yMin <= pt.position.y ? yMin : pt.position.y;
+                yMax = yMax >= pt.position.y ? yMax : pt.position.y;
 
             }
 

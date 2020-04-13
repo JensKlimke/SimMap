@@ -50,7 +50,6 @@ set(BUILD_TESTS OFF)
 # load library
 add_subdirectory(lib/odrparser)
 
-set(Eigen_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/lib/Eigen/)
 set(odrparser_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/lib/odrparser/include)
 
 # reset build tests

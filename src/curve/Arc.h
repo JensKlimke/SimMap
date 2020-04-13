@@ -67,10 +67,9 @@ namespace curve {
         }
 
 
-        Eigen::RowVectorXd parameters() const override {
+        base::VectorX parameters() const override {
 
-            Eigen::RowVectorXd v(1);
-            v << _crv;
+            base::VectorX v{_crv};
             return v;
 
         };
@@ -97,10 +96,10 @@ namespace curve {
         }
 
 
-        def::CurvePoint pos(double s) const override {
+        base::CurvePoint pos(double s) const override {
 
             // get start position
-            def::CurvePoint pos0(startPoint());
+            base::CurvePoint pos0(startPoint());
 
             // get start angle and crv
             double phi0(pos0.angle);
@@ -114,7 +113,7 @@ namespace curve {
             double phi = phi0 + s * startCurvature();
 
             // return position
-            return {Eigen::Vector3d{(sin(phi) - x0) / kappa, (1.0 - cos(phi) - y0) / kappa, 0.0} + pos0.position, phi, kappa};
+            return {base::Vector3{(sin(phi) - x0) / kappa, (1.0 - cos(phi) - y0) / kappa, 0.0} + pos0.position, phi, kappa};
 
         }
 

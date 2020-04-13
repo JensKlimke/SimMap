@@ -74,34 +74,34 @@ public:
 
 TEST_F(JunctionTest, LaneConnection) {
 
-    auto ls1 = r1->lanes.crossSection(def::ContactPoint::START); // lane section of road 1
-    auto ls2 = r2->lanes.crossSection(def::ContactPoint::END);   // lane section of road 2
-    auto ls3 = r3->lanes.crossSection(def::ContactPoint::START); // lane section of road 3
+    auto ls1 = r1->lanes.crossSection(base::ContactPoint::START); // lane section of road 1
+    auto ls2 = r2->lanes.crossSection(base::ContactPoint::END);   // lane section of road 2
+    auto ls3 = r3->lanes.crossSection(base::ContactPoint::START); // lane section of road 3
 
     // check different accesses
-    EXPECT_EQ(ls1.left()->front(), r1->lanes.lane(def::ContactPoint::START, 1));
-    EXPECT_EQ(ls1.right()->front(), r1->lanes.lane(def::ContactPoint::START, -1));
-    EXPECT_EQ(ls2.left()->front(), r2->lanes.lane(def::ContactPoint::END, 1));
-    EXPECT_EQ(ls2.right()->front(), r2->lanes.lane(def::ContactPoint::END, -1));
-    EXPECT_EQ(ls3.left()->front(), r3->lanes.lane(def::ContactPoint::START, 1));
-    EXPECT_EQ(ls3.right()->front(), r3->lanes.lane(def::ContactPoint::START, -1));
+    EXPECT_EQ(ls1.left()->front(), r1->lanes.lane(base::ContactPoint::START, 1));
+    EXPECT_EQ(ls1.right()->front(), r1->lanes.lane(base::ContactPoint::START, -1));
+    EXPECT_EQ(ls2.left()->front(), r2->lanes.lane(base::ContactPoint::END, 1));
+    EXPECT_EQ(ls2.right()->front(), r2->lanes.lane(base::ContactPoint::END, -1));
+    EXPECT_EQ(ls3.left()->front(), r3->lanes.lane(base::ContactPoint::START, 1));
+    EXPECT_EQ(ls3.right()->front(), r3->lanes.lane(base::ContactPoint::START, -1));
 
 
     // check
-    EXPECT_EQ(ls1.left()->front(), r1->lanes.lane(def::ContactPoint::START, 1));
-    EXPECT_EQ(ls1.right()->front(), r1->lanes.lane(def::ContactPoint::START, -1));
-    EXPECT_EQ(ls2.left()->front(), r2->lanes.lane(def::ContactPoint::END, 1));
-    EXPECT_EQ(ls2.right()->front(), r2->lanes.lane(def::ContactPoint::END, -1));
-    EXPECT_EQ(ls3.left()->front(), r3->lanes.lane(def::ContactPoint::START, 1));
-    EXPECT_EQ(ls3.right()->front(), r3->lanes.lane(def::ContactPoint::START, -1));
+    EXPECT_EQ(ls1.left()->front(), r1->lanes.lane(base::ContactPoint::START, 1));
+    EXPECT_EQ(ls1.right()->front(), r1->lanes.lane(base::ContactPoint::START, -1));
+    EXPECT_EQ(ls2.left()->front(), r2->lanes.lane(base::ContactPoint::END, 1));
+    EXPECT_EQ(ls2.right()->front(), r2->lanes.lane(base::ContactPoint::END, -1));
+    EXPECT_EQ(ls3.left()->front(), r3->lanes.lane(base::ContactPoint::START, 1));
+    EXPECT_EQ(ls3.right()->front(), r3->lanes.lane(base::ContactPoint::START, -1));
 
 
     // get lane sections: This test is equal to LaneSectionTest::RoadConnection
     auto laneSections = &r1->lanes;
 
     // check different accesses
-    EXPECT_EQ(ls1.left()->front(), laneSections->lane(def::ContactPoint::START, 1));
-    EXPECT_EQ(ls1.right()->front(), laneSections->lane(def::ContactPoint::START, -1));
+    EXPECT_EQ(ls1.left()->front(), laneSections->lane(base::ContactPoint::START, 1));
+    EXPECT_EQ(ls1.right()->front(), laneSections->lane(base::ContactPoint::START, -1));
 
 
     // get lane information

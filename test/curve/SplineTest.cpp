@@ -24,14 +24,14 @@
 
 #include <gtest/gtest.h>
 #include <curve/C3Spline.h>
-#include <Eigen/Core>
+#include <base/definitions.h>
 
 TEST(SplineTest, CreationAndEvaluation) {
 
     using namespace simmap::curve;
 
-    Eigen::RowVector3d s(1.0, 11.0, 21.0);
-    Eigen::RowVector3d w(0.0, 1.0, 1.0);
+    base::VectorX s{1.0, 11.0, 21.0};
+    base::VectorX w{0.0, 1.0, 1.0};
 
     C3Spline sp(s, w);
     EXPECT_DOUBLE_EQ(sp.length(), 20.0);

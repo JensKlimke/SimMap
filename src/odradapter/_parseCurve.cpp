@@ -61,7 +61,7 @@ void parseCurve(ODRRoad *road, const odr1_5::t_road &r) { // ### CURVE ###
     for (auto const &geo : r.sub_planView->sub_geometry) {
 
         // ignore geo elements which are too small
-        if (lengths[i] < def::EPS_DISTANCE) {
+        if (lengths[i] < base::EPS_DISTANCE) {
             ign += lengths[i++];
             continue;
         }
@@ -117,7 +117,7 @@ void parseCurve(ODRRoad *road, const odr1_5::t_road &r) { // ### CURVE ###
         }
 
         // set start point and add to curve
-        ge->startPoint({Eigen::Vector3d(*geo._x, *geo._y, 0.0), *geo._hdg, 0.0});
+        ge->startPoint({base::Vector3{*geo._x, *geo._y, 0.0}, *geo._hdg, 0.0});
         crv->emplace(*geo._s, std::move(ge));
 
         i++;

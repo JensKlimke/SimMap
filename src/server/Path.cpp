@@ -37,22 +37,22 @@ namespace simmap {
 namespace server {
 
 
-def::CurvePoint Path::Matcher::operator()(double s, double &d) const
+base::CurvePoint Path::Matcher::operator()(double s, double &d) const
 {
     // calculate position
     auto pos = path->positionAt(s).absolutePosition();
 
     // calculate result
-    Eigen::Vector3d diff = pos.position - *xyz;
-    d = diff.squaredNorm();
+    base::Vector3 diff = pos.position - *xyz;
+    d = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
 
     return pos;
 
 }
 
-Eigen::Vector2d Path::Matcher::bounds() const {
+base::Vector3 Path::Matcher::bounds() const {
 
-    return {-path->distanceToBack(), path->distanceToHead()};
+    return {-path->distanceToBack(), path->distanceToHead(), 0.0};
 
 }
 
@@ -148,7 +148,7 @@ Track Path::track() const {
 
     // create track
     Track tr{};
-    Track::TrackElement ro = {def::Orientation::FORWARDS, nullptr};
+    Track::TrackElement ro = {base::Orientation::FORWARDS, nullptr};
 
     // iterate over edges
     for(const auto &edge : _segments) {
@@ -276,13 +276,13 @@ void Path::extendPath(double ds, const Track &track, size_t &trackIndex) {
 
             // check if same road
             // TODO: better way with operator==?
-            if (edge->trackElement().second == itc->second && (edge->orientation() == def::Orientation::NONE
-                || (edge->isForward() == (itc->first == def::Orientation::FORWARDS)))) {
+            if (edge->trackElement().second == itc->second && (edge->orientation() == base::Orientation::NONE
+                || (edge->isForward() == (itc->first == base::Orientation::FORWARDS)))) {
 
                 add = true;
 
-            } else if (edge->trackElement().second == itn->second && (edge->orientation() == def::Orientation::NONE
-                || (edge->isForward() == (itn->first == def::Orientation::FORWARDS)))) {
+            } else if (edge->trackElement().second == itn->second && (edge->orientation() == base::Orientation::NONE
+                || (edge->isForward() == (itn->first == base::Orientation::FORWARDS)))) {
 
                 add = true;
                 trackIndex = tin;
@@ -346,7 +346,7 @@ void Path::createRecursively(std::list<Path*> &paths, const LaneEdge *edge, doub
 }
 
 
-double Path::match(const Eigen::Vector3d &xyz, double &s, double radius) const {
+double Path::match(const base::Vector3 &xyz, double &s, double radius) const {
 
     Matcher matcher{};
     matcher.path = this;
@@ -356,8 +356,8 @@ double Path::match(const Eigen::Vector3d &xyz, double &s, double radius) const {
     auto b = matcher.bounds();
 
     // get bounds
-    double b0 = b(0) + 1e-12;
-    double b1 = b(1) - 1e-12;
+    double b0 = b.x + 1e-12;
+    double b1 = b.y - 1e-12;
 
     // set radius at least to a minimum
     radius = fmax(0.1, fabs(radius));
@@ -369,16 +369,16 @@ double Path::match(const Eigen::Vector3d &xyz, double &s, double radius) const {
     for(size_t i = 0; i < ss.size(); ++i) {
 
         double err = INFINITY;
-        matcher.operator()(ss(i), err);
+        matcher.operator()(ss[i], err);
 
         if(err < erro) {
-            s = ss(i);
+            s = ss[i];
             erro = err;
         }
 
     }
 
-    return matchExec(&matcher, &s, def::EPS_DISTANCE, def::EPS_DISTANCE, 1000);
+    return matchExec(&matcher, &s, base::EPS_DISTANCE, base::EPS_DISTANCE, 1000);
 
 }
 
@@ -415,12 +415,14 @@ std::list<Path::Neighbor> Path::neighboredPaths(Track &track) const {
         Path p{};
         NeighborInformation info{};
 
+        auto diff = mc.absolutePosition().position - pos.absolutePosition().position;
+
         // save information
         info.index      = j;
         info.sameDir    = dir == mc.edge()->isForward();
         info.accessible = true; // TODO
         info.allowed    = true; // TODO
-        info.offset     = sqrt((mc.absolutePosition().position - pos.absolutePosition().position).norm());
+        info.offset     = sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 
         // add to list
         ret.emplace_back(info, p);
@@ -458,12 +460,14 @@ std::list<Path::Neighbor> Path::neighboredPaths(Track &track) const {
         Path p{};
         NeighborInformation info{};
 
+        auto diff = mc.absolutePosition().position - pos.absolutePosition().position;
+
         // save information
         info.index      = j;
         info.sameDir    = dir == mc.edge()->isForward();
         info.accessible = true;
         info.allowed    = true;
-        info.offset     = sqrt((mc.absolutePosition().position - pos.absolutePosition().position).norm());
+        info.offset     = sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 
         // add to list
         ret.emplace_back(info, p);
@@ -570,14 +574,14 @@ double Path::matchExec(const Path::Matcher *matcher, double *s, double s_eps, do
         auto pos = matcher->operator()(*s, err);
 
         auto loc = base::toLocal(pos, *matcher->xyz);
-        delta_s = loc.x();
+        delta_s = loc.x;
 
         // calculate delta s
         *s += delta_s;
 
         // apply boundaries
-        *s = fmax(*s, bnds(0));
-        *s = fmin(*s, bnds(1));
+        *s = fmax(*s, bnds.x);
+        *s = fmin(*s, bnds.y);
 
         // check number of evaluations
         if(++i >= max_f)
@@ -606,7 +610,7 @@ void Path::extendRecursively(std::list<Path *> &paths, double len) {
         return;
 
     // reinterpret to LaneEdge vector
-    auto next = reinterpret_cast<const std::vector<std::pair<def::ContactPoint, LaneEdge*>>*>(conPtr);
+    auto next = reinterpret_cast<const std::vector<std::pair<base::ContactPoint, LaneEdge*>>*>(conPtr);
 
     // remove element from vector
     paths.pop_back();

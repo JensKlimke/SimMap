@@ -47,11 +47,9 @@ namespace curve {
      * Returns the parameters defining the element
      * @return Parameter vector
      */
-    Eigen::RowVectorXd Spiral::parameters() const {
+    base::VectorX Spiral::parameters() const {
 
-        Eigen::RowVectorXd p(2);
-        p << _kappa0, _kappa1;
-
+        base::VectorX p{_kappa0, _kappa1};
         return p;
 
     }
@@ -77,7 +75,7 @@ namespace curve {
     double Spiral::curvatureDerivative() const {
 
         // calculate sigma
-        return (_kappa1 - _kappa0) / std::max(def::EPS_DISTANCE, length());
+        return (_kappa1 - _kappa0) / std::max(base::EPS_DISTANCE, length());
 
     }
 
@@ -90,10 +88,10 @@ namespace curve {
 
 
 
-    def::CurvePoint Spiral::pos(double s) const {
+    base::CurvePoint Spiral::pos(double s) const {
 
         // get start position
-        def::CurvePoint pos0(startPoint());
+        base::CurvePoint pos0(startPoint());
 
         // calculate end crv
         double kappa1 = curvature(s);
@@ -111,7 +109,6 @@ namespace curve {
         x1 = x1 - x0;
         y1 = y1 - y0;
 
-        // TODO: rotation by eigen
         // angle to rotate
         double dPhi = pos0.angle - tau0;
 
@@ -120,7 +117,7 @@ namespace curve {
         double ss = sin(dPhi);
 
         // rotate local position and return position
-        return {Eigen::Vector3d{cs * x1 - ss * y1, ss * x1 + cs * y1, 0.0} + pos0.position, tau1 + dPhi, kappa1};
+        return {base::Vector3{cs * x1 - ss * y1, ss * x1 + cs * y1, 0.0} + pos0.position, tau1 + dPhi, kappa1};
 
     }
 

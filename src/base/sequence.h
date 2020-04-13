@@ -265,7 +265,7 @@ namespace base {
          * @param eps Tolerance
          * @return Flag of existence
          */
-        bool exists(double s, double eps = def::EPS_DISTANCE) const {
+        bool exists(double s, double eps = base::EPS_DISTANCE) const {
 
             return !empty() && s >= front().position - eps && s <= _end + eps;
 

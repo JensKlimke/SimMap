@@ -9,7 +9,7 @@ set(SOURCE_FILES
 add_executable(GraphTest ${SOURCE_FILES})
 
 # include directory
-target_include_directories(GraphTest PRIVATE ${Eigen_INCLUDE_DIR} ${PROJECT_SOURCE_DIR}/src)
+target_include_directories(GraphTest PRIVATE ${PROJECT_SOURCE_DIR}/src)
 
 # link library to target
 target_link_libraries(GraphTest PRIVATE graph)

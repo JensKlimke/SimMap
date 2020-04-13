@@ -10,4 +10,4 @@ set(SOURCE_FILES
 add_library(curve STATIC ${SOURCE_FILES})
 
 # include directory
-target_include_directories(curve PRIVATE ${Eigen_INCLUDE_DIR} ${PROJECT_SOURCE_DIR}/src)
+target_include_directories(curve PRIVATE ${PROJECT_SOURCE_DIR}/src)

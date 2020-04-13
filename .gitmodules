@@ -4,6 +4,3 @@
 [submodule "lib/gtest"]
 	path = lib/gtest
 	url = https://github.com/google/googletest.git
-[submodule "lib/Eigen"]
-	path = lib/Eigen
-	url = https://github.com/eigenteam/eigen-git-mirror.git

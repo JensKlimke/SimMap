@@ -41,7 +41,7 @@ namespace graph {
     public:
 
         /** Type definition for pairs of a contact point and a oriented element */
-        typedef std::pair<def::ContactPoint, Oriented *> OPair;
+        typedef std::pair<base::ContactPoint, Oriented *> OPair;
 
         /** Type definition for a vector of contact points with regarding oriented elements */
         typedef std::vector<OPair> Connections;
@@ -84,7 +84,7 @@ namespace graph {
          * @param contactPoint Contact point of the successor to this element
          * @param bi Flag for bi-connecting the objects. If set to true, the given object is linked to this object accordingly
          */
-        void next(Oriented *obj, def::ContactPoint contactPoint = def::ContactPoint::START, bool bi = true);
+        void next(Oriented *obj, base::ContactPoint contactPoint = base::ContactPoint::START, bool bi = true);
 
 
         /**
@@ -93,7 +93,7 @@ namespace graph {
          * @param contactPoint Contact point of the predecessor to this element
          * @param bi Flag for bi-connecting the objects. If set to true, the given object is linked to this object accordingly
          */
-        void prev(Oriented *obj, def::ContactPoint contactPoint = def::ContactPoint::END, bool bi = true);
+        void prev(Oriented *obj, base::ContactPoint contactPoint = base::ContactPoint::END, bool bi = true);
 
 
         /**
@@ -114,7 +114,7 @@ namespace graph {
          * Returns the orientation of this element
          * @return The orientation
          */
-        virtual def::Orientation orientation() const = 0;
+        virtual base::Orientation orientation() const = 0;
 
 
         /**
@@ -140,7 +140,7 @@ namespace graph {
          * @param contactPoint Contact point
          * @return Flag denoting the existance
          */
-        bool isNext(Oriented *obj, def::ContactPoint contactPoint) const;
+        bool isNext(Oriented *obj, base::ContactPoint contactPoint) const;
 
 
         /**
@@ -149,7 +149,7 @@ namespace graph {
          * @param contactPoint Contact point
          * @return Flag denoting the existance
          */
-        bool isPrev(Oriented *obj, def::ContactPoint contactPoint) const;
+        bool isPrev(Oriented *obj, base::ContactPoint contactPoint) const;
 
     };
 

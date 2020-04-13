@@ -411,17 +411,17 @@ namespace simmap {
 
                 // get road id and
                 std::string id(trackElements[i]);
-                def::Orientation ori;
+                base::Orientation ori;
 
                 // get orientation and remove sign
                 if (id.substr(0, 1) == "-") {
                     id = id.substr(1);
-                    ori = def::Orientation::BACKWARDS;
+                    ori = base::Orientation::BACKWARDS;
                 } else if (id.substr(0, 1) == "+") {
                     id = id.substr(1);
-                    ori = def::Orientation::FORWARDS;
+                    ori = base::Orientation::FORWARDS;
                 } else {
-                    ori = def::Orientation::FORWARDS;
+                    ori = base::Orientation::FORWARDS;
                 }
 
                 // check if road exists
@@ -465,9 +465,9 @@ namespace simmap {
             auto p = mc.absolutePosition();
 
             // save result
-            pos->x = p.position.x();
-            pos->y = p.position.y();
-            pos->z = p.position.z();
+            pos->x = p.position.x;
+            pos->y = p.position.y;
+            pos->z = p.position.z;
             pos->phi = p.angle;
             pos->kappa = p.curvature;
 
@@ -571,7 +571,7 @@ namespace simmap {
             double ds2 = fabs(ds) * MATCH_WIDTH_FACTOR;
 
             // matching
-            Eigen::Vector3d vec(pos.x, pos.y, pos.z);
+            base::Vector3 vec{pos.x, pos.y, pos.z};
             ag->path.match(vec, ds, ds2);
 
             // update path position
@@ -584,7 +584,7 @@ namespace simmap {
 
             // transform real position into matched positions cs
             auto loc = base::toLocal(mc.absolutePosition(), vec);
-            mapPos->latPos = loc.y();
+            mapPos->latPos = loc.y;
 
         } catch (const std::exception &e) {
             std::cerr << e.what() << std::endl;
@@ -752,7 +752,7 @@ namespace simmap {
 
                 // calculate position
                 MapCoordinate mc{};
-                def::CurvePoint mp{};
+                base::CurvePoint mp{};
 
                 try {
 
@@ -778,8 +778,8 @@ namespace simmap {
                 }
 
                 // position angle and curvature
-                horizon[i].x     = mp.position.x();
-                horizon[i].y     = mp.position.y();
+                horizon[i].x     = mp.position.x;
+                horizon[i].y     = mp.position.y;
                 horizon[i].psi   = mp.angle;
                 horizon[i].kappa = mp.curvature;
 

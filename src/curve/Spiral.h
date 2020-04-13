@@ -25,7 +25,6 @@
 #ifndef SIMMAP_CURVE_SPIRAL_H
 #define SIMMAP_CURVE_SPIRAL_H
 
-#include <Eigen/Core>
 #include "GeoElement.h"
 
 namespace simmap {
@@ -73,7 +72,7 @@ namespace curve {
          * Returns the parameters defining the element
          * @return Parameter vector
          */
-        Eigen::RowVectorXd parameters() const override;
+        base::VectorX parameters() const override;
 
 
 
@@ -115,7 +114,7 @@ namespace curve {
          * @param s Position
          * @return Curve position
          */
-        def::CurvePoint pos(double s) const override;
+        base::CurvePoint pos(double s) const override;
 
 
 

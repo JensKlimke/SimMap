@@ -26,9 +26,7 @@
 #define SIMMAP_CURVE_GEOELEMENT_H
 
 #include <vector>
-#include <Eigen/Core>
 #include <base/definitions.h>
-
 
 namespace simmap {
 namespace curve {
@@ -42,7 +40,7 @@ namespace curve {
 
     private:
 
-        Eigen::Vector3d r0 = {0.0, 0.0, 0.0};
+        base::Vector3 r0 = {0.0, 0.0, 0.0};
         double phi0 = 0.0;
         double len = 0.0;
 
@@ -70,28 +68,28 @@ namespace curve {
          * Returns the parameters of the geo element
          * @return Parameters
          */
-        virtual Eigen::RowVectorXd parameters() const = 0;
+        virtual base::VectorX parameters() const = 0;
 
 
         /**
          * Sets the start point of the geo element
          * @param pos Start point
          */
-        virtual void startPoint(const def::CurvePoint &pos);
+        virtual void startPoint(const base::CurvePoint &pos);
 
 
         /**
          * Returns the start point of the geo element
          * @return Start point
          */
-        virtual def::CurvePoint startPoint() const;
+        virtual base::CurvePoint startPoint() const;
 
 
         /**
          * Returns the end point of the geo element
          * @return
          */
-        virtual def::CurvePoint endPoint() const;
+        virtual base::CurvePoint endPoint() const;
 
         /**
          * Returns the start curvature of the geo element
@@ -134,7 +132,7 @@ namespace curve {
          * @param v Positions
          * @return Curve positions
          */
-        virtual std::vector<def::CurvePoint> positions(const Eigen::RowVectorXd &v) const;
+        virtual std::vector<base::CurvePoint> positions(const base::VectorX &v) const;
 
 
         /**
@@ -142,7 +140,7 @@ namespace curve {
          * @param v Positions
          * @return Curve positions
          */
-        virtual std::vector<def::CurvePoint> operator()(const Eigen::RowVectorXd &v) const;
+        virtual std::vector<base::CurvePoint> operator()(const base::VectorX &v) const;
 
 
         /**
@@ -150,7 +148,7 @@ namespace curve {
          * @param s Position
          * @return Curve position
          */
-        virtual def::CurvePoint operator()(double s) const;
+        virtual base::CurvePoint operator()(double s) const;
 
 
         /**
@@ -158,7 +156,7 @@ namespace curve {
          * @param s Position
          * @return Curve position
          */
-        virtual def::CurvePoint pos(double s) const = 0;
+        virtual base::CurvePoint pos(double s) const = 0;
 
 
         /**
@@ -167,7 +165,7 @@ namespace curve {
          * @param d Offset
          * @return Curve position
          */
-        def::CurvePoint pos(double s, double d) const;
+        base::CurvePoint pos(double s, double d) const;
 
 
         /**
@@ -177,7 +175,7 @@ namespace curve {
          * @param s_max Maximum step size
          * @return
          */
-        virtual Eigen::RowVectorXd steps(double dPhi_max, double s_max) const;
+        virtual base::VectorX steps(double dPhi_max, double s_max) const;
 
 
         /**

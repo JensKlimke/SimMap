@@ -64,7 +64,7 @@ public:
      * @param side Side of the lane section
      * @return The created lane section
      */
-    LaneSection *create(double s, def::Side side);
+    LaneSection *create(double s, base::Side side);
 
 
     /**
@@ -87,7 +87,7 @@ public:
      * @param id ID of the lane
      * @return Pointer to lane
      */
-    ODREdge *lane(def::ContactPoint cp, int id) const;
+    ODREdge *lane(base::ContactPoint cp, int id) const;
 
 
     /**
@@ -110,7 +110,7 @@ public:
      * @param cp Contact point (can be START or END)
      * @return Cross section of the lane section
      */
-    CrossSection crossSection(def::ContactPoint cp) const;
+    CrossSection crossSection(base::ContactPoint cp) const;
 
 
     /**

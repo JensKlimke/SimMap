@@ -58,7 +58,7 @@ namespace curve {
                   polyY(base::poly1(ay[0], ay[1], ay[2], ay[3])) {
 
             // set length
-            length(len);
+            GeoElement::length(len);
 
         }
 
@@ -68,18 +68,20 @@ namespace curve {
                   polyY(base::poly1(ay[0], ay[1], ay[2], ay[3])) {
 
             // calculate steps
-            auto t = base::maxspace(0.0, 1.0, 0.001);
+            auto t = base::maxspace(0.0, 1.0, 1e-6);
             auto x = polyX(t);
             auto y = polyY(t);
 
             // calculate diffs
-            Eigen::RowVectorXd dx =
-                    x.block(0, 1, x.rows(), x.cols() - 1).eval() - x.block(0, 0, x.rows(), x.cols() - 1).eval();
-            Eigen::RowVectorXd dy =
-                    y.block(0, 1, y.rows(), y.cols() - 1).eval() - y.block(0, 0, y.rows(), y.cols() - 1).eval();
+            base::VectorX dx = base::diff(x);
+            base::VectorX dy = base::diff(y);
+
+            double l = 0.0;
+            for(size_t i = 0; i < dx.size(); ++i)
+                l += sqrt(dx[i] * dx[i] + dy[i] * dy[i]);
 
             // save length
-            length(sqrt(dx.array() * dx.array() + dy.array() * dy.array()).sum());
+            GeoElement::length(l);
 
         }
 
@@ -91,12 +93,12 @@ namespace curve {
         }
 
 
-        Eigen::RowVectorXd parameters() const override {
+        base::VectorX parameters() const override {
 
-            Eigen::VectorXd d(8);
-            d << polyX.parameters(), polyY.parameters();
+            auto x = polyX.parameters();
+            auto y = polyY.parameters();
 
-            return d;
+            return base::VectorX{x[0], x[1], x[2], x[3], y[0], y[1], y[2], y[3]};
 
         };
 
@@ -133,7 +135,7 @@ namespace curve {
         }
 
 
-        def::CurvePoint pos(double s) const override {
+        base::CurvePoint pos(double s) const override {
 
             double t = s / length();
 
@@ -141,7 +143,7 @@ namespace curve {
             base::poly1 derY = polyY.der();
 
             // rotate
-            auto pos = Eigen::Vector3d(polyX(t), polyY(t), 0.0);
+            auto pos = base::Vector3{polyX(t), polyY(t), 0.0};
             auto sp = startPoint();
             pos = base::toGlobal(sp, pos);
 
@@ -164,13 +166,13 @@ namespace curve {
 
             // get parameters for x and create new parameter vector
             auto p = this->polyX.parameters();
-            Eigen::VectorXd pn(p.size());
+            base::VectorX pn(p.size());
 
             // adapt parameters
-            pn(3) = p(0) + p(1) + p(2) + p(3);
-            pn(2) = -3.0 * p(0) - 2.0 * p(1) - p(2);
-            pn(1) = 3.0 * p(0) + p(1);
-            pn(0) = -p(0);
+            pn[3] = p[0] + p[1] + p[2] + p[3];
+            pn[2] = -3.0 * p[0] - 2.0 * p[1] - p[2];
+            pn[1] = 3.0 * p[0] + p[1];
+            pn[0] = -p[0];
 
             // set parameters
             poly->polyX.parameters(pn);
@@ -180,10 +182,10 @@ namespace curve {
             p = this->polyY.parameters();
 
             // adapt parameters
-            pn(3) = p(0) + p(1) + p(2) + p(3);
-            pn(2) = -3.0 * p(0) - 2.0 * p(1) - p(2);
-            pn(1) = 3.0 * p(0) + p(1);
-            pn(0) = -p(0);
+            pn[3] = p[0] + p[1] + p[2] + p[3];
+            pn[2] = -3.0 * p[0] - 2.0 * p[1] - p[2];
+            pn[1] = 3.0 * p[0] + p[1];
+            pn[0] = -p[0];
 
             // set parameters
             poly->polyY.parameters(pn);

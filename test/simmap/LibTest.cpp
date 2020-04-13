@@ -228,11 +228,11 @@ TEST_F(LibraryTest, GetPosition) {
     EXPECT_DOUBLE_EQ(0.0,  mapPos.latPos);
     EXPECT_EQ(0, strcmp("R1-LS1-R1", mapPos.edgeID));
 
-    EXPECT_NEAR(x,            pos.x,     def::EPS_DISTANCE);
-    EXPECT_NEAR(y,            pos.y,     def::EPS_DISTANCE);
-    EXPECT_NEAR(0.0,          pos.z,     def::EPS_DISTANCE);
-    EXPECT_NEAR(phi + M_PI_2, pos.phi,   def::EPS_DISTANCE);
-    EXPECT_NEAR(RE,     1.0 / pos.kappa, def::EPS_DISTANCE);
+    EXPECT_NEAR(x,            pos.x,     base::EPS_DISTANCE);
+    EXPECT_NEAR(y,            pos.y,     base::EPS_DISTANCE);
+    EXPECT_NEAR(0.0,          pos.z,     base::EPS_DISTANCE);
+    EXPECT_NEAR(phi + M_PI_2, pos.phi,   base::EPS_DISTANCE);
+    EXPECT_NEAR(RE,     1.0 / pos.kappa, base::EPS_DISTANCE);
 
 
     // second agent
@@ -247,11 +247,11 @@ TEST_F(LibraryTest, GetPosition) {
     EXPECT_DOUBLE_EQ(10.0, mapPos.longPos);
     EXPECT_EQ(0, strcmp("R2-LS1-R1", mapPos.edgeID));
 
-    EXPECT_NEAR(x,             pos.x,     def::EPS_DISTANCE);
-    EXPECT_NEAR(y,             pos.y,     def::EPS_DISTANCE);
-    EXPECT_NEAR(0.0,           pos.z,     def::EPS_DISTANCE);
-    EXPECT_NEAR(-M_PI_2 + phi, pos.phi,   def::EPS_DISTANCE);
-    EXPECT_NEAR(-1.0 / RE,     pos.kappa, def::EPS_DISTANCE);
+    EXPECT_NEAR(x,             pos.x,     base::EPS_DISTANCE);
+    EXPECT_NEAR(y,             pos.y,     base::EPS_DISTANCE);
+    EXPECT_NEAR(0.0,           pos.z,     base::EPS_DISTANCE);
+    EXPECT_NEAR(-M_PI_2 + phi, pos.phi,   base::EPS_DISTANCE);
+    EXPECT_NEAR(-1.0 / RE,     pos.kappa, base::EPS_DISTANCE);
 
 }
 

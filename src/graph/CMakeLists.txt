@@ -7,4 +7,4 @@ set(SOURCE_FILES
         )
 
 add_library(graph STATIC ${SOURCE_FILES})
-target_include_directories(graph PRIVATE ${PROJECT_SOURCE_DIR}/src ${Eigen_INCLUDE_DIR})
+target_include_directories(graph PRIVATE ${PROJECT_SOURCE_DIR}/src)

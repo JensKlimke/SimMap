@@ -12,7 +12,7 @@ set(SOURCE_FILES
 # build test executable
 add_executable(AdapterTest ${SOURCE_FILES})
 target_link_libraries(AdapterTest PRIVATE odradapter)
-target_include_directories(AdapterTest PRIVATE ${PROJECT_SOURCE_DIR}/src ${odrparser_INCLUDE_DIR} ${Eigen_INCLUDE_DIR})
+target_include_directories(AdapterTest PRIVATE ${PROJECT_SOURCE_DIR}/src ${odrparser_INCLUDE_DIR})
 
 # add test
 add_gtest(AdapterTest)

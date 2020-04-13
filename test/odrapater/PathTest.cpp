@@ -22,6 +22,7 @@
 // Created by Jens Klimke on 2019-05-12.
 //
 
+#include <base/definitions.h>
 #include <base/functions.h>
 #include <server/Track.h>
 #include <server/Path.h>
@@ -66,12 +67,12 @@ public:
         rd2 = dynamic_cast<ODRRoad *>(mp->_roadNetwork.at("2").get());
 
         // create track
-        track = Track({{def::Orientation::FORWARDS,  rd1},
-                       {def::Orientation::BACKWARDS, rd2}});
+        track = Track({{base::Orientation::FORWARDS,  rd1},
+                       {base::Orientation::BACKWARDS, rd2}});
 
         // get edges
-        e_R1_LS1_R1 = dynamic_cast<ODREdge *>(rd1->lanes.lane(def::ContactPoint::START, -1));
-        e_R2_LS1_L1 = dynamic_cast<ODREdge *>(rd2->lanes.lane(def::ContactPoint::START, 1));
+        e_R1_LS1_R1 = dynamic_cast<ODREdge *>(rd1->lanes.lane(base::ContactPoint::START, -1));
+        e_R2_LS1_L1 = dynamic_cast<ODREdge *>(rd2->lanes.lane(base::ContactPoint::START, 1));
 
         // save map
         this->map = mp;
@@ -217,36 +218,36 @@ TEST_F(PathTest, Positions) {
     // check positionAt with 0.0
     auto pos1 = this->position().absolutePosition();
     auto pos2 = this->positionAt(0.0).absolutePosition();
-    EXPECT_DOUBLE_EQ(pos1.position.x(), pos2.position.x());
-    EXPECT_DOUBLE_EQ(pos1.position.y(), pos2.position.y());
+    EXPECT_DOUBLE_EQ(pos1.position.x, pos2.position.x);
+    EXPECT_DOUBLE_EQ(pos1.position.y, pos2.position.y);
     EXPECT_DOUBLE_EQ(pos1.angle, pos2.angle);
 
     // check positionAt with head position and back position
     auto pos = this->positionAt(25.0).absolutePosition();
-    EXPECT_DOUBLE_EQ(89.403723492581704, pos.position.x());
-    EXPECT_DOUBLE_EQ(48.841476745303154, pos.position.y());
+    EXPECT_DOUBLE_EQ(89.403723492581704, pos.position.x);
+    EXPECT_DOUBLE_EQ(48.841476745303154, pos.position.y);
 
     pos = this->positionAt(-75.0).absolutePosition();
-    EXPECT_DOUBLE_EQ(89.403723492581704, pos.position.x());
-    EXPECT_DOUBLE_EQ(-48.841476745303154, pos.position.y());
+    EXPECT_DOUBLE_EQ(89.403723492581704, pos.position.x);
+    EXPECT_DOUBLE_EQ(-48.841476745303154, pos.position.y);
 
     // check positionAt with head position and back position
     pos = this->positionAt(25.0, 1.0).absolutePosition();
-    EXPECT_DOUBLE_EQ(88.526140930691327, pos.position.x());
-    EXPECT_DOUBLE_EQ(48.362051206698951, pos.position.y());
+    EXPECT_DOUBLE_EQ(88.526140930691327, pos.position.x);
+    EXPECT_DOUBLE_EQ(48.362051206698951, pos.position.y);
 
     pos = this->positionAt(-75.0, 1.0).absolutePosition();
-    EXPECT_DOUBLE_EQ(88.526140930691327, pos.position.x());
-    EXPECT_DOUBLE_EQ(-48.362051206698951, pos.position.y());
+    EXPECT_DOUBLE_EQ(88.526140930691327, pos.position.x);
+    EXPECT_DOUBLE_EQ(-48.362051206698951, pos.position.y);
 
     // check positionAt with head position and back position
     pos = this->positionAt(25.0, -1.0).absolutePosition();
-    EXPECT_DOUBLE_EQ(90.281306054472083, pos.position.x());
-    EXPECT_DOUBLE_EQ(49.320902283907358, pos.position.y());
+    EXPECT_DOUBLE_EQ(90.281306054472083, pos.position.x);
+    EXPECT_DOUBLE_EQ(49.320902283907358, pos.position.y);
 
     pos = this->positionAt(-75.0, -1.0).absolutePosition();
-    EXPECT_DOUBLE_EQ(90.281306054472083, pos.position.x());
-    EXPECT_DOUBLE_EQ(-49.320902283907358, pos.position.y());
+    EXPECT_DOUBLE_EQ(90.281306054472083, pos.position.x);
+    EXPECT_DOUBLE_EQ(-49.320902283907358, pos.position.y);
 
 }
 
@@ -367,15 +368,16 @@ TEST_F(PathTest, PositionInPath) {
         double p = base::angleDiff(phi + 0.5 * M_PI, pos.angle);
 
         // calculate distance
-        auto diff = (pos.position - prev).norm();
+        auto diff = pos.position - prev;
+        auto norm = sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 
         // check x and y
-        EXPECT_NEAR(x, pos.position.x(), 1e-9);
-        EXPECT_NEAR(y, pos.position.y(), 1e-9);
+        EXPECT_NEAR(x, pos.position.x, 1e-9);
+        EXPECT_NEAR(y, pos.position.y, 1e-9);
         EXPECT_NEAR(0.0, p, 1e-9);
 
         // check step size
-        EXPECT_NEAR(ref, diff, 1e-9);
+        EXPECT_NEAR(ref, norm, 1e-9);
 
         prev = pos.position;
         phi += dPhi;
@@ -411,8 +413,8 @@ TEST_F(PathTest, UpdatePosition) {
         double dp = base::angleDiff(phi + 0.5 * M_PI, pos.angle);
 
         // check x and y
-        EXPECT_NEAR(x, pos.position.x(), 1e-9);
-        EXPECT_NEAR(y, pos.position.y(), 1e-9);
+        EXPECT_NEAR(x, pos.position.x, 1e-9);
+        EXPECT_NEAR(y, pos.position.y, 1e-9);
         EXPECT_NEAR(0.0, dp, 1e-9);
 
         phi += dPhi;
@@ -439,9 +441,9 @@ TEST(PathMapTest, createPath) {
 
     // create track
     Track track;
-    track.push_back({def::Orientation::BACKWARDS, map->_roadNetwork.at("2").get()});
-    track.push_back({def::Orientation::BACKWARDS, map->_roadNetwork.at("4").get()});
-    track.push_back({def::Orientation::FORWARDS,  map->_roadNetwork.at("18").get()});
+    track.push_back({base::Orientation::BACKWARDS, map->_roadNetwork.at("2").get()});
+    track.push_back({base::Orientation::BACKWARDS, map->_roadNetwork.at("4").get()});
+    track.push_back({base::Orientation::FORWARDS,  map->_roadNetwork.at("18").get()});
 
     // create path
     Path path;
@@ -541,7 +543,7 @@ TEST(PathMatchTest, Algo) {
     // create path (lane 0)
     auto edge = map.getEdge("R1-LS1-R1");
     MapCoordinate mc(edge, 0.0, 0.0);
-    Track track({{def::Orientation::FORWARDS, rd1}});
+    Track track({{base::Orientation::FORWARDS, rd1}});
 
     // create path
     Path path;
@@ -618,7 +620,7 @@ TEST_F(PathTest, match) {
         double err;
 
         // matching with unspecified starting point
-        err = match(Eigen::Vector3d(x, y, 0.0), sm = 0.0);
+        err = match(base::Vector3{x, y, 0.0}, sm = 0.0);
 
         // calculate position
         auto pos = positionAt(sm, -1.0).absolutePosition();
@@ -626,11 +628,11 @@ TEST_F(PathTest, match) {
         // check
         EXPECT_NEAR(s, sm, 1e-5);
         EXPECT_NEAR(err, 1.0, 1e-5);
-        EXPECT_NEAR(x, pos.position.x(), 1e-5);
-        EXPECT_NEAR(y, pos.position.y(), 1e-5);
+        EXPECT_NEAR(x, pos.position.x, 1e-5);
+        EXPECT_NEAR(y, pos.position.y, 1e-5);
 
         // matching with specified starting point
-        err = match(Eigen::Vector3d(x, y, 0.0), sm = s - 10.1234, 25.0);
+        err = match(base::Vector3{x, y, 0.0}, sm = s - 10.1234, 25.0);
 
         // check
         EXPECT_NEAR(s, sm, 1e-5);
@@ -662,7 +664,7 @@ TEST_F(PathTest, matchWithUpdate) {
     position(0.0, 0.0);
 
     // get position
-    Eigen::Vector3d pos;
+    base::Vector3 pos;
 
     // loop
     for(size_t i = 0; i < n - 2; ++i) {
@@ -675,8 +677,8 @@ TEST_F(PathTest, matchWithUpdate) {
         auto y = sin(phi + dPhi) * (R + W * 0.5 - 0.0);
 
         // check updated position
-        EXPECT_NEAR(x, pos.x(), 1e-4);
-        EXPECT_NEAR(y, pos.y(), 1e-4);
+        EXPECT_NEAR(x, pos.x, 1e-4);
+        EXPECT_NEAR(y, pos.y, 1e-4);
 
         // matching
         auto sm = 0.0;
@@ -690,8 +692,8 @@ TEST_F(PathTest, matchWithUpdate) {
         position(sm, 0.0);
 
         // check matched position
-        EXPECT_NEAR(x, position().absolutePosition().position.x(), 1e-4);
-        EXPECT_NEAR(y, position().absolutePosition().position.y(), 1e-4);
+        EXPECT_NEAR(x, position().absolutePosition().position.x, 1e-4);
+        EXPECT_NEAR(y, position().absolutePosition().position.y, 1e-4);
 
         // update phi
         phi += dPhi;

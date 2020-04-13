@@ -44,7 +44,7 @@ class MapCoordinate;
 struct LaneEdge : public ::graph::Edge {
 
 
-    Track::TrackElement _trackElement = {def::Orientation::NONE, nullptr}; //!< The track element the edge belongs to (e.g. a road)
+    Track::TrackElement _trackElement = {base::Orientation::NONE, nullptr}; //!< The track element the edge belongs to (e.g. a road)
 
     base::sequence<LaneSeparation*> _separations_left{};  //!< A sequence of separation objects, which separate the edge from the neighbored left hand side edge
     base::sequence<LaneSeparation*> _separations_right{}; //!< A sequence of separation objects, which separate the edge from the neighbored right hand side edge
@@ -83,7 +83,7 @@ struct LaneEdge : public ::graph::Edge {
      * Returns the start point of the lane (center point of the lane at the entrance with respect to the lane direction)
      * @return Start point
      */
-    def::CurvePoint startPoint() const;
+    base::CurvePoint startPoint() const;
 
 
 
@@ -91,7 +91,7 @@ struct LaneEdge : public ::graph::Edge {
      * Returns the end point of the lane (center point of the lane at the exit with respect to the lane direction)
      * @return End point
      */
-    def::CurvePoint endPoint() const;
+    base::CurvePoint endPoint() const;
 
 
 
@@ -100,7 +100,7 @@ struct LaneEdge : public ::graph::Edge {
      * @param s Point within the lane with respect to direction
      * @return The position
      */
-    def::CurvePoint position(double s) const;
+    base::CurvePoint position(double s) const;
 
 
 
@@ -112,7 +112,7 @@ struct LaneEdge : public ::graph::Edge {
      * @param d An additional offset to be respected
      * @return The position
      */
-    virtual def::CurvePoint position(double s, def::Reference ref, double d) const = 0;
+    virtual base::CurvePoint position(double s, base::Reference ref, double d) const = 0;
 
 
 

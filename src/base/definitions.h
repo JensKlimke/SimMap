@@ -27,18 +27,11 @@
 #ifndef SIMMAP_BASE_DEFINITIONS_H
 #define SIMMAP_BASE_DEFINITIONS_H
 
-#include <Eigen/Core>
 #include <vector>
-
-#ifdef _WIN32
-#define _USE_MATH_DEFINES
-#include <math.h>
-#endif
-
 #include <cmath>
 
 
-namespace def {
+namespace base {
 
     const double EPS_DOUBLE_CMP = 1e-12;
     const double EPS_DISTANCE = 1e-9;
@@ -51,17 +44,72 @@ namespace def {
     enum class ContactPoint { START, END };
     enum class Reference {INNER, OUTER, CENTER};
 
+
+    /*!< Definition of dynamic vector */
+    typedef std::vector<double> VectorX;
+
+
     /**
-     * Curve point class
-     * @author Jens Klimke <jens.klimke@rwth-aachen.de>
+     * Creates a zero vector
+     * @param n Number of elements
+     * @return Vector with zeros
      */
-    struct CurvePoint {
-        Eigen::Vector3d position;
-        double angle;
-        double curvature;
+    inline VectorX zeros(size_t n) {
+
+        VectorX vec(n);
+        for(size_t i = 0; i < n; ++i)
+            vec[i] = 0.0;
+
+        return vec;
+
+    }
+
+
+    /**
+     * A simple 3D vector class
+     */
+    struct Vector3 {
+        double x = 0.0;
+        double y = 0.0;
+        double z = 0.0;
     };
 
-};
+
+    /**
+     * Curve point class
+     */
+    struct CurvePoint {
+        Vector3 position;
+        double angle = 0.0;
+        double curvature = 0.0;
+    };
+
+}
+
+
+/**
+ * Operator to add two vectors
+ * @param a First vector
+ * @param b Second vector
+ * @return Sum of the tqo vectors
+ */
+inline base::Vector3 operator+ (const base::Vector3 &a, const base::Vector3 &b) {
+
+    return base::Vector3{a.x + b.x, a.y + b.y, a.z + b.z};
+
+}
+
+/**
+ * Operator to subtract two vectors
+ * @param a First vector
+ * @param b Second vector
+ * @return Sum of the tqo vectors
+ */
+inline base::Vector3 operator- (const base::Vector3 &a, const base::Vector3 &b) {
+
+    return base::Vector3{a.x - b.x, a.y - b.y, a.z - b.z};
+
+}
 
 
 #endif // SIMMAP_BASE_DEFINITIONS_H

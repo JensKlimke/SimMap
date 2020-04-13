@@ -110,7 +110,7 @@ public:
      * Returns the absolute position of the map coordinate
      * @return Absolute position
      */
-    def::CurvePoint absolutePosition() const;
+    base::CurvePoint absolutePosition() const;
 
 
     /**
