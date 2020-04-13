@@ -70,6 +70,30 @@ class NestedSequenceTest : public base::nestedseq<int>, public testing::Test {
 };
 
 
+TEST(NestedSequenceNaiveTest, Creation) {
+
+    base::nestedseq<int> n{};
+
+    // create element without content
+    n.create(0.0);
+    n.length(10.0);
+
+    // get element
+    auto tmp = n.at(5.0);
+
+    // check dummy content
+    EXPECT_EQ(nullptr, tmp.first.element);
+    EXPECT_EQ(INFINITY, tmp.first.length);
+    EXPECT_EQ(INFINITY, tmp.first.position);
+    EXPECT_EQ(base::nestedseq<int>::Side::FIRST, tmp.first.side);
+    EXPECT_EQ(nullptr, tmp.second.element);
+    EXPECT_EQ(INFINITY, tmp.second.length);
+    EXPECT_EQ(INFINITY, tmp.second.position);
+    EXPECT_EQ(base::nestedseq<int>::Side::SECOND, tmp.second.side);
+
+}
+
+
 TEST_F(NestedSequenceTest, CreateElements) {
 
     // check lengths

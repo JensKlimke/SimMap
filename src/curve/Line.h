@@ -25,6 +25,7 @@
 #ifndef SIMMAP_CURVE_LINE_H
 #define SIMMAP_CURVE_LINE_H
 
+#include <base/functions.h>
 #include "GeoElement.h"
 
 namespace simmap {

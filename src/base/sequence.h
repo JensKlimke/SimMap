@@ -126,6 +126,7 @@ namespace base {
          * Inserts an element at the given position.
          * @param s Position to be added
          * @param e Entry to be added
+         * @return A pointer of the created element
          */
         T* emplace(double s, T &&e) {
 
@@ -133,11 +134,7 @@ namespace base {
                 throw std::invalid_argument("s is out of bounds");
 
             auto res = _entries.insert(entry_type_t{s, std::move(e)});
-
-            if(!res.second)
-                return nullptr;
-            else
-                return &res.first->element;
+            return &res.first->element;
 
         }
 
@@ -172,10 +169,7 @@ namespace base {
             auto res = _entries.insert(entry_type_t{_end, std::move(e)});
             _end += ds;
 
-            if(!res.second)
-                return nullptr;
-            else
-                return &res.first->element;
+            return &res.first->element;
 
         }
 
@@ -347,21 +341,22 @@ namespace base {
 
 
         /**
-         * Returns the list of the grid points of the sequence. Don't use this (except you are stupid or perfom testing)
+         * Returns the list of the grid points of the sequence.
          * @return Vector of points
          */
         std::vector<double> points() const {
 
             // create output container
-            std::vector<double> ret(this->size() + 1);
+            std::vector<double> ret;
+            ret.reserve(this->size() + 1);
 
             // copy positions from entries
             size_t i = 0;
             for(auto &e : _entries)
-                ret[i++] = e.position;
+                ret.push_back(e.position);
 
             // set end point
-            ret[this->size()] = _end;
+            ret.push_back(_end);
 
             return ret;
 
@@ -370,7 +365,7 @@ namespace base {
 
         /**
          * Returns a list of entries of the container
-         * @return Vector of entires
+         * @return Vector of entries
          */
         std::vector<EntryPtr> entries() const {
 

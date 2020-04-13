@@ -30,12 +30,20 @@
 using namespace base;
 
 
-inline void ASSERT_NEAR_VEC(std::vector<double> a, const base::VectorX& b) {
+inline void ASSERT_NEAR_VEC(const base::VectorX &a, const base::VectorX &b) {
 
     ASSERT_EQ(a.size(), b.size());
 
     for(size_t i = 0; i < a.size(); ++i)
         ASSERT_FLOAT_EQ(a[i], b[i]);
+
+}
+
+inline void ASSERT_NEAR_VEC3(const base::Vector3 &a, const base::Vector3 &b) {
+
+    ASSERT_FLOAT_EQ(a.x, b.x);
+    ASSERT_FLOAT_EQ(a.y, b.y);
+    ASSERT_FLOAT_EQ(a.z, b.z);
 
 }
 
@@ -73,13 +81,85 @@ TEST(FunctionTest, AngleDiff) {
 
 }
 
+
+TEST(FunctionTest, LinSpace) {
+
+    // error
+    ASSERT_THROW(linspace(0.0, 1.0, 1), std::invalid_argument);
+    ASSERT_THROW(linspace(0.0, 1.0, 0), std::invalid_argument);
+
+    // normal
+    ASSERT_NEAR_VEC({0.0, 1.0},       linspace(0.0, 1.0, 2));
+    ASSERT_NEAR_VEC({0.0, 1.0, 2.0},  linspace(0.0, 2.0, 3));
+    ASSERT_NEAR_VEC({0.0, 0.75, 1.5}, linspace(0.0, 1.5, 3));
+    ASSERT_NEAR_VEC({0.0, 0.5},       linspace(0.0, 0.5, 2));
+
+    // negative
+    ASSERT_NEAR_VEC({0.0, -1.0},        linspace( 0.0, -1.0, 2));
+    ASSERT_NEAR_VEC({-1.0, -1.5, -2.0}, linspace(-1.0, -2.0, 3));
+
+}
+
+
 TEST(FunctionTest, MaxSpace) {
 
+    // special case (a = b)
     ASSERT_NEAR_VEC({0.0}, maxspace(0.0, 0.0, 1.0));
+
+    // normal
     ASSERT_NEAR_VEC({0.0, 1.0}, maxspace(0.0, 1.0, 1.0));
     ASSERT_NEAR_VEC({0.0, 1.0, 2.0}, maxspace(0.0, 2.0, 1.0));
     ASSERT_NEAR_VEC({0.0, 0.75, 1.5}, maxspace(0.0, 1.5, 1.0));
     ASSERT_NEAR_VEC({0.0, 0.5}, maxspace(0.0, 0.5, 1.0));
+
+    // negative
+    ASSERT_NEAR_VEC({1.0, 0.0, -1.0}, maxspace(1.0, -1.0, 1.0));
+
+}
+
+
+TEST(FunctionTest, VectorDiff) {
+
+    VectorX vec{-1.0, 0.0, 1.0, 2.0, 4.0, 8.0, 16.0, 16.0, -16.0};
+    ASSERT_NEAR_VEC({1.0, 1.0, 1.0, 2.0, 4.0, 8.0, 0.0, -32.0}, base::diff(vec));
+
+}
+
+
+TEST(FunctionTest, Zeros) {
+
+    auto vec = base::zeros(5);
+    ASSERT_NEAR_VEC({0.0, 0.0, 0.0, 0.0, 0.0}, vec);
+
+    vec = base::zeros(0);
+    ASSERT_NEAR_VEC({}, vec);
+
+}
+
+
+TEST(FunctionTest, Vector3Operation) {
+
+    using namespace base;
+
+    Vector3 a{0.0, 1.0, 2.0};
+    Vector3 b{-2.0, 1.0, 0.0};
+
+    ASSERT_NEAR_VEC3({-2.0, 2.0, 2.0}, a + b);
+    ASSERT_NEAR_VEC3(b + a, a + b);
+    ASSERT_NEAR_VEC3({2.0, 0.0, 2.0}, a - b);
+    ASSERT_NEAR_VEC3({-2.0, 0.0, -2.0}, b - a);
+
+}
+
+
+TEST(FunctionTest, FlipOrientation) {
+
+    using namespace base;
+
+    ASSERT_EQ(Orientation::BACKWARDS, flip(Orientation::FORWARDS));
+    ASSERT_EQ(Orientation::FORWARDS, flip(Orientation::BACKWARDS));
+    ASSERT_EQ(Orientation::BOTH, flip(Orientation::BOTH));
+    ASSERT_EQ(Orientation::NONE, flip(Orientation::NONE));
 
 }
 

@@ -9,14 +9,10 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # set options
 option(BUILD_TESTS "Sets or unsets the option to generate the test target" OFF)
-option(ENABLE_COVERAGE "Enable the coverage check of the module" OFF)
+option(BUILD_FOR_COVERAGE "Builds the project with coverage test options." OFF)
 
 # add ./cmake to CMAKE_MODULE_PATH
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
-
-# create and set binary directory
-set(BIN_DIR ${PROJECT_SOURCE_DIR}/bin CACHE PATH "BIN_DIR")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 
 
 # ------------------------------------------------------------------------------
@@ -26,6 +22,28 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 # load macros for docs
 set(DOC_SOURCE_FOLDERS "${PROJECT_SOURCE_DIR}/include")
 include(GenerateDocs)
+
+
+# ------------------------------------------------------------------------------
+# coverage
+# ------------------------------------------------------------------------------
+
+if (BUILD_FOR_COVERAGE)
+
+    # message
+    message("-- Coverage option is enabled")
+
+    # gnu or clang
+    if (CMAKE_COMPILER_IS_GNUCXX)
+        set(CMAKE_CXX_FLAGS "--coverage")
+    elseif ("${CMAKE_C_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang"
+            OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
+        set(CMAKE_CXX_FLAGS "-fprofile-instr-generate -fcoverage-mapping")
+    endif ()
+
+    # from: https://blog.jetbrains.com/clion/2019/10/clion-2019-3-eap-coverage-cmake-defaults-lldb/
+
+endif (BUILD_FOR_COVERAGE)
 
 
 

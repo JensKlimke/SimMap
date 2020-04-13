@@ -41,6 +41,18 @@ class PolyTest : public base::poly1, public testing::Test {
 };
 
 
+TEST_F(PolyTest, Content) {
+
+    using namespace base;
+
+    EXPECT_NEAR((*this)[0], -0.0833, 1e-4);
+    EXPECT_NEAR((*this)[1],  0.375,  1e-4);
+    EXPECT_NEAR((*this)[2], -0.0416, 1e-4);
+    EXPECT_NEAR((*this)[3],  1.0,    1e-4);
+
+}
+
+
 TEST_F(PolyTest, Calculation) {
 
     using namespace base;

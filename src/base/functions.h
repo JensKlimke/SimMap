@@ -44,6 +44,9 @@ namespace base {
      */
     inline VectorX linspace(double a, double b, size_t n) {
 
+        if(n == 0 || n == 1)
+            throw std::invalid_argument("n must be > 1");
+
         // create vector
         VectorX v(n);
         double d = (b - a) / ((double)n - 1.0);
@@ -66,11 +69,13 @@ namespace base {
      */
     inline VectorX maxspace(double a, double b, double ds) {
 
-        if ((b - a) * ds < 0.0)
-            throw std::invalid_argument("(b-a)*ds must pe positive");
-
         // get number of elements
-        auto n = static_cast<unsigned long>(ceil((b - a) / ds) + 1);
+        auto n = static_cast<unsigned long>(ceil(std::abs((b - a) / ds)) + 1);
+
+        // return start point if solution is not possible
+        if(n < 2)
+            return {a};
+
         return linspace(a, b, n);
 
     }
@@ -114,6 +119,22 @@ namespace base {
         return r;
 
     }
+
+
+    /**
+     * Creates a zero vector
+     * @param n Number of elements
+     * @return Vector with zeros
+     */
+        inline VectorX zeros(size_t n) {
+
+            VectorX vec(n);
+            for(size_t i = 0; i < n; ++i)
+                vec[i] = 0.0;
+
+            return vec;
+
+        }
 
 
     /**
@@ -194,6 +215,31 @@ namespace base {
 
 
 } // namespace
+
+
+/**
+ * Operator to add two vectors
+ * @param a First vector
+ * @param b Second vector
+ * @return Sum of the tqo vectors
+ */
+inline base::Vector3 operator+ (const base::Vector3 &a, const base::Vector3 &b) {
+
+    return base::Vector3{a.x + b.x, a.y + b.y, a.z + b.z};
+
+}
+
+/**
+ * Operator to subtract two vectors
+ * @param a First vector
+ * @param b Second vector
+ * @return Sum of the tqo vectors
+ */
+inline base::Vector3 operator- (const base::Vector3 &a, const base::Vector3 &b) {
+
+    return base::Vector3{a.x - b.x, a.y - b.y, a.z - b.z};
+
+}
 
 
 #endif // SIMMAP_BASE_FUNCTIONS_H

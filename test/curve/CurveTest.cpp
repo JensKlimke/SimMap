@@ -134,21 +134,6 @@ public:
 
     }
 
-    static bool compareCurvePointVectors(const std::vector<base::CurvePoint> &p0, const std::vector<base::CurvePoint> &p1,
-            double eps, double angle_offset = 0.0, double curvature_factor = 1.0) {
-
-        if (p0.size() != p1.size())
-            throw std::invalid_argument("vector sizes not equal");
-
-        // iterate over elements
-        for(size_t i = 0; i < p0.size(); ++i)
-            if(!compareCurvePoints(p0[i], p1[i], eps, angle_offset, curvature_factor))
-                return false;
-
-        return true;
-
-    }
-
 
 };
 
@@ -185,10 +170,47 @@ TEST_F(CurveTest, Arc) {
 
 TEST_F(CurveTest, Spiral) {
 
-    double c1 = 0.01;
-    double c2 = 0.02;
+    double c1 =  0.01;
+    double c2 = -0.02;
 
-    auto point = createSpiral(-10.0, -20.0, M_PI * 0.5, c1, c2, 10.0).startPoint();
+    // create spiral
+    auto spiral = createSpiral(-10.0, -20.0, M_PI * 0.5, c1, c2, 10.0);
+
+    // get type
+    EXPECT_EQ(GeoElement::Type::SPIRAL, spiral.type());
+
+    // check parameters
+    EXPECT_DOUBLE_EQ(  0.01,  spiral.parameters()[0]);
+    EXPECT_DOUBLE_EQ( -0.02,  spiral.parameters()[1]);
+    EXPECT_DOUBLE_EQ( 10.0,   spiral.length());
+    EXPECT_DOUBLE_EQ(  0.01,  spiral.startCurvature());
+    EXPECT_DOUBLE_EQ( -0.02,  spiral.endCurvature());
+    EXPECT_DOUBLE_EQ( -0.003, spiral.curvatureDerivative());
+    EXPECT_DOUBLE_EQ( -0.005, spiral.curvature(5.0));
+    EXPECT_NEAR(-10.0, spiral.startPoint().position.x, 1e-1);
+    EXPECT_NEAR(-20.0, spiral.startPoint().position.y, 1e-1);
+    EXPECT_NEAR(-10.0, spiral.endPoint().position.x, 1e-1);
+    EXPECT_NEAR(-10.0, spiral.endPoint().position.y, 1e-1);
+
+    // reverse
+    Spiral reverse{};
+    spiral.reverse(&reverse);
+
+    // check parameters
+    EXPECT_DOUBLE_EQ(  0.02,  reverse.parameters()[0]);
+    EXPECT_DOUBLE_EQ( -0.01,  reverse.parameters()[1]);
+    EXPECT_DOUBLE_EQ( 10.0,   reverse.length());
+    EXPECT_DOUBLE_EQ(  0.02,  reverse.startCurvature());
+    EXPECT_DOUBLE_EQ( -0.01,  reverse.endCurvature());
+    EXPECT_DOUBLE_EQ( -0.003, reverse.curvatureDerivative());
+    EXPECT_DOUBLE_EQ(  0.005, reverse.curvature(5.0));
+    EXPECT_NEAR(-10.0, reverse.endPoint().position.x, 1e-1);
+    EXPECT_NEAR(-20.0, reverse.endPoint().position.y, 1e-1);
+    EXPECT_NEAR(-10.0, reverse.startPoint().position.x, 1e-1);
+    EXPECT_NEAR(-10.0, reverse.startPoint().position.y, 1e-1);
+
+    // check point
+    auto point = spiral.startPoint();
     EXPECT_TRUE(CurveTest::compareCurvePoints(base::CurvePoint({{-10.0, -20.0, 0.0}, M_PI_2, c1}), point, 1e-12));
 
     point = createSpiral(0.0, 0.0, 0.0, c1, c2, 0.0).endPoint();

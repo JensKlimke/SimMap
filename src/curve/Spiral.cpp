@@ -22,6 +22,7 @@
 // Created by Jens Klimke on 2019-05-05.
 //
 
+#include <base/functions.h>
 #include "Spiral.h"
 #include "odrSpiral.h"
 
@@ -30,7 +31,7 @@ namespace curve {
 
     Spiral::Spiral(double len, double c0, double c1) : _kappa0(c0), _kappa1(c1) {
 
-        length(len);
+        GeoElement::length(len);
 
     }
 
@@ -42,18 +43,12 @@ namespace curve {
     }
 
 
-
-    /**
-     * Returns the parameters defining the element
-     * @return Parameter vector
-     */
     base::VectorX Spiral::parameters() const {
 
         base::VectorX p{_kappa0, _kappa1};
         return p;
 
     }
-
 
 
     double Spiral::startCurvature() const {
@@ -63,13 +58,11 @@ namespace curve {
     }
 
 
-
     double Spiral::endCurvature() const {
 
         return _kappa1;
 
     }
-
 
 
     double Spiral::curvatureDerivative() const {
@@ -85,7 +78,6 @@ namespace curve {
         return _kappa0 + s * curvatureDerivative();
 
     }
-
 
 
     base::CurvePoint Spiral::pos(double s) const {
@@ -122,7 +114,6 @@ namespace curve {
     }
 
 
-
     void Spiral::reverse(GeoElement *geo) const {
 
         auto spi = dynamic_cast<Spiral*>(geo);
@@ -142,7 +133,6 @@ namespace curve {
         spi->_kappa1 = -_kappa0;
 
     }
-
 
 
     GeoElement* Spiral::createBlank() const {

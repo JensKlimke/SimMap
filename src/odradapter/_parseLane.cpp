@@ -23,6 +23,7 @@
 //
 
 #include <cmath>
+#include <sstream>
 #include <odr/odr1_5_structure.h>
 #include <curve/C3Spline.h>
 #include <base/definitions.h>

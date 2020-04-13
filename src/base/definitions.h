@@ -50,22 +50,6 @@ namespace base {
 
 
     /**
-     * Creates a zero vector
-     * @param n Number of elements
-     * @return Vector with zeros
-     */
-    inline VectorX zeros(size_t n) {
-
-        VectorX vec(n);
-        for(size_t i = 0; i < n; ++i)
-            vec[i] = 0.0;
-
-        return vec;
-
-    }
-
-
-    /**
      * A simple 3D vector class
      */
     struct Vector3 {
@@ -86,30 +70,6 @@ namespace base {
 
 }
 
-
-/**
- * Operator to add two vectors
- * @param a First vector
- * @param b Second vector
- * @return Sum of the tqo vectors
- */
-inline base::Vector3 operator+ (const base::Vector3 &a, const base::Vector3 &b) {
-
-    return base::Vector3{a.x + b.x, a.y + b.y, a.z + b.z};
-
-}
-
-/**
- * Operator to subtract two vectors
- * @param a First vector
- * @param b Second vector
- * @return Sum of the tqo vectors
- */
-inline base::Vector3 operator- (const base::Vector3 &a, const base::Vector3 &b) {
-
-    return base::Vector3{a.x - b.x, a.y - b.y, a.z - b.z};
-
-}
 
 
 #endif // SIMMAP_BASE_DEFINITIONS_H

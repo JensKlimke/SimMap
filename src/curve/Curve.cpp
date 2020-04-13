@@ -23,7 +23,6 @@
 //
 
 #include "Curve.h"
-
 #include "Line.h"
 #include "Arc.h"
 #include "Spiral.h"

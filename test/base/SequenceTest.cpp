@@ -40,6 +40,15 @@ TEST_F(SequenceTest, OrganizeElements1) {
 
     this->clear();
 
+    // errors
+    EXPECT_THROW(front(), std::runtime_error);
+    EXPECT_THROW(back(), std::runtime_error);
+    EXPECT_THROW(atPos(10.0), std::runtime_error);
+
+    // default values
+    EXPECT_EQ(INFINITY, endPosition());
+    EXPECT_EQ(INFINITY, startPosition());
+
     // check length etc. of empty sequence
     EXPECT_DOUBLE_EQ(0.0, this->length());
     ASSERT_TRUE(this->empty());
@@ -81,6 +90,14 @@ TEST_F(SequenceTest, OrganizeElements1) {
     EXPECT_DOUBLE_EQ(4.0, e[3].position);
     EXPECT_DOUBLE_EQ(5.0, e[4].position);
     EXPECT_DOUBLE_EQ(6.0, e[5].position);
+
+    auto pnts = points();
+    EXPECT_DOUBLE_EQ(1.0, pnts[0]);
+    EXPECT_DOUBLE_EQ(2.0, pnts[1]);
+    EXPECT_DOUBLE_EQ(3.0, pnts[2]);
+    EXPECT_DOUBLE_EQ(4.0, pnts[3]);
+    EXPECT_DOUBLE_EQ(5.0, pnts[4]);
+    EXPECT_DOUBLE_EQ(6.0, pnts[5]);
 
     EXPECT_DOUBLE_EQ(1.0, e[0].length);
     EXPECT_DOUBLE_EQ(1.0, e[1].length);
@@ -206,6 +223,7 @@ TEST_F(SequenceTest, OrganizeElements4) {
     this->emplace(1.5, 15);
     this->emplace(2.5, 25);
     this->emplace(4.0, 40);
+    EXPECT_THROW(this->emplace(6.0, 40.0), std::invalid_argument);
 
     // check number and length
     ASSERT_EQ(7, this->size());

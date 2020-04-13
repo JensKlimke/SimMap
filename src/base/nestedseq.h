@@ -64,8 +64,7 @@ namespace base {
 
             Entry() = default;
 
-            Entry(const typename sequence<T>::EntryPtr &e, Side sd)
-                : sequence<T>::EntryPtr(e), side(sd) {}
+            Entry(const typename sequence<T>::EntryPtr &e, Side sd) : sequence<T>::EntryPtr(e), side(sd) {}
 
             Entry(double pos, double len, T* e, Side sd) : sequence<T>::EntryPtr(), side(sd) {
                 this->position = pos;
@@ -102,11 +101,11 @@ namespace base {
         }
 
 
-        virtual /**
+        /**
          * Updates the length and the sub-sequence lengths of the sequence
          * @param length Length to be set
          */
-        void length(double length) {
+        virtual void length(double length) {
 
             _sections.length(length);
 
@@ -130,11 +129,11 @@ namespace base {
         }
 
 
-        virtual /**
+        /**
          * Returns the length of the nested sequence
          * @return Length
          */
-        double length() const {
+        virtual double length() const {
 
             return _sections.length();
 

@@ -23,6 +23,7 @@
 //
 
 #include <base/definitions.h>
+#include <base/functions.h>
 #include "C3Spline.h"
 
 namespace simmap {
