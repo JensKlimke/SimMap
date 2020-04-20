@@ -43,10 +43,4 @@ TEST(SplineTest, CreationAndEvaluation) {
     EXPECT_NEAR(1.0, sp(16.0), 1e-9);
     EXPECT_NEAR(1.0, sp(21.0), 1e-9);
 
-    // check derivatives
-    EXPECT_NEAR(0.0, sp.der(1.0),  1e-9);
-    EXPECT_NEAR(0.0, sp.der(11.0), 1e-9);
-    EXPECT_NEAR(0.0, sp.der(16.0), 1e-9);
-    EXPECT_NEAR(0.0, sp.der(21.0), 1e-9);
-
 }

@@ -41,7 +41,15 @@ namespace odra {
     public:
 
 
+        /**
+         * Default constructor
+         */
         ODRAdapter() = default;
+
+
+        /**
+         * Default destructor
+         */
         ~ODRAdapter() override = default;
 
 
@@ -51,24 +59,9 @@ namespace odra {
          */
         void loadFile(const std::string &filename);
 
-
-        /**
-         * Stream the content into the out-stream
-         * @param os Out-stream
-         * @return Out-stream
-         */
-        std::ostream &streamTo(std::ostream &os) const;
-
     };
 
 
 }}
-
-
-inline std::ostream &operator<< (std::ostream &os, const simmap::odra::ODRAdapter &ad) {
-
-    return ad.streamTo(os);
-
-}
 
 #endif //SIMMAP_ODR_ODRADAPTER_H

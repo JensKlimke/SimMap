@@ -28,6 +28,7 @@
 #define SIMMAP_BASE_POLYNOMIAL1_H
 
 #include <vector>
+#include <stdexcept>
 #include "definitions.h"
 
 namespace base {

@@ -24,6 +24,7 @@
 
 #include "Graph.h"
 #include "Edge.h"
+#include <iostream>
 
 namespace graph {
 
@@ -60,8 +61,9 @@ namespace graph {
                     // iterate over edges
                     for (auto &edge2 : seq2.second) {
 
-                        // calculate start point in edge
-                        edge->addNeighbor(s02 - s0, edge2);
+                        // do not set neighbors out of bounds
+                        if(s02 - s0 + edge2->length() > 1e-15 && s02 - s0 < edge->length() - 1e-15)
+                            edge->addNeighbor(s02 - s0, edge2);
 
                         // next s
                         s02 += edge2->length();

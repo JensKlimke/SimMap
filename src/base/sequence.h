@@ -27,6 +27,7 @@
 #ifndef SIMMAP_BASE_SEQUENCE_H
 #define SIMMAP_BASE_SEQUENCE_H
 
+#include <algorithm>
 #include <vector>
 #include <set>
 #include "definitions.h"

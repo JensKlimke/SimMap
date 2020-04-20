@@ -51,19 +51,12 @@ namespace curve {
         C3Spline(const C3Spline& ps) = default;
         C3Spline(const base::VectorX& s, const std::vector<base::VectorX>& p);
         C3Spline(const base::VectorX& s, const base::VectorX& w);
-        explicit C3Spline(double width);
 
         ~C3Spline() = default;
 
         void insert(double s, double p0, double p1, double p2, double p3);
-
-        base::VectorX operator() (const base::VectorX& s) const;
         double operator() (double s) const;
 
-        base::VectorX der(const base::VectorX& s) const;
-        double der(double s) const;
-
-        base::VectorX steps(double dPhi_max, double s_max) const;
 
     };
 

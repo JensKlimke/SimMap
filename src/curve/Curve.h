@@ -62,13 +62,9 @@ public:
     void startPoint(const base::CurvePoint &pos) override;
     base::CurvePoint startPoint() const override;
 
-    base::VectorX steps(double dPhi_max, double s_max) const override;
     double length() const override;
     void length(double len) override;
     base::CurvePoint pos(double s) const override;
-
-    void reverse(GeoElement *geo) const override;
-    GeoElement* createBlank() const override;
 
 };
 

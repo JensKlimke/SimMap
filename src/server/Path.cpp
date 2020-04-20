@@ -360,7 +360,7 @@ double Path::match(const base::Vector3 &xyz, double &s, double radius) const {
     double b1 = b.y - 1e-12;
 
     // set radius at least to a minimum
-    radius = fmax(0.1, fabs(radius));
+    radius = fmax(0.1, std::abs(radius));
 
     // calculate minimum on discrete steps
     auto ss = base::maxspace(fmax(s - radius, b0), fmin(s + radius, b1), 10.0);
@@ -568,7 +568,7 @@ double Path::matchExec(const Path::Matcher *matcher, double *s, double s_eps, do
     auto bnds = matcher->bounds();
     size_t i = 0;
 
-    while(err > f_eps && fabs(delta_s) > s_eps) {
+    while(err > f_eps && std::abs(delta_s) > s_eps) {
 
         // calculate position and error
         auto pos = matcher->operator()(*s, err);

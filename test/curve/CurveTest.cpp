@@ -100,12 +100,14 @@ public:
     }
 
 
-    static Poly3 createPoly3(double x0, double y0, double x1, double y1, double dx0, double dy0, double dx1, double dy1) {
+    static Poly3 createPoly3(double len, double x0, double y0, double x1, double y1, double dx0, double dy0, double dx1, double dy1) {
 
+        // calculate parameters
         auto px = base::poly1::order3_fromValueAndDerivative(0.0, 1.0, x0, dx0, x1, dx1);
         auto py = base::poly1::order3_fromValueAndDerivative(0.0, 1.0, y0, dy0, y1, dy1);
 
-        return Poly3(px.parameters().data(), py.parameters().data());
+        // return polynomial
+        return Poly3(len, px.parameters().data(), py.parameters().data());
 
     }
 
@@ -126,11 +128,11 @@ public:
         double dPhi  = base::angleDiff(p0.angle, p1.angle - angle_offset);
         double dCurv = p0.curvature - p1.curvature * curvature_factor;
 
-        return        (fabs(p0.position.x - p1.position.x) < base::EPS_DISTANCE)
-                   && (fabs(p0.position.y - p1.position.y) < base::EPS_DISTANCE)
-                   && (fabs(p0.position.z - p1.position.z) < base::EPS_DISTANCE)
-                   && (fabs(dPhi)                              < base::EPS_ANGLE)
-                   && (fabs(dCurv)                             < base::EPS_CURVATURE);
+        return        (std::abs(p0.position.x - p1.position.x) < base::EPS_DISTANCE)
+                   && (std::abs(p0.position.y - p1.position.y) < base::EPS_DISTANCE)
+                   && (std::abs(p0.position.z - p1.position.z) < base::EPS_DISTANCE)
+                   && (std::abs(dPhi)                          < base::EPS_ANGLE)
+                   && (std::abs(dCurv)                         < base::EPS_CURVATURE);
 
     }
 
@@ -142,6 +144,26 @@ TEST_F(CurveTest, Line) {
 
     double p0 = atan2(3.0, 4.0);
 
+    // check parameters
+    auto line = createLine(-10.0, -20.0, M_PI * 0.5, 10.0);
+
+    // error
+    EXPECT_THROW(line.length(-1.0), std::invalid_argument);
+
+    // type
+    EXPECT_EQ(GeoElement::Type::LINE, line.type());
+
+    // parameters
+    EXPECT_EQ(0, line.parameters().size());
+    EXPECT_DOUBLE_EQ(0.0, line.startCurvature());
+    EXPECT_DOUBLE_EQ(0.0, line.endCurvature());
+    EXPECT_DOUBLE_EQ(0.0, line.curvature(5.0));
+    EXPECT_DOUBLE_EQ(10.0, line.length());
+
+    // position
+    EXPECT_TRUE(CurveTest::compareCurvePoints(base::CurvePoint({{-12.0, -15.0, 0.0}, M_PI_2, 0.0}), line.position(5.0, 2.0), 1e-12));
+
+    // start and end points
     EXPECT_TRUE(CurveTest::compareCurvePoints(base::CurvePoint({{-10.0, -20.0, 0.0}, M_PI_2, 0.0}), createLine(-10.0, -20.0, M_PI * 0.5, 10.0).startPoint(), 1e-12));
     EXPECT_TRUE(CurveTest::compareCurvePoints(base::CurvePoint({{0.0, 0.0, 0.0}, 0.0, 0.0}), createLine(0.0, 0.0, 0.0, 0.0).endPoint(), 1e-12));
     EXPECT_TRUE(CurveTest::compareCurvePoints(base::CurvePoint({{20.0, -10.0, 0.0}, 0.0, 0.0}), createLine(10.0, -10.0, 0.0, 10.0).endPoint(), 1e-12));
@@ -192,23 +214,6 @@ TEST_F(CurveTest, Spiral) {
     EXPECT_NEAR(-10.0, spiral.endPoint().position.x, 1e-1);
     EXPECT_NEAR(-10.0, spiral.endPoint().position.y, 1e-1);
 
-    // reverse
-    Spiral reverse{};
-    spiral.reverse(&reverse);
-
-    // check parameters
-    EXPECT_DOUBLE_EQ(  0.02,  reverse.parameters()[0]);
-    EXPECT_DOUBLE_EQ( -0.01,  reverse.parameters()[1]);
-    EXPECT_DOUBLE_EQ( 10.0,   reverse.length());
-    EXPECT_DOUBLE_EQ(  0.02,  reverse.startCurvature());
-    EXPECT_DOUBLE_EQ( -0.01,  reverse.endCurvature());
-    EXPECT_DOUBLE_EQ( -0.003, reverse.curvatureDerivative());
-    EXPECT_DOUBLE_EQ(  0.005, reverse.curvature(5.0));
-    EXPECT_NEAR(-10.0, reverse.endPoint().position.x, 1e-1);
-    EXPECT_NEAR(-20.0, reverse.endPoint().position.y, 1e-1);
-    EXPECT_NEAR(-10.0, reverse.startPoint().position.x, 1e-1);
-    EXPECT_NEAR(-10.0, reverse.startPoint().position.y, 1e-1);
-
     // check point
     auto point = spiral.startPoint();
     EXPECT_TRUE(CurveTest::compareCurvePoints(base::CurvePoint({{-10.0, -20.0, 0.0}, M_PI_2, c1}), point, 1e-12));
@@ -221,15 +226,17 @@ TEST_F(CurveTest, Spiral) {
 
 TEST_F(CurveTest, Poly3) {
 
-    // calculate length
-    auto l = sqrt(5.0);
+    double l = sqrt(5.0);
 
     // create poly and get parameters
-    auto p3 = createPoly3(0.0, 0.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0);
+    auto p3 = createPoly3(l, 0.0, 0.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0);
     auto p = p3.parameters();
 
-    // check length
-    EXPECT_NEAR(l, p3.length(), base::EPS_DISTANCE);
+    // check type
+    EXPECT_EQ(GeoElement::Type::PARAM_POLY_3, p3.type());
+
+    // check (estimated length)
+    EXPECT_NEAR(sqrt(5.0), p3.length(), base::EPS_DISTANCE);
 
     // check parameters
     EXPECT_DOUBLE_EQ(0.0, p[3]);
@@ -242,6 +249,10 @@ TEST_F(CurveTest, Poly3) {
     EXPECT_DOUBLE_EQ(0.0, p[5]);
     EXPECT_DOUBLE_EQ(0.0, p[4]);
 
+    // curvature
+    EXPECT_DOUBLE_EQ(0.0, p3.startCurvature());
+    EXPECT_DOUBLE_EQ(0.0, p3.endCurvature());
+
     EXPECT_NEAR(0.0, p3(0.0 * l).position.x, base::EPS_DISTANCE);
     EXPECT_NEAR(0.2, p3(0.2 * l).position.x, base::EPS_DISTANCE);
     EXPECT_NEAR(0.5, p3(0.5 * l).position.x, base::EPS_DISTANCE);
@@ -251,21 +262,6 @@ TEST_F(CurveTest, Poly3) {
     EXPECT_NEAR(0.4, p3(0.2 * l).position.y, base::EPS_DISTANCE);
     EXPECT_NEAR(1.0, p3(0.5 * l).position.y, base::EPS_DISTANCE);
     EXPECT_NEAR(2.0, p3(1.0 * l).position.y, base::EPS_DISTANCE);
-
-
-}
-
-
-TEST_F(CurveTest, Poly3Complex) {
-
-    // create poly and get parameters
-    auto p3 = createPoly3(10.0, 5.0, 25.0, 20.0, 50.0, 0.0, 0.0, 50.0);
-    auto p = p3.parameters();
-
-    EXPECT_NEAR(10.0, p3(0.0).position.x, base::EPS_DISTANCE);
-    EXPECT_NEAR(5.0, p3(0.0).position.y, base::EPS_DISTANCE);
-    EXPECT_NEAR(25.0, p3(p3.length()).position.x, base::EPS_DISTANCE);
-    EXPECT_NEAR(20.0, p3(p3.length()).position.y, base::EPS_DISTANCE);
 
 }
 

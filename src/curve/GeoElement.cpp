@@ -24,7 +24,6 @@
 
 #include "GeoElement.h"
 
-#include <cmath>
 #include <algorithm>
 #include <base/definitions.h>
 #include <base/functions.h>
@@ -72,27 +71,6 @@ namespace curve {
     }
 
 
-    std::vector<base::CurvePoint> GeoElement:: positions(const base::VectorX &v) const {
-
-        // create result vector
-        std::vector<base::CurvePoint> r(static_cast<size_t>(v.size()));
-
-        // iterate over grid point
-        for (int i = 0; i < v.size(); ++i)
-            r[i] = pos(v[i]);
-
-        return r;
-
-    }
-
-
-    std::vector<base::CurvePoint> GeoElement::operator()(const base::VectorX &v) const {
-
-        return positions(v);
-
-    }
-
-
     base::CurvePoint GeoElement::operator()(double s) const {
 
         return pos(s);
@@ -100,56 +78,20 @@ namespace curve {
     }
 
 
-    base::CurvePoint GeoElement::pos(double s, double d) const {
+    base::CurvePoint GeoElement::position(double s, double d) const {
 
         // get curve position
         base::CurvePoint p = pos(s);
 
         // translate and rotate position
         base::Vector3 y{0.0, d, 0.0};
-        base::toGlobal(p, y);
+        p.position = base::toGlobal(p, y);
 
         // recalculate curvature
         auto c = p.curvature;
         p.curvature = c / (1.0 - d * c);
 
         return p;
-
-    }
-
-
-    base::VectorX GeoElement::steps(double dPhi_max, double s_max) const {
-
-        // create vector
-        base::VectorX stps{};
-
-        // calculate change of curvature
-        double sigma = fabs((endCurvature() - startCurvature()) / length());
-
-        double s = 0.0;
-        while(s < length()) {
-
-            // add s to vector
-            stps.push_back(s);
-
-            // get ds and calculate s
-            auto k0 = fabs(curvature(s));
-
-            // calculate step
-            auto t0 = dPhi_max / k0;
-            if(sigma > base::EPS_CURVATURE)
-                t0 = (1.0 / sigma) * (-1.0 * k0 + sqrt(k0 * k0 + 2.0 * dPhi_max * sigma));
-
-            // calculate step
-            auto ds = std::min(t0, s_max);
-            s += ds;
-
-        }
-
-        // add last s
-        stps.push_back(length() - base::EPS_DISTANCE);
-
-        return stps;
 
     }
 

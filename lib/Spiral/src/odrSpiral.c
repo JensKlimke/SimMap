@@ -36,19 +36,8 @@
 
 /* ====== INCLUSIONS ====== */
 #include <stdio.h>
+#include <unistd.h>
 #include <math.h>
-
-// modifications by Jens Klimke (jens.klimke@rwth-aachen.de)
-#ifdef _WIN32
-    #include <io.h>
-#else
-    #include <unistd.h>
-#endif
-
-#ifndef M_PI
-    #define M_PI 3.14159265359
-#endif
-
 
 /* ====== LOCAL VARIABLES ====== */
 

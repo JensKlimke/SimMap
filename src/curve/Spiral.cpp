@@ -22,9 +22,13 @@
 // Created by Jens Klimke on 2019-05-05.
 //
 
+// include spiral c code
+extern "C" {
+#include <odrSpiral/odrSpiral.h>
+}
+
 #include <base/functions.h>
 #include "Spiral.h"
-#include "odrSpiral.h"
 
 namespace simmap {
 namespace curve {
@@ -110,34 +114,6 @@ namespace curve {
 
         // rotate local position and return position
         return {base::Vector3{cs * x1 - ss * y1, ss * x1 + cs * y1, 0.0} + pos0.position, tau1 + dPhi, kappa1};
-
-    }
-
-
-    void Spiral::reverse(GeoElement *geo) const {
-
-        auto spi = dynamic_cast<Spiral*>(geo);
-
-        // get end point and reserve angle
-        auto sp = endPoint();
-        sp.angle += M_PI;
-
-        // set start point
-        spi->startPoint(sp);
-
-        // set length
-        spi->length(length());
-
-        // reserve curvatures and set
-        spi->_kappa0 = -_kappa1;
-        spi->_kappa1 = -_kappa0;
-
-    }
-
-
-    GeoElement* Spiral::createBlank() const {
-
-        return new Spiral;
 
     }
 

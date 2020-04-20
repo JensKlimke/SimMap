@@ -568,7 +568,7 @@ namespace simmap {
                 return ERR + err;
 
             // get doubled travel distance
-            double ds2 = fabs(ds) * MATCH_WIDTH_FACTOR;
+            double ds2 = std::abs(ds) * MATCH_WIDTH_FACTOR;
 
             // matching
             base::Vector3 vec{pos.x, pos.y, pos.z};
@@ -966,7 +966,7 @@ namespace simmap {
             // sort results by distance
             sort(tars.begin(), tars.end(),
                  [](const TargetInformation &a, const TargetInformation &b) -> bool {
-                     return fabs(a.distance) < fabs(b.distance);
+                     return std::abs(a.distance) < std::abs(b.distance);
                  });
 
             // copy

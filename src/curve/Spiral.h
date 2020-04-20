@@ -117,21 +117,6 @@ namespace curve {
         base::CurvePoint pos(double s) const override;
 
 
-
-        /**
-         * Reverse the geo element
-         * @param geo Geo element
-         */
-        void reverse(GeoElement *geo) const override;
-
-
-
-        /**
-         * Creates a blank element of the spiral
-         * @return Spiral
-         */
-        GeoElement* createBlank() const override;
-
     };
 
 }

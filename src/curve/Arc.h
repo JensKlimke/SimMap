@@ -55,7 +55,7 @@ namespace curve {
          */
         Arc(double len, double c) : _crv(c) {
 
-            length(len);
+            GeoElement::length(len);
 
         }
 
@@ -117,30 +117,6 @@ namespace curve {
 
         }
 
-
-        void reverse(GeoElement *geo) const override {
-
-            auto arc = dynamic_cast<Arc*>(geo);
-
-            // get end point and reserve angle
-            auto sp = endPoint();
-            sp.angle += M_PI;
-
-            // set start point
-            arc->startPoint(sp);
-
-            // set curvature and length
-            arc->length(length());
-            arc->_crv = -startCurvature();
-
-        }
-
-
-        GeoElement* createBlank() const override {
-
-            return new Arc;
-
-        }
 
     };
 

@@ -103,25 +103,6 @@ namespace base {
 
 
     /**
-     * Calculates the difference between the single vector elements
-     * @param v Vector
-     * @return Diffs
-     */
-    inline VectorX diff(const VectorX &v) {
-
-        // create vector
-        VectorX r(v.size() - 1);
-
-        // set elements
-        for(size_t i = 0; i < r.size(); ++i)
-            r[i] = v[i + 1] - v[i];
-
-        return r;
-
-    }
-
-
-    /**
      * Creates a zero vector
      * @param n Number of elements
      * @return Vector with zeros

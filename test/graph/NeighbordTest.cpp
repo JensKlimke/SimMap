@@ -37,8 +37,14 @@ protected:
 public:
 
     Neighbor() = default;
-    explicit Neighbor(double len) : _length(fabs(len)), _forward(len >= 0.0) {}
-    double length() const override { return _length; }
+
+    explicit Neighbor(double len, std::string name) : _length(std::abs(len)), _forward(len >= 0.0) {
+        this->_id = std::move(name);
+    }
+
+    double length() const override {
+        return _length;
+    }
 
     ObjectsList objects() const override {
         return graph::Edge::ObjectsList();
@@ -81,22 +87,22 @@ TEST_F(NeighboredTest, Neighbors1) {
      */
 
     // create neighbors
-    Neighbor n0(10.0);
+    Neighbor n0(10.0, "m");
 
-    Neighbor nl11(-5.0);
-    Neighbor nl12(-4.0);
-    Neighbor nl13(-7.0);
-    Neighbor nl14(-4.0);
+    Neighbor nl11(-5.0, "l11");
+    Neighbor nl12(-4.0, "l12");
+    Neighbor nl13(-7.0, "l13");
+    Neighbor nl14(-4.0, "l14");
 
-    Neighbor nr11(4.0);
-    Neighbor nr12(5.0);
-    Neighbor nr13(6.0);
-    Neighbor nr14(5.0);
+    Neighbor nr11(4.0, "r11");
+    Neighbor nr12(5.0, "r12");
+    Neighbor nr13(6.0, "r13");
+    Neighbor nr14(5.0, "r14");
 
-    Neighbor nl21(-20.0);
-    Neighbor nl31(20.0);
-    Neighbor nr21(20.0);
-    Neighbor nr31(-20.0);
+    Neighbor nl21(-20.0, "l21");
+    Neighbor nl31(20.0, "l31");
+    Neighbor nr21(20.0, "r21");
+    Neighbor nr31(-20.0, "r31");
 
     // create container and fill
     std::vector<std::pair<double, std::vector<Edge *>>> container;
@@ -111,7 +117,6 @@ TEST_F(NeighboredTest, Neighbors1) {
     // create container
     ::graph::Graph::autoConnect(container);
 
-    /* TODO:
     // check very right edge
     auto &n1 = nr21.left();
     auto e = n1.entries();
@@ -123,7 +128,7 @@ TEST_F(NeighboredTest, Neighbors1) {
 
     // check right edges
     auto &n2 = nr11.left();
-    ASSERT_EQ(1, n2.size());
+    ASSERT_EQ(0, n2.size());
 
     auto &n3 = nr11.right();
     e = n3.entries();
@@ -144,8 +149,7 @@ TEST_F(NeighboredTest, Neighbors1) {
     EXPECT_DOUBLE_EQ(-4.0, e[0].position);
 
     auto &n6 = nr14.left();
-    // e = n6.entries();
-    ASSERT_EQ(1, n6.size());
+    ASSERT_EQ(0, n6.size());
 
     auto &n7 = n0.right();
     e = n7.entries();
@@ -222,7 +226,7 @@ TEST_F(NeighboredTest, Neighbors1) {
 
     auto &n18 = nl31.left();
     // e = n18.entries();
-    ASSERT_EQ(0, n18.size());*/
+    ASSERT_EQ(0, n18.size());
 
 
 }

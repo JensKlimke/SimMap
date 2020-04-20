@@ -88,7 +88,7 @@ public:
 
     void createPath(double len, double s0) {
 
-        if (fabs(s0) > len * 0.5 || len < 0.0)
+        if (std::abs(s0) > len * 0.5 || len < 0.0)
             throw std::invalid_argument("abs(s0) must be smaller than len * 0.5 and len must be larger than zero");
 
         // map coordinate for path start

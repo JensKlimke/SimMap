@@ -137,9 +137,9 @@ namespace curve {
     void Curve::_addElement(double s, double ds, double kappa0, double kappa1) {
 
         // check for element type
-        if(fabs(kappa1) < base::EPS_CURVATURE && fabs(kappa0) < base::EPS_CURVATURE)
+        if(std::abs(kappa1) < base::EPS_CURVATURE && std::abs(kappa0) < base::EPS_CURVATURE)
             emplace(s, new curve::Line(ds));
-        else if(fabs(kappa1 - kappa0) < base::EPS_CURVATURE)
+        else if(std::abs(kappa1 - kappa0) < base::EPS_CURVATURE)
             emplace(s, new curve::Arc(ds, kappa0));
         else
             emplace(s, new curve::Spiral(ds, kappa0, kappa1));
@@ -156,34 +156,6 @@ namespace curve {
     }
 
 
-    base::VectorX Curve::steps(double dPhi_max, double s_max) const {
-
-        base::VectorX res{0.0};
-        double s0 = 0.0;
-
-        for(auto const &ee : *this) {
-
-            // get curve
-            auto ge = ee.element;
-
-            // get steps from element. The last element of the current vector is deleted to avoid doubled steps since the
-            // end of the previous element is the start of the current element
-            base::VectorX t = ge->steps(dPhi_max, s_max);
-
-            // add elements to res
-            for(size_t i = 1; i < t.size(); ++i)
-                res.push_back(t[i] + s0);
-
-            // update s0
-            s0 += ge->length();
-
-        }
-
-        return res;
-
-    }
-
-
     double Curve::length() const {
 
         return GeoElement::length();
@@ -195,43 +167,6 @@ namespace curve {
 
         sequence::length(len);
         GeoElement::length(len);
-
-    }
-
-
-    void Curve::reverse(GeoElement *geo) const {
-
-        auto crv = dynamic_cast<Curve*>(geo);
-
-        // get length
-        double l = length();
-
-        // iterate over elements
-        crv->length(l);
-        for(auto const &e : *this) {
-
-            // create element and fill with reversed data
-            GeoElement *rev = e.element->createBlank();
-            e.element->reverse(rev);
-
-            // insert to curve
-            crv->emplace(l - (e.position + e.length), std::move(rev));
-
-        }
-
-        // get end point and reserve angle
-        auto sp = endPoint();
-        sp.angle += M_PI;
-
-        // set start point
-        crv->startPoint(sp);
-
-    }
-
-
-    GeoElement* Curve::createBlank() const {
-
-        return new Curve;
 
     }
 

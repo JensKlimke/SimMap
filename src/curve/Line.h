@@ -45,11 +45,16 @@ namespace curve {
          */
         Line() = default;
 
+
         /**
          * Constructor
          * @param len Length of the line
          */
-        explicit Line(double len) { length(len); }
+        explicit Line(double len) {
+
+            GeoElement::length(len);
+
+        }
 
 
         /**
@@ -63,7 +68,7 @@ namespace curve {
          * Returns the parameters of the geo element
          * @return Parameters
          */
-        base::VectorX parameters() const override { return base::VectorX(0); };
+        base::VectorX parameters() const override { return base::VectorX{}; };
 
 
         /**
@@ -94,39 +99,12 @@ namespace curve {
          * @return Curve positions
          */
         base::CurvePoint pos(double s) const override {
+
             base::CurvePoint pos(startPoint());
             return {base::Vector3{cos(pos.angle) * s, sin(pos.angle) * s, 0.0} + pos.position, pos.angle, 0.0};
-        }
-
-
-        /**
-         * Returns a geo element which is equal to the given geo element but reversed in terms of the process variable s
-         * @param geo Reversed geo element to be stored in (must be same type as original or compatible)
-         */
-        void reverse(GeoElement *geo) const override {
-
-            auto line = dynamic_cast<Line*>(geo);
-
-            // get end point and reserve angle
-            auto sp = endPoint();
-            sp.angle += M_PI;
-
-            // set start point and length
-            line->startPoint(sp);
-            line->length(length());
 
         }
 
-
-        /**
-         * Creates a blank objects of the line
-        * @return created object
-        */
-        virtual GeoElement* createBlank() const override {
-
-            return new Line;
-
-        }
 
     };
 

@@ -163,7 +163,7 @@ namespace graph {
         auto sm = r.back().s;
 
         // check result (resultant position must be equal to search position)
-        if (fabs(sm - s) >= base::EPS_DOUBLE_CMP)
+        if (std::abs(sm - s) >= base::EPS_DOUBLE_CMP)
             throw std::invalid_argument("Wrong s");
 
         // update s
@@ -189,7 +189,7 @@ namespace graph {
 
         // check result (resultant position must be equal to search position)
         auto sm = r.back().s;
-        if (fabs(sm + s) > base::EPS_DOUBLE_CMP)
+        if (std::abs(sm + s) > base::EPS_DOUBLE_CMP)
             throw std::invalid_argument("Wrong s");
 
         // update s

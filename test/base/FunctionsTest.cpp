@@ -118,14 +118,6 @@ TEST(FunctionTest, MaxSpace) {
 }
 
 
-TEST(FunctionTest, VectorDiff) {
-
-    VectorX vec{-1.0, 0.0, 1.0, 2.0, 4.0, 8.0, 16.0, 16.0, -16.0};
-    ASSERT_NEAR_VEC({1.0, 1.0, 1.0, 2.0, 4.0, 8.0, 0.0, -32.0}, base::diff(vec));
-
-}
-
-
 TEST(FunctionTest, Zeros) {
 
     auto vec = base::zeros(5);
