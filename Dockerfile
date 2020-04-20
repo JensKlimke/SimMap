@@ -3,11 +3,8 @@ MAINTAINER Jens Klimke (jens.klimke@rwth-aachen.de)
 
 # installation
 RUN apt-get update
-RUN apt-get -y install git g++ make cmake nano doxygen graphviz nodejs npm wget
+RUN apt-get -y install git g++ make cmake nano doxygen graphviz
 RUN cmake --version && g++ --version
-
-# update node
-RUN npm cache clean -f && npm install -g n && n stable
 
 # copy code
 COPY . /app
