@@ -1,3 +1,0 @@
-[submodule "lib/odrparser"]
-	path = lib/odrparser
-	url = https://github.com/JensKlimke/odrparser.git
