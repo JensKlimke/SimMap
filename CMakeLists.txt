@@ -12,6 +12,7 @@ option(BUILD_TESTS "Sets or unsets the option to generate the test target" OFF)
 option(BUILD_FOR_COVERAGE "Builds the project with coverage test options." OFF)
 option(BUILD_GTEST "Sets or unsets the option to build gtest manually (do not set if gtest is installed)" OFF)
 option(CREATE_DOXYGEN_TARGET "Creates the doxygen documentation if set." OFF)
+option(BUILD_MAP_SERVER "Builds the map server executable." OFF)
 
 # add ./cmake to CMAKE_MODULE_PATH
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
@@ -23,22 +24,8 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 # ------------------------------------------------------------------------------
 
 if (BUILD_FOR_COVERAGE)
-
-    # message
-    message("-- Coverage option is enabled")
-
-    # gnu or clang
-    if (CMAKE_COMPILER_IS_GNUCXX)
-        set(CMAKE_CXX_FLAGS "--coverage")
-    elseif ("${CMAKE_C_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang"
-            OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
-        set(CMAKE_CXX_FLAGS "-fprofile-instr-generate -fcoverage-mapping")
-    endif ()
-
-    # from: https://blog.jetbrains.com/clion/2019/10/clion-2019-3-eap-coverage-cmake-defaults-lldb/
-
+    include(ModuleCoverage)
 endif (BUILD_FOR_COVERAGE)
-
 
 
 # ------------------------------------------------------------------------------
@@ -116,42 +103,11 @@ set(BUILD_TESTS ${MAIN_BUILD_TESTS})
 add_subdirectory(src)
 
 
-
 # ------------------------------------------------------------------------------
 # Tests
 # ------------------------------------------------------------------------------
 
 # enable google testing for project
-if(BUILD_TESTS)
-
-    message("-- Testing enabled")
-
-    # enable testing
-    enable_testing()
-
-    # switch (build or use installed lib)
-    if(BUILD_GTEST)
-
-        # add subdirectory
-        add_subdirectory(lib/googletest)
-        set(GTEST_BOTH_LIBRARIES gtest_main)
-        include_directories(lib/googletest/googletest/include)
-
-    else()
-
-        # find gtest
-        find_package(GTest REQUIRED)
-        include_directories(${GTEST_INCLUDE_DIRS})
-
-    endif()
-
-    # unset for all subprojects
-    set(BUILD_TESTS OFF)
-
-    # load macros for test
-    include(AddGoogleTest)
-
-    # add test folder
-    add_subdirectory(test)
-
-endif()
+if (BUILD_TESTS)
+    include(ModuleGtest)
+endif (BUILD_TESTS)
