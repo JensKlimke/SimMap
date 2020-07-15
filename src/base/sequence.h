@@ -30,6 +30,7 @@
 #include <algorithm>
 #include <vector>
 #include <set>
+#include <iterator>
 #include "definitions.h"
 #include "sequence_types.h"
 

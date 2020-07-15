@@ -13,6 +13,7 @@ option(BUILD_FOR_COVERAGE "Builds the project with coverage test options." OFF)
 option(BUILD_GTEST "Sets or unsets the option to build gtest manually (do not set if gtest is installed)" OFF)
 option(CREATE_DOXYGEN_TARGET "Creates the doxygen documentation if set." OFF)
 option(BUILD_MAP_SERVER "Builds the map server executable." OFF)
+option(BUILD_MAP_EXPORTER "Builds the map exporter executable." OFF)
 
 # add ./cmake to CMAKE_MODULE_PATH
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})

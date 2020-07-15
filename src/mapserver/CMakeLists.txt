@@ -1,3 +1,7 @@
+# activate modules
+include(ModuleGrpc)
+include(ModuleProtobuf)
+
 # set source files
 set(SOURCE_FILES
         main.cpp

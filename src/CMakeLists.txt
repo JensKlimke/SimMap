@@ -5,8 +5,9 @@ add_subdirectory(server)
 add_subdirectory(simmap)
 
 if (BUILD_MAP_SERVER)
-
-    include(ModuleProtobuf)
     add_subdirectory(mapserver)
-
 endif (BUILD_MAP_SERVER)
+
+if (BUILD_MAP_EXPORTER)
+    add_subdirectory(exporter)
+endif (BUILD_MAP_EXPORTER)

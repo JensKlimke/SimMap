@@ -1,81 +1,86 @@
-/*
- *
- * Copyright 2015 gRPC authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
+#include <algorithm>
+#include <chrono>
+#include <cmath>
+#include <iostream>
+#include <memory>
+#include <string>
 
-//#include <chrono>
-//#include <iostream>
-//#include <memory>
-//#include <random>
-//#include <string>
-//#include <thread>
-//
-//#include <grpc/grpc.h>
-//#include <grpcpp/channel.h>
-//#include <grpcpp/client_context.h>
-//#include <grpcpp/create_channel.h>
-//#include <grpcpp/security/credentials.h>
-//#include <client/Models.grpc.pb.h>
-//
-//using grpc::Channel;
-//using grpc::ClientContext;
-//using grpc::ClientReader;
-//using grpc::ClientReaderWriter;
-//using grpc::ClientWriter;
-//using grpc::Status;
-//using simulation::models::VehicleDefinition;
-//using simulation::models::VehicleInput;
-//using simulation::models::VehicleState;
-//
-//
-//class RemoteControllerClient {
-//public:
-//
-//    RemoteControllerClient(std::shared_ptr<Channel> channel) : stub_(simulation::models::RemoteController::NewStub(channel)) {
-//
-//    }
-//
-//    bool Create(const simulation::models::VehicleDefinition& def, simulation::models::VehicleState* state) {
-//
-//        ClientContext context;
-//        Status status = stub_->CreateUnit(&context, def, state);
-//
-//        if (!status.ok()) {
-//            std::cout << "GetFeature rpc failed." << std::endl;
-//            return false;
-//        }
-//
-//        return true;
-//    }
-//
-//    std::unique_ptr<simulation::models::RemoteController::Stub> stub_;
-//
-//};
+#include <grpc/grpc.h>
+#include <grpcpp/server.h>
+#include <grpcpp/server_builder.h>
+#include <grpcpp/server_context.h>
+#include <grpcpp/security/server_credentials.h>
+#include <mapserver/simmap.grpc.pb.h>
+
+using grpc::Server;
+using grpc::ServerBuilder;
+using grpc::ServerContext;
+using grpc::ServerReader;
+using grpc::ServerReaderWriter;
+using grpc::ServerWriter;
+using grpc::Status;
+using simulation::models::VehicleDefinition;
+using simulation::models::VehicleInput;
+using simulation::models::VehicleState;
+using std::chrono::system_clock;
+
+
+class RemoteControllerImpl final : public simulation::models::RemoteController::Service {
+
+public:
+
+    explicit RemoteControllerImpl() {
+        // simulation::models::Parse(db, &feature_list_);
+    }
+
+    Status CreateUnit(::grpc::ServerContext *context, const ::simulation::models::VehicleDefinition *request,
+                      ::simulation::models::VehicleState *response) override {
+
+        std::cout << "Create Unit" << std::endl;
+
+        response->set_acceleration(0.0);
+        response->set_velocity(0.0);
+        response->set_distance(0.0);
+
+        return Status::OK;
+
+    }
+
+    Status SendRequest(::grpc::ServerContext *context, const ::simulation::models::VehicleInput *request,
+                       ::simulation::models::VehicleState *response) override {
+
+        std::cout << "Send request" << std::endl;
+        return Service::SendRequest(context, request, response);
+
+    }
+
+
+private:
+
+    std::mutex mu_;
+
+};
+
+void RunServer() {
+
+    std::string server_address("0.0.0.0:50051");
+    RemoteControllerImpl service;
+
+    ServerBuilder builder;
+    builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
+    builder.RegisterService(&service);
+    std::unique_ptr<Server> server(builder.BuildAndStart());
+    std::cout << "Server listening on " << server_address << std::endl;
+
+    server->Wait();
+
+}
 
 int main(int argc, char **argv) {
 
-//    // Expect only arg: --db_path=path/to/route_guide_db.json.
-//    // std::string db = routeguide::GetDbFileContent(argc, argv);
-//    RemoteControllerClient client(grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
-//
-//    simulation::models::VehicleDefinition def;
-//    simulation::models::VehicleState state;
-//
-//    def.set_id(1);
-//    client.Create(def, &state);
+    // Expect only arg: --db_path=path/to/route_guide_db.json.
+    // std::string db = routeguide::GetDbFileContent(argc, argv);
+    RunServer();
 
     return 0;
 }
