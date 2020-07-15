@@ -89,7 +89,7 @@ namespace simmap {
         const char *id;         /**< the ID of the object */
         double distance;        /**< the longitudinal distance to the object */
         enum ObjectType type;   /**< the type of the object */
-    int value = 0;              /**< the value stored in the object, if any */
+        int value;              /**< the value stored in the object, if any */
     };
 
 
