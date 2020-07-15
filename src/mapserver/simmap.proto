@@ -3,6 +3,32 @@ syntax = "proto3";
 package simmap.agent_interface;
 
 
+service AgentEnvironmentServer {
+
+    rpc clear (Void) returns (Void);
+    rpc loadMap (MapFile) returns (MapInstance);
+    rpc unloadMap (MapInstance) returns (Void);
+    rpc registerAgent (AgentMap) returns (Void);
+    rpc unregisterAgent (AgentInstance) returns (Void);
+    rpc setTrack (AgentTrack) returns (Void);
+    rpc getPosition (AgentInstance) returns (Position);
+    rpc setMapPosition (AgentMapPosition) returns (TrackLengths);
+    rpc getMapPosition (AgentInstance) returns (MapPosition);
+    rpc match (AgentPositionUpdate) returns (MapPosition);
+    rpc move (AgentDisplacement) returns (TrackLengths);
+    rpc switchLane (AgentLane) returns (Void);
+    rpc horizon (AgentGridPoints) returns (Horizon);
+    rpc objects (AgentInstance) returns (ObjectList);
+    rpc lanes (AgentInstance) returns (LaneList);
+    rpc targets (AgentInstance) returns (TargetList);
+
+}
+
+
+message Void {
+    bool blank = 1;
+}
+
 message MapFile {
     string filename = 1;
 }
@@ -15,7 +41,7 @@ message AgentInstance {
     uint32 id = 1;
 }
 
-message RegisterAgent {
+message AgentMap {
     AgentInstance id = 1;
     MapInstance mapId = 2;
 }
@@ -39,7 +65,7 @@ message TrackLengths {
     double back = 2;
 }
 
-message AgentPosition {
+message AgentPositionUpdate {
     AgentInstance agent = 1;
     Position position = 2;
     double distance = 3;
@@ -63,6 +89,18 @@ message AgentGridPoints {
 
 message Horizon {
     repeated HorizonInformation point = 1;
+}
+
+message ObjectList {
+    repeated ObjectInformation point = 1;
+}
+
+message LaneList {
+    repeated LaneInformation point = 1;
+}
+
+message TargetList {
+    repeated TargetInformation point = 1;
 }
 
 message Position {
