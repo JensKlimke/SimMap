@@ -1,0 +1,143 @@
+syntax = "proto3";
+
+package simmap.agent_interface;
+
+
+message MapFile {
+    string filename = 1;
+}
+
+message MapInstance {
+    uint32 id = 1;
+}
+
+message AgentInstance {
+    uint32 id = 1;
+}
+
+message RegisterAgent {
+    AgentInstance id = 1;
+    MapInstance mapId = 2;
+}
+
+message Track {
+    repeated uint32 roads = 1;
+}
+
+message AgentTrack {
+    AgentInstance agent = 1;
+    Track track = 2;
+}
+
+message AgentMapPosition {
+    AgentInstance agent = 1;
+    MapPosition mapPosition = 2;
+}
+
+message TrackLengths {
+    double front = 1;
+    double back = 2;
+}
+
+message AgentPosition {
+    AgentInstance agent = 1;
+    Position position = 2;
+    double distance = 3;
+}
+
+message AgentDisplacement {
+    AgentInstance agent = 1;
+    double distance = 2;
+    double lateralPosition = 3;
+}
+
+message AgentLane {
+    AgentInstance agent = 1;
+    int32 laneOffset = 2;
+}
+
+message AgentGridPoints {
+    AgentInstance agent = 1;
+    repeated double position = 2;
+}
+
+message Horizon {
+    repeated HorizonInformation point = 1;
+}
+
+message Position {
+    double x = 1;
+    double y = 2;
+    double z = 3;
+    double phi = 4;
+    double kappa = 5;
+};
+
+
+message MapPosition {
+    string edgeId = 1;
+    double longPos = 2;
+    double latPos = 3;
+};
+
+message HorizonInformation {
+    double s = 1;
+    double x = 2;
+    double y = 3;
+    double psi = 4;
+    double kappa = 5;
+    double laneWidth = 6;
+    double rightWidth = 7;
+    double leftWidth = 8;
+};
+
+
+message ObjectInformation {
+
+    enum ObjectType {
+        STOP_SIGN = 0;
+        SPEED_LIMIT = 1;
+        UNKNOWN = 2;
+    }
+
+    string id = 1;
+    double distance = 2;
+    ObjectType type = 3;
+    int32 value = 4;
+
+};
+
+
+message LaneInformation {
+
+    enum Direction {
+        FORWARDS = 0;
+        BACKWARDS = 1;
+    };
+
+    enum Access {
+        ALLOWED = 0;
+        NOT_ALLOWED = 1;
+        NOT_POSSIBLE = 2;
+    };
+
+    int32 index = 1;
+    double width = 2;
+    Direction direction = 3;
+    double lengthOnTrack = 4;
+    double lengthToClosed = 5;
+    Access access = 6;
+    double s = 7;
+    string id = 8;
+
+};
+
+
+message TargetInformation {
+    uint32 id = 1;
+    double rel_pos_x = 2;
+    double rel_pos_y = 3;
+    double distance = 4;
+    double latOffset = 5;
+    uint32 lane = 6;
+};
