@@ -114,17 +114,19 @@ public:
     }
 
 
-    void initPaths() {
+    static void initPaths() {
 
-        double lenFront = 700.0; double lenBack = 350.0;
+        double lenFront = 700.0;
+        double lenBack = 350.0;
         EXPECT_EQ(0, setMapPosition(1, {"R1-LS1-R1", 10.0, 0.0}, &lenFront, &lenBack));
-        EXPECT_NEAR(700.0,lenFront, 1e-6);
-        EXPECT_NEAR(350.0,lenBack,  1e-6);
+        EXPECT_NEAR(700.0, lenFront, 1e-6);
+        EXPECT_NEAR(350.0, lenBack, 1e-6);
 
-        lenFront = 200.0; lenBack = 100.0;
+        lenFront = 200.0;
+        lenBack = 100.0;
         EXPECT_EQ(0, setMapPosition(2, {"R2-LS1-R1", 10.0, 0.0}, &lenFront, &lenBack));
-        EXPECT_NEAR(200.0,lenFront, 1e-6);
-        EXPECT_NEAR(100.0,lenBack,  1e-6);
+        EXPECT_NEAR(200.0, lenFront, 1e-6);
+        EXPECT_NEAR(100.0, lenBack, 1e-6);
 
         lenFront = 200.0; lenBack = 100.0;
         EXPECT_EQ(0, setMapPosition(5, {"R1-LS2-R2", 10.0, 0.0}, &lenFront, &lenBack));
@@ -156,17 +158,17 @@ public:
     }
 
 
-    void terminate() {
+    static void terminate() {
 
         // unload agents
 
-        EXPECT_EQ(0,  unregisterAgent(3));
+        EXPECT_EQ(0, unregisterAgent(3));
         EXPECT_EQ(52, unregisterAgent(4));
 
 
         // unload maps
 
-        EXPECT_EQ(0,  unloadMap(1));
+        EXPECT_EQ(0, unloadMap(1));
         EXPECT_EQ(0,  unloadMap(2));
         EXPECT_EQ(0,  unloadMap(3));
         EXPECT_EQ(0,  unloadMap(4));
@@ -628,57 +630,71 @@ TEST_F(LibraryTest, GetTargetInformation) {
     unsigned long n = 10;
     TargetInformation info[10];
 
-    // get lane information
+    // get target information
     targets(1, info, &n);
 
     // check data
     ASSERT_EQ(7, n);
 
 
-    EXPECT_EQ(7,           info[0].id);
-    EXPECT_EQ(0,           info[0].lane);
-    EXPECT_DOUBLE_EQ(0.0,  info[0].latOffset);
+    EXPECT_EQ(7, info[0].id);
+    EXPECT_EQ(0, info[0].lane);
+    EXPECT_NEAR(-5.091, info[0].x, 1e-3);
+    EXPECT_NEAR(0.127, info[0].y, 1e-3);
+    EXPECT_DOUBLE_EQ(0.0, info[0].latOffset);
     EXPECT_DOUBLE_EQ(-5.0, info[0].distance);
 
 
-    EXPECT_EQ(6,           info[1].id);
-    EXPECT_EQ(0,           info[1].lane);
-    EXPECT_DOUBLE_EQ(0.0,  info[1].latOffset);
+    EXPECT_EQ(6, info[1].id);
+    EXPECT_EQ(0, info[1].lane);
+    EXPECT_NEAR(20.239, info[1].x, 1e-3);
+    EXPECT_NEAR(2.030, info[1].y, 1e-3);
+    EXPECT_DOUBLE_EQ(0.0, info[1].latOffset);
     EXPECT_DOUBLE_EQ(20.0, info[1].distance);
 
 
-    EXPECT_EQ(2,           info[2].id);
-    EXPECT_EQ(1,           info[2].lane);
-    EXPECT_DOUBLE_EQ(0.0,  info[2].latOffset);
+    EXPECT_EQ(2, info[2].id);
+    EXPECT_EQ(1, info[2].lane);
+    EXPECT_NEAR(19.494, info[2].x, 1e-3);
+    EXPECT_NEAR(-1.955, info[2].y, 1e-3);
+    EXPECT_DOUBLE_EQ(0.0, info[2].latOffset);
     EXPECT_DOUBLE_EQ(-20.0, info[2].distance);
 
 
     double ds = M_PI * LibraryTest::R * 0.5;
-    EXPECT_EQ(5,            info[3].id);
-    EXPECT_EQ(-1,           info[3].lane);
-    EXPECT_DOUBLE_EQ(0.0,   info[3].latOffset);
-    EXPECT_DOUBLE_EQ(ds,    info[3].distance);
+    EXPECT_EQ(5, info[3].id);
+    EXPECT_EQ(-1, info[3].lane);
+    EXPECT_NEAR(105.5, info[3].x, 1e-3);
+    EXPECT_NEAR(105.5, info[3].y, 1e-3);
+    EXPECT_DOUBLE_EQ(0.0, info[3].latOffset);
+    EXPECT_DOUBLE_EQ(ds, info[3].distance);
 
 
     ds = M_PI * LibraryTest::R * 2.0 - 20.0;
-    EXPECT_EQ(2,          info[4].id);
-    EXPECT_EQ(1,          info[4].lane);
+    EXPECT_EQ(2, info[4].id);
+    EXPECT_EQ(1, info[4].lane);
+    EXPECT_NEAR(19.494, info[4].x, 1e-3);
+    EXPECT_NEAR(-1.955, info[4].y, 1e-3);
     EXPECT_DOUBLE_EQ(0.0, info[4].latOffset);
-    EXPECT_DOUBLE_EQ(ds,  info[4].distance);
+    EXPECT_DOUBLE_EQ(ds, info[4].distance);
 
 
     ds = 2.0 * M_PI * LibraryTest::R - 5.0;
-    EXPECT_EQ(7,           info[5].id);
-    EXPECT_EQ(0,           info[5].lane);
-    EXPECT_DOUBLE_EQ(0.0,  info[5].latOffset);
-    EXPECT_DOUBLE_EQ(ds,   info[5].distance);
+    EXPECT_EQ(7, info[5].id);
+    EXPECT_EQ(0, info[5].lane);
+    EXPECT_NEAR(-5.091, info[5].x, 1e-3);
+    EXPECT_NEAR(0.127, info[5].y, 1e-3);
+    EXPECT_DOUBLE_EQ(0.0, info[5].latOffset);
+    EXPECT_DOUBLE_EQ(ds, info[5].distance);
 
 
     ds = 2.0 * M_PI * LibraryTest::R + 20.0;
-    EXPECT_EQ(6,           info[6].id);
-    EXPECT_EQ(0,           info[6].lane);
-    EXPECT_DOUBLE_EQ(0.0,  info[6].latOffset);
-    EXPECT_DOUBLE_EQ(ds,   info[6].distance);
+    EXPECT_EQ(6, info[6].id);
+    EXPECT_EQ(0, info[6].lane);
+    EXPECT_NEAR(20.239, info[6].x, 1e-3);
+    EXPECT_NEAR(2.030, info[6].y, 1e-3);
+    EXPECT_DOUBLE_EQ(0.0, info[6].latOffset);
+    EXPECT_DOUBLE_EQ(ds, info[6].distance);
 
 }
 

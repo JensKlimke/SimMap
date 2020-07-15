@@ -26,7 +26,6 @@
 #include <map>
 #include <list>
 
-#include <lib.h>
 #include <server/Map.h>
 #include <server/Path.h>
 #include <server/MapCoordinate.h>
@@ -184,9 +183,13 @@ namespace simmap {
             auto mc = tar.second->path.position();
             auto ds = path.distance(mc);
 
+            // get relative position
+            auto rel = base::toLocal(path.position().absolutePosition(), mc.absolutePosition().position);
+
             // set information
             for (auto dse : ds)
-                tars.emplace_back(TargetInformation{tar.first, (sameDir ? 1.0 : -1.0) * dse, mc.d(), pathIndex});
+                tars.emplace_back(
+                        TargetInformation{tar.first, rel.x, rel.y, (sameDir ? 1.0 : -1.0) * dse, mc.d(), pathIndex});
 
         }
 
@@ -594,7 +597,7 @@ namespace simmap {
     }
 
 
-    err_type_t move(id_type_t agentID, double ds, double t, double *lenFront, double *lenBack) {
+    err_type_t move(id_type_t agentID, double distance, double lateralPosition, double *lenFront, double *lenBack) {
 
         const int ERR = 110;
 
@@ -607,13 +610,13 @@ namespace simmap {
                 return ERR + err;
 
             // check length
-            if (ag->path.distanceToHead() < ds || -ag->path.distanceToBack() > ds)
+            if (ag->path.distanceToHead() < distance || -ag->path.distanceToBack() > distance)
                 return ERR + 5;
 
             try {
 
                 // set path
-                ag->path.position(ds, t);
+                ag->path.position(distance, lateralPosition);
 
             } catch (const std::exception &e) {
                 std::cerr << e.what() << std::endl;

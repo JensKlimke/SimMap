@@ -162,13 +162,14 @@ namespace simmap {
     /**
      * Moves the given agent by the distance of ds
      * @param agentID Agent id
-     * @param ds Distance to be moved
-     * @param t Lateral position in lane
+     * @param distance Distance to be moved
+     * @param lateralPosition Lateral position in lane
      * @param lenFront Length to the front of the path (value is used for update)
      * @param lenBack Length to the back of the path (value is used for update)
      * @return Error code (0 = no error)
      */
-    SHARED_EXPORT err_type_t move(id_type_t agentID, double ds, double t, double *lenFront, double *lenBack);
+    SHARED_EXPORT err_type_t
+    move(id_type_t agentID, double distance, double lateralPosition, double *lenFront, double *lenBack);
 
 
     /**

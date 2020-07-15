@@ -109,6 +109,8 @@ namespace simmap {
     /** Struct to define target traffic participant information */
     struct TargetInformation {
         unsigned int id;    /**< the ID of the target */
+        double x;           /**< Relative position in x-direction */
+        double y;           /**< Relative position in y-direction */
         double distance;    /**< the distance to the target */
         double latOffset;   /**< the lateral offset of the target in the lane */
         int lane;           /**< the lane, the target is corresponding to */
