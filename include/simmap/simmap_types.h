@@ -30,8 +30,8 @@
  * This header file defines the data types to store and receive the information from the SimMap framework.
  */
 
-#ifndef SIMMAP_TYPES_H
-#define SIMMAP_TYPES_H
+#ifndef SIMMAP_SIMMAP_TYPES_H
+#define SIMMAP_SIMMAP_TYPES_H
 
 #include <iostream>
 
@@ -89,7 +89,7 @@ namespace simmap {
         const char *id;         /**< the ID of the object */
         double distance;        /**< the longitudinal distance to the object */
         enum ObjectType type;   /**< the type of the object */
-    int value = 0;              /**< the value stored in the object, if any */
+        int value;              /**< the value stored in the object, if any */
     };
 
 
@@ -126,5 +126,5 @@ inline std::ostream &operator<< (std::ostream &os, const simmap::MapPosition& po
     return os;
 }
 
-#endif //SIMMAP_TYPES_H
+#endif //SIMMAP_SIMMAP_TYPES_H
 

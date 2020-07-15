@@ -26,7 +26,7 @@
 #include <map>
 #include <list>
 
-#include <lib.h>
+#include <simmap.h>
 #include <server/Map.h>
 #include <server/Path.h>
 #include <server/MapCoordinate.h>
