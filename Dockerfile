@@ -11,7 +11,7 @@ COPY . /app
 RUN cd /app && git submodule update --init --recursive
 
 # prepare inta
-RUN cd /app && git clone https://github.com/google/googletest
+RUN cd /app/lib && git clone https://github.com/google/googletest
 
 
 

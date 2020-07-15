@@ -133,9 +133,9 @@ if(BUILD_TESTS)
     if(BUILD_GTEST)
 
         # add subdirectory
-        add_subdirectory(googletest)
+        add_subdirectory(lib/googletest)
         set(GTEST_BOTH_LIBRARIES gtest_main)
-        include_directories(${PROJECT_SOURCE_DIR}/googletest/googletest/include)
+        include_directories(lib/googletest/googletest/include)
 
     else()
 

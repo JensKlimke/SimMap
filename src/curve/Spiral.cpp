@@ -27,6 +27,7 @@ extern "C" {
 #include <odrSpiral/odrSpiral.h>
 }
 
+#include <algorithm>
 #include <base/functions.h>
 #include "Spiral.h"
 

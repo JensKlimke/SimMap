@@ -30,8 +30,8 @@
  * This header file defines the data types to store and receive the information from the SimMap framework.
  */
 
-#ifndef SIMMAP_TYPES_H
-#define SIMMAP_TYPES_H
+#ifndef SIMMAP_SIMMAP_TYPES_H
+#define SIMMAP_SIMMAP_TYPES_H
 
 #include <iostream>
 
@@ -126,5 +126,5 @@ inline std::ostream &operator<< (std::ostream &os, const simmap::MapPosition& po
     return os;
 }
 
-#endif //SIMMAP_TYPES_H
+#endif //SIMMAP_SIMMAP_TYPES_H
 

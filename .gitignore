@@ -37,3 +37,6 @@ build*
 bin/
 docs/
 test/tracks/map.json
+lib/googletest
+install
+build

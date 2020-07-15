@@ -30,6 +30,9 @@
 #include <vector>
 #include <cmath>
 
+#ifndef M_PI
+#define M_PI 3.14159265359
+#endif
 
 namespace base {
 
@@ -38,8 +41,12 @@ namespace base {
     const double EPS_CURVATURE = 1e-9;
     const double EPS_ANGLE = 1e-9;
 
-    enum class Unit { METER, KILOMETER, FEET, MILE, MPS, MPH, KPH, KILOGRAMS, TONS, PERCENT };
-    enum class Side { LEFT, RIGHT, CENTER, BOTH, NONE };
+    enum class Unit {
+        METER, KILOMETER, FEET, MILE, MPS, MPH, KPH, KILOGRAMS, TONS, PERCENT
+    };
+    enum class Side {
+        LEFT, RIGHT, CENTER, BOTH, NONE
+    };
     enum class Orientation { FORWARDS, BACKWARDS, BOTH, NONE };
     enum class ContactPoint { START, END };
     enum class Reference {INNER, OUTER, CENTER};

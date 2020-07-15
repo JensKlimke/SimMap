@@ -30,11 +30,11 @@
  * This header file defines the access to the library functions.
  */
 
-#ifndef SIMMAP_LIB_H
-#define SIMMAP_LIB_H
+#ifndef SIMMAP_SIMMAP_H
+#define SIMMAP_SIMMAP_H
 
 #include <cstdint>
-#include "types.h"
+#include "simmap_types.h"
 
 #ifdef MAKE_SHARED
 #ifdef LIBRARY_EXPORT
@@ -222,5 +222,5 @@ namespace simmap {
 
 }
 
-#endif // SIMMAP_LIB_H
+#endif // SIMMAP_SIMMAP_H
 

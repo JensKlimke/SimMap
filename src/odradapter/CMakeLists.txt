@@ -18,5 +18,5 @@ set(SOURCE_FILES
         _parseRoadMarking.cpp)
 
 add_library(odradapter STATIC ${SOURCE_FILES})
-target_include_directories(odradapter PRIVATE ${PROJECT_SOURCE_DIR}/src ${odrparser_INCLUDE_DIR})
+target_include_directories(odradapter PUBLIC ${PROJECT_SOURCE_DIR}/src ${odrparser_INCLUDE_DIR})
 target_link_libraries(odradapter PRIVATE odr server curve)

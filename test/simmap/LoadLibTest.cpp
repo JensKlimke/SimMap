@@ -24,7 +24,7 @@
 
 
 #include <gtest/gtest.h>
-#include <simmap/lib.h>
+#include <simmap/simmap.h>
 #include <base/functions.h>
 
 
