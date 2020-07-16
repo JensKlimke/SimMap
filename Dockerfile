@@ -4,7 +4,20 @@ MAINTAINER Jens Klimke (jens.klimke@rwth-aachen.de)
 # installation
 RUN apt-get update
 RUN apt-get -y install git g++ make cmake nano doxygen graphviz
+RUN apt-get -y install autoconf automake libtool curl make g++ unzip
 RUN cmake --version && g++ --version
+
+# install protobuf
+RUN cd /tmp && git clone --recursive https://github.com/protocolbuffers/protobuf.git
+RUN cd /tmp/protobuf && ./autogen.sh && ./configure && make && make check && make install && ldconfig
+RUN rm -rf /tmp/protobuf
+
+# install grpc
+RUN cd /tmp &&  git clone --recurse-submodules -b v1.30.0 https://github.com/grpc/grpc
+RUN cd /tmp/grpc && mkdir -p cmake/build
+RUN cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/usr/local ../..
+RUN cd /tmp/grpc/cmake/build && make && make install && ldconfig
+RUN rm -rf /tmp/grpc
 
 # copy code
 COPY . /app
@@ -24,7 +37,7 @@ RUN cd /app && mkdir build && cd build && cmake -G "Unix Makefiles" \
     -DBUILD_GTEST=ON \
     -DBUILD_FOR_COVERAGE=OFF \
     -DCREATE_DOXYGEN_TARGET=ON \
-    -DBUILD_MAP_SERVER=OFF \
+    -DBUILD_MAP_SERVER=ON \
     -DCMAKE_BUILD_TYPE=Debug ..
 
 # documentation, compilation, tests
