@@ -95,20 +95,51 @@ namespace base {
 
 
         explicit seq_iterator(const seq_container_type_t<T> *container, const double *length)
-            : _container(container), _end(length) { begin(); }
+                : _container(container), _end(length) { begin(); }
 
-        seq_iterator(const seq_iterator<T>& other)
-            : _container(other._container), _end(other._end), _it(other._it) {};
+        seq_iterator(const seq_iterator<T> &other)
+                : _container(other._container), _end(other._end), _it(other._it) {};
 
         typename type_t::iterator it() const { return _it; }
 
-        seq_iterator& operator+=(size_t i) { _it = std::next(_it, i); return *this; }
-        seq_iterator& operator++() { _it++; return *this; }
-        seq_iterator operator++(int) { seq_iterator retval = *this; ++(*this); return retval; }
+        seq_iterator &operator+=(size_t i) {
+            _it = std::next(_it, i);
+            return *this;
+        }
+
+        seq_iterator &operator++() {
+            _it++;
+            return *this;
+        }
+
+        seq_iterator operator++(int) {
+            seq_iterator retval = *this;
+            ++(*this);
+            return retval;
+        }
+
+        seq_iterator &operator-=(size_t i) {
+            _it = std::next(_it, -i);
+            return *this;
+        }
+
+        seq_iterator &operator--() {
+            _it--;
+            return *this;
+        }
+
+        seq_iterator operator--(int) {
+            seq_iterator retval = *this;
+            --(*this);
+            return retval;
+        }
+
         bool operator==(seq_iterator other) const { return _container == other._container && _it == other._it; }
+
         bool operator!=(seq_iterator other) const { return !(*this == other); }
 
-        T& operator-> () const { return _it->element; }
+        T &operator->() const { return _it->element; }
+
         seq_entry_t<T> operator*() const { return it2entry(_it, _container, *_end); }
 
         seq_iterator begin() {
