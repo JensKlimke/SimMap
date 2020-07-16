@@ -1,6 +1,3 @@
-#include <algorithm>
-#include <chrono>
-#include <cmath>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -9,7 +6,6 @@
 #include <grpcpp/server.h>
 #include <grpcpp/server_builder.h>
 #include <grpcpp/server_context.h>
-#include <grpcpp/security/server_credentials.h>
 #include <mapserver/simmap.grpc.pb.h>
 #include <simmap/simmap.h>
 
@@ -21,7 +17,6 @@ using grpc::ServerReaderWriter;
 using grpc::ServerWriter;
 using grpc::Status;
 using std::chrono::system_clock;
-
 
 class AgentEnvironmentSrv final : public simmap::agent_interface::AgentEnvironmentServer::Service {
 
@@ -370,17 +365,17 @@ public:
 
     }
 
-
-private:
-
-    std::mutex mu_;
-
 };
 
 int main(int argc, char **argv) {
 
+    if (argc != 2) {
+        std::cerr << "Please provide file OpenDRIVE filename." << std::endl;
+        return 1;
+    }
+
     std::string server_address("0.0.0.0:50051");
-    AgentEnvironmentSrv service("map.odr");
+    AgentEnvironmentSrv service(argv[1]);
 
     ServerBuilder builder;
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
