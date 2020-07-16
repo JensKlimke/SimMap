@@ -28,9 +28,9 @@ package simmap.agent_interface;
 
 service AgentEnvironmentServer {
 
-    rpc clear (Void) returns (Void);
-    rpc loadMap (MapFile) returns (MapInstance);
-    rpc unloadMap (MapInstance) returns (Void);
+    //    rpc clear (Void) returns (Void);
+    //    rpc loadMap (MapFile) returns (MapInstance);
+    //    rpc unloadMap (MapInstance) returns (Void);
     rpc registerAgent (AgentMap) returns (Void);
     rpc unregisterAgent (AgentInstance) returns (Void);
     rpc setTrack (AgentTrack) returns (Void);
@@ -65,12 +65,12 @@ message AgentInstance {
 }
 
 message AgentMap {
-    AgentInstance id = 1;
-    MapInstance mapId = 2;
+    AgentInstance agent = 1;
+    MapInstance map = 2;
 }
 
 message Track {
-    repeated uint32 roads = 1;
+    repeated string roads = 1;
 }
 
 message AgentTrack {
@@ -195,7 +195,7 @@ message LaneInformation {
 
 
 message TargetInformation {
-    uint32 id = 1;
+    uint64 id = 1;
     double rel_pos_x = 2;
     double rel_pos_y = 3;
     double distance = 4;
