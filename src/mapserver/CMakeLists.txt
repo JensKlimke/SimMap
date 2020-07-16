@@ -5,6 +5,7 @@ include(ModuleGrpc)
 # set source files
 set(SOURCE_FILES
         main.cpp
+        AgentEnvironmentSrv.h
         )
 
 # set proto files
@@ -37,4 +38,5 @@ target_include_directories(mapserver PRIVATE
         ${PROJECT_SOURCE_DIR}/src
         ${PROJECT_SOURCE_DIR}/include
         ${CMAKE_BINARY_DIR}/src
+        ${PROJECT_SOURCE_DIR}/lib/cxxopts/include
         )
