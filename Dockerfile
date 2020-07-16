@@ -10,9 +10,9 @@ RUN cmake --version && g++ --version
 COPY . /app
 RUN cd /app && git submodule update --init --recursive
 
-# prepare inta
+# prepare gtest
+RUN cd /app/lib && rm -rf googletest
 RUN cd /app/lib && git clone https://github.com/google/googletest
-
 
 
 ## FULL FUNCTIONALITY
@@ -24,6 +24,7 @@ RUN cd /app && mkdir build && cd build && cmake -G "Unix Makefiles" \
     -DBUILD_GTEST=ON \
     -DBUILD_FOR_COVERAGE=OFF \
     -DCREATE_DOXYGEN_TARGET=ON \
+    -DBUILD_MAP_SERVER=OFF \
     -DCMAKE_BUILD_TYPE=Debug ..
 
 # documentation, compilation, tests
