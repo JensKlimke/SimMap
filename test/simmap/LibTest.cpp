@@ -35,7 +35,6 @@
 
 #include <simmap/simmap.h>
 #include <base/functions.h>
-#include <base/definitions.h>
 
 using namespace simmap;
 
@@ -52,7 +51,7 @@ protected:
 
     static const double R;
 
-    err_type_t _loadMap(const std::string& filename, id_type_t *id) {
+    static err_type_t _loadMap(const std::string &filename, id_type_t &id) {
 
         return loadMap(filename.c_str(), id);
 
@@ -67,28 +66,28 @@ public:
 
         id_type_t id;
 
-        EXPECT_EQ(0, _loadMap(base::string_format("%s/CircleR100.xodr", TRACKS_DIR), &id));
+        EXPECT_EQ(0, _loadMap(base::string_format("%s/CircleR100.xodr", TRACKS_DIR), id));
         EXPECT_EQ(1, id);
 
-        EXPECT_EQ(26, _loadMap(base::string_format("%s/not_existing_map.xodr", TRACKS_DIR), &id));
+        EXPECT_EQ(26, _loadMap(base::string_format("%s/not_existing_map.xodr", TRACKS_DIR), id));
         EXPECT_EQ(0, id);
 
-        EXPECT_EQ(0, _loadMap(base::string_format("%s/map.xodr", TRACKS_DIR), &id));
+        EXPECT_EQ(0, _loadMap(base::string_format("%s/map.xodr", TRACKS_DIR), id));
         EXPECT_EQ(2, id);
 
-        EXPECT_EQ(0, _loadMap(base::string_format("%s/example_simple.xodr", TRACKS_DIR), &id));
+        EXPECT_EQ(0, _loadMap(base::string_format("%s/example_simple.xodr", TRACKS_DIR), id));
         EXPECT_EQ(3, id);
 
-        EXPECT_EQ(0, _loadMap(base::string_format("%s/Straight10000.xodr", TRACKS_DIR), &id));
+        EXPECT_EQ(0, _loadMap(base::string_format("%s/Straight10000.xodr", TRACKS_DIR), id));
         EXPECT_EQ(4, id);
 
 
         // register agents
 
-        EXPECT_EQ(0,  registerAgent(1, 1));
+        EXPECT_EQ(0, registerAgent(1, 1));
         EXPECT_EQ(45, registerAgent(1, 1)); // try to re-register agent 1 again
-        EXPECT_EQ(0,  registerAgent(2, 1));
-        EXPECT_EQ(0,  registerAgent(3, 2)); // register agent 3 on different map
+        EXPECT_EQ(0, registerAgent(2, 1));
+        EXPECT_EQ(0, registerAgent(3, 2)); // register agent 3 on different map
         EXPECT_EQ(46, registerAgent(4, 9)); // try to register agent on non-existing map
         EXPECT_EQ(0,  registerAgent(5, 1));
         EXPECT_EQ(0,  registerAgent(6, 1));
@@ -118,41 +117,45 @@ public:
 
         double lenFront = 700.0;
         double lenBack = 350.0;
-        EXPECT_EQ(0, setMapPosition(1, {"R1-LS1-R1", 10.0, 0.0}, &lenFront, &lenBack));
+        EXPECT_EQ(0, setMapPosition(1, {"R1-LS1-R1", 10.0, 0.0}, lenFront, lenBack));
         EXPECT_NEAR(700.0, lenFront, 1e-6);
         EXPECT_NEAR(350.0, lenBack, 1e-6);
 
         lenFront = 200.0;
         lenBack = 100.0;
-        EXPECT_EQ(0, setMapPosition(2, {"R2-LS1-R1", 10.0, 0.0}, &lenFront, &lenBack));
+        EXPECT_EQ(0, setMapPosition(2, {"R2-LS1-R1", 10.0, 0.0}, lenFront, lenBack));
         EXPECT_NEAR(200.0, lenFront, 1e-6);
         EXPECT_NEAR(100.0, lenBack, 1e-6);
 
-        lenFront = 200.0; lenBack = 100.0;
-        EXPECT_EQ(0, setMapPosition(5, {"R1-LS2-R2", 10.0, 0.0}, &lenFront, &lenBack));
-        EXPECT_NEAR(200.0,lenFront, 1e-6);
-        EXPECT_NEAR(100.0,lenBack,  1e-6);
+        lenFront = 200.0;
+        lenBack = 100.0;
+        EXPECT_EQ(0, setMapPosition(5, {"R1-LS2-R2", 10.0, 0.0}, lenFront, lenBack));
+        EXPECT_NEAR(200.0, lenFront, 1e-6);
+        EXPECT_NEAR(100.0, lenBack, 1e-6);
 
-        lenFront = 200.0; lenBack = 100.0;
-        EXPECT_EQ(0, setMapPosition(6, {"R1-LS1-R1", 30.0, 0.0}, &lenFront, &lenBack));
-        EXPECT_NEAR(200.0,lenFront, 1e-6);
-        EXPECT_NEAR(100.0,lenBack,  1e-6);
+        lenFront = 200.0;
+        lenBack = 100.0;
+        EXPECT_EQ(0, setMapPosition(6, {"R1-LS1-R1", 30.0, 0.0}, lenFront, lenBack));
+        EXPECT_NEAR(200.0, lenFront, 1e-6);
+        EXPECT_NEAR(100.0, lenBack, 1e-6);
 
-        lenFront = 200.0; lenBack = 100.0;
-        EXPECT_EQ(0, setMapPosition(7, {"R1-LS1-R1", 5.0, 0.0}, &lenFront, &lenBack));
-        EXPECT_NEAR(200.0,lenFront, 1e-6);
-        EXPECT_NEAR(100.0,lenBack,  1e-6);
+        lenFront = 200.0;
+        lenBack = 100.0;
+        EXPECT_EQ(0, setMapPosition(7, {"R1-LS1-R1", 5.0, 0.0}, lenFront, lenBack));
+        EXPECT_NEAR(200.0, lenFront, 1e-6);
+        EXPECT_NEAR(100.0, lenBack, 1e-6);
 
-        lenFront = 165.0; lenBack = 10.0;
-        EXPECT_EQ(0, setMapPosition(8, {"R1-LS1-R1", 0.0, 0.0}, &lenFront, &lenBack));
-        EXPECT_NEAR(165.0,lenFront, 1e-6);
-        EXPECT_NEAR(  0.0,lenBack,  1e-6);
+        lenFront = 165.0;
+        lenBack = 10.0;
+        EXPECT_EQ(0, setMapPosition(8, {"R1-LS1-R1", 0.0, 0.0}, lenFront, lenBack));
+        EXPECT_NEAR(165.0, lenFront, 1e-6);
+        EXPECT_NEAR(0.0, lenBack, 1e-6);
 
-        lenFront = 1000.0; lenBack = 50.0;
-        EXPECT_EQ(0, setMapPosition(9, {"R1-LS1-R1", 0.0, 0.0}, &lenFront, &lenBack));
-        EXPECT_NEAR(1000.0,lenFront, 1e-6);
-        EXPECT_NEAR(   0.0,lenBack,  1e-6);
-
+        lenFront = 1000.0;
+        lenBack = 50.0;
+        EXPECT_EQ(0, setMapPosition(9, {"R1-LS1-R1", 0.0, 0.0}, lenFront, lenBack));
+        EXPECT_NEAR(1000.0, lenFront, 1e-6);
+        EXPECT_NEAR(0.0, lenBack, 1e-6);
 
 
     }
@@ -223,37 +226,37 @@ TEST_F(LibraryTest, GetPosition) {
     auto y = sin(phi) * RE;
     auto x = cos(phi) * RE;
 
-    EXPECT_EQ(0, getPosition(1, &pos));
-    EXPECT_EQ(0, getMapPosition(1, &mapPos));
+    EXPECT_EQ(0, getPosition(1, pos));
+    EXPECT_EQ(0, getMapPosition(1, mapPos));
 
     EXPECT_DOUBLE_EQ(10.0, mapPos.longPos);
-    EXPECT_DOUBLE_EQ(0.0,  mapPos.latPos);
+    EXPECT_DOUBLE_EQ(0.0, mapPos.latPos);
     EXPECT_EQ(0, strcmp("R1-LS1-R1", mapPos.edgeID));
 
-    EXPECT_NEAR(x,            pos.x,     base::EPS_DISTANCE);
-    EXPECT_NEAR(y,            pos.y,     base::EPS_DISTANCE);
-    EXPECT_NEAR(0.0,          pos.z,     base::EPS_DISTANCE);
-    EXPECT_NEAR(phi + M_PI_2, pos.phi,   base::EPS_DISTANCE);
-    EXPECT_NEAR(RE,     1.0 / pos.kappa, base::EPS_DISTANCE);
+    EXPECT_NEAR(x, pos.x, base::EPS_DISTANCE);
+    EXPECT_NEAR(y, pos.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(0.0, pos.z, base::EPS_DISTANCE);
+    EXPECT_NEAR(phi + M_PI_2, pos.phi, base::EPS_DISTANCE);
+    EXPECT_NEAR(RE, 1.0 / pos.kappa, base::EPS_DISTANCE);
 
 
     // second agent
-    RE  = LibraryTest::R - 1.875;
+    RE = LibraryTest::R - 1.875;
     phi = -10.0 / LibraryTest::R;
-    y   = sin(phi) * RE;
-    x   = cos(phi) * RE;
+    y = sin(phi) * RE;
+    x = cos(phi) * RE;
 
-    EXPECT_EQ(0, getPosition(2, &pos));
-    EXPECT_EQ(0, getMapPosition(2, &mapPos));
+    EXPECT_EQ(0, getPosition(2, pos));
+    EXPECT_EQ(0, getMapPosition(2, mapPos));
 
     EXPECT_DOUBLE_EQ(10.0, mapPos.longPos);
     EXPECT_EQ(0, strcmp("R2-LS1-R1", mapPos.edgeID));
 
-    EXPECT_NEAR(x,             pos.x,     base::EPS_DISTANCE);
-    EXPECT_NEAR(y,             pos.y,     base::EPS_DISTANCE);
-    EXPECT_NEAR(0.0,           pos.z,     base::EPS_DISTANCE);
-    EXPECT_NEAR(-M_PI_2 + phi, pos.phi,   base::EPS_DISTANCE);
-    EXPECT_NEAR(-1.0 / RE,     pos.kappa, base::EPS_DISTANCE);
+    EXPECT_NEAR(x, pos.x, base::EPS_DISTANCE);
+    EXPECT_NEAR(y, pos.y, base::EPS_DISTANCE);
+    EXPECT_NEAR(0.0, pos.z, base::EPS_DISTANCE);
+    EXPECT_NEAR(-M_PI_2 + phi, pos.phi, base::EPS_DISTANCE);
+    EXPECT_NEAR(-1.0 / RE, pos.kappa, base::EPS_DISTANCE);
 
 }
 
@@ -267,19 +270,19 @@ TEST_F(LibraryTest, UpdatePosition) {
     Position pos{};
 
     // get position
-    getMapPosition(1, &mapPos);
-    getPosition(1, &pos);
+    getMapPosition(1, mapPos);
+    getPosition(1, pos);
 
     double R = LibraryTest::R;
     double dPhi = 0.1, phi = 10.0 / R;
     double lf = 100.0, lb = 100.0;
-    for(size_t i = 0; i < 100; ++i) {
+    for (size_t i = 0; i < 100; ++i) {
 
         auto x = cos(phi) * (R + 1.875);
         auto y = sin(phi) * (R + 1.875);
 
         // get positions
-        getPosition(1, &pos);
+        getPosition(1, pos);
 
         // check positions
         EXPECT_NEAR(x, pos.x, 1e-6);
@@ -287,7 +290,7 @@ TEST_F(LibraryTest, UpdatePosition) {
         EXPECT_NEAR(0.0, base::angleDiff(phi + M_PI_2, pos.phi), 1e-6);
 
         // move by one step
-        EXPECT_EQ(0, move(1, dPhi * R, 0.0, &lf, &lb));
+        EXPECT_EQ(0, move(1, dPhi * R, 0.0, lf, lb));
         EXPECT_DOUBLE_EQ(100.0, lf);
         EXPECT_DOUBLE_EQ(100.0, lb);
 
@@ -308,8 +311,8 @@ TEST_F(LibraryTest, UpdatePositionWithLaneChange) {
     Position pos{};
 
     // get position
-    getMapPosition(1, &mapPos);
-    getPosition(1, &pos);
+    getMapPosition(1, mapPos);
+    getPosition(1, pos);
 
     double R = LibraryTest::R;
     double dPhi = 1.0, phi = 10.0 / R;
@@ -317,13 +320,13 @@ TEST_F(LibraryTest, UpdatePositionWithLaneChange) {
 
     int l = -1;
 
-    for(size_t i = 0; i < 7; ++i) {
+    for (size_t i = 0; i < 7; ++i) {
 
         auto x = cos(phi) * (R + (l < 0 ? 1.875 : 5.5));
         auto y = sin(phi) * (R + (l < 0 ? 1.875 : 5.5));
 
         // get positions
-        getPosition(1, &pos);
+        getPosition(1, pos);
 
         // check positions
         EXPECT_NEAR(x, pos.x, 1e-6);
@@ -331,7 +334,7 @@ TEST_F(LibraryTest, UpdatePositionWithLaneChange) {
         EXPECT_NEAR(0.0, base::angleDiff(phi + M_PI_2, pos.phi), 1e-6);
 
         // get map position
-        getMapPosition(1, &mapPos);
+        getMapPosition(1, mapPos);
 
         if(i < 2) {
 
@@ -347,7 +350,7 @@ TEST_F(LibraryTest, UpdatePositionWithLaneChange) {
             EXPECT_NEAR(mapPos.longPos, R * (phi - M_PI_2), 1e-6);
             EXPECT_NEAR(mapPos.latPos, 0.0, 1e-6);
 
-        } else if(i < 7) {
+        } else if (i < 7) {
 
             // check map position
             EXPECT_EQ((l < 0 ? "R2-LS1-L1" : "R2-LS1-L2"), std::string(mapPos.edgeID));
@@ -357,7 +360,7 @@ TEST_F(LibraryTest, UpdatePositionWithLaneChange) {
         }
 
         // move by one step and switch lane
-        EXPECT_EQ(0, move(1, dPhi * R, 0.0, &lf, &lb));
+        EXPECT_EQ(0, move(1, dPhi * R, 0.0, lf, lb));
         EXPECT_EQ(0, switchLane(1, l));
 
         // this should result in a error code
@@ -382,18 +385,18 @@ TEST_F(LibraryTest, MatchPosition) {
     Position pos{};
 
     // get position
-    getMapPosition(1, &mapPos);
-    getPosition(1, &pos);
+    getMapPosition(1, mapPos);
+    getPosition(1, pos);
 
     double R = LibraryTest::R;
     double dPhi = 0.1, phi = 0.1;
-    for(size_t i = 0; i < 10; ++i) {
+    for (size_t i = 0; i < 10; ++i) {
 
         auto s = phi * R;
         pos.x = cos(phi) * (R + 2.0);
         pos.y = sin(phi) * (R + 2.0);
 
-        EXPECT_EQ(0, match(1, pos, 0.0, &mapPos));
+        EXPECT_EQ(0, match(1, pos, 0.0, mapPos));
         EXPECT_EQ(0, strcmp("R1-LS1-R1", mapPos.edgeID));
         EXPECT_NEAR(s, mapPos.longPos, 1e-5);
         EXPECT_NEAR(-0.125, mapPos.latPos, 1e-5);
@@ -414,8 +417,8 @@ TEST_F(LibraryTest, MatchPosition2) {
     Position pos{};
 
     // get position
-    getMapPosition(9, &mapPos);
-    getPosition(9, &pos);
+    getMapPosition(9, mapPos);
+    getPosition(9, pos);
 
     // set position
     pos.x = 100.0;
@@ -425,7 +428,7 @@ TEST_F(LibraryTest, MatchPosition2) {
     pos.kappa = 0.0;
 
     // match
-    EXPECT_EQ(0, match(9, pos, 0.0, &mapPos));
+    EXPECT_EQ(0, match(9, pos, 0.0, mapPos));
 
 }
 
@@ -452,22 +455,22 @@ TEST_F(LibraryTest, MatchAndUpdatePosition) {
     Position pos{};
 
     // get position
-    getMapPosition(1, &mapPos);
-    getPosition(1, &pos);
+    getMapPosition(1, mapPos);
+    getPosition(1, pos);
 
 
     // iterate
     double s = s0;
-    for(size_t i = 0; i < 600; ++i) {
+    for (size_t i = 0; i < 600; ++i) {
 
         double lenFront = 450.0;
         double lenBack = 20.0;
 
         // check matching
-        EXPECT_EQ(0, match(1, pos, 0.0, &mapPos));
+        EXPECT_EQ(0, match(1, pos, 0.0, mapPos));
 
         // check results
-        if(s >= 0.0 && s <= M_PI * 0.5 * R) {
+        if (s >= 0.0 && s <= M_PI * 0.5 * R) {
 
             EXPECT_EQ(0, strcmp("R1-LS1-R1", mapPos.edgeID));
             EXPECT_NEAR(s, mapPos.longPos, 1e-5);
@@ -494,7 +497,7 @@ TEST_F(LibraryTest, MatchAndUpdatePosition) {
         }
 
         // set new position and create horizon
-        EXPECT_EQ(0, setMapPosition(1, mapPos, &lenFront, &lenBack));
+        EXPECT_EQ(0, setMapPosition(1, mapPos, lenFront, lenBack));
         EXPECT_NEAR(450.0, lenFront, 1e-9);
         EXPECT_NEAR(20.0, lenBack, 1e-9);
 
@@ -541,7 +544,7 @@ TEST_F(LibraryTest, GetObjects) {
     unsigned long n = 10;
     ObjectInformation info[10];
 
-    objects(1, info, &n);
+    objects(1, info, n);
 
     ASSERT_EQ(5, n);
 
@@ -584,7 +587,7 @@ TEST_F(LibraryTest, GetLaneInformation) {
     LaneInformation info[10];
 
     // get lane information
-    lanes(1, info, &n);
+    lanes(1, info, n);
 
     // check data
     EXPECT_EQ(3, n);
@@ -631,7 +634,7 @@ TEST_F(LibraryTest, GetTargetInformation) {
     TargetInformation info[10];
 
     // get target information
-    targets(1, info, &n);
+    targets(1, info, n);
 
     // check data
     ASSERT_EQ(7, n);

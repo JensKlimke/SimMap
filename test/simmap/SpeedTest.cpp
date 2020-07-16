@@ -45,14 +45,14 @@ TEST_F(SpeedTest, Targets) {
     unsigned int m = 100;
 
     // load map
-    unsigned int id;
-    simmap::loadMap(base::string_format("%s/CircleR100.xodr", TRACKS_DIR).c_str(), &id);
+    unsigned long id;
+    simmap::loadMap(base::string_format("%s/CircleR100.xodr", TRACKS_DIR).c_str(), id);
 
     // define track
-    std::vector<const char*> track = {"1", "-2"};
+    std::vector<const char *> track = {"1", "-2"};
 
     // loop to create agents
-    for(auto i = 0; i < n; ++i) {
+    for (auto i = 0; i < n; ++i) {
 
         // register agent
         unsigned int aid = i + 1;
@@ -72,7 +72,7 @@ TEST_F(SpeedTest, Targets) {
         double bkLen =  50.0;
 
         // set map position
-        simmap::setMapPosition(aid, pos, &frLen, &bkLen);
+        simmap::setMapPosition(aid, pos, frLen, bkLen);
 
     }
 
@@ -91,14 +91,14 @@ TEST_F(SpeedTest, Targets) {
 
             // get target information
             std::vector<simmap::TargetInformation> ti(nt);
-            simmap::targets(aid, ti.data(), &nt);
+            simmap::targets(aid, ti.data(), nt);
 
             // define path lengths
             double frLen = 200.0;
             double bkLen =  50.0;
 
             // move agent
-            simmap::move(aid, 5.0, 0.0, &frLen, &bkLen);
+            simmap::move(aid, 5.0, 0.0, frLen, bkLen);
 
         }
 

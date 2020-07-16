@@ -50,7 +50,7 @@
 namespace simmap {
 
     // typedefs
-    typedef unsigned int id_type_t;
+    typedef unsigned long id_type_t;
     typedef unsigned int err_type_t;
 
 
@@ -80,7 +80,7 @@ namespace simmap {
      * @param id ID of the segment
      * @return Error code (0 = no error)
      */
-    SHARED_EXPORT err_type_t loadMap(const char *filename, id_type_t *id);
+    SHARED_EXPORT err_type_t loadMap(const char *filename, id_type_t &id);
 
 
     /**
@@ -125,7 +125,7 @@ namespace simmap {
      * @param pos Position in global coordinates (will be updated)
      * @return Error code (0 = no error)
      */
-    SHARED_EXPORT err_type_t getPosition(id_type_t agentID, Position *pos);
+    SHARED_EXPORT err_type_t getPosition(id_type_t agentID, Position &pos);
 
 
     /**
@@ -136,7 +136,7 @@ namespace simmap {
      * @param lenBack Length to the back of the path (value is used for update)
      * @return Error code (0 = no error)
      */
-    SHARED_EXPORT err_type_t setMapPosition(id_type_t agentID, MapPosition mapPos, double *lenFront, double *lenBack);
+    SHARED_EXPORT err_type_t setMapPosition(id_type_t agentID, MapPosition mapPos, double &lenFront, double &lenBack);
 
 
     /**
@@ -145,7 +145,7 @@ namespace simmap {
      * @param mapPos Map position
      * @return Error code (0 = no error)
      */
-    SHARED_EXPORT err_type_t getMapPosition(id_type_t agentID, MapPosition *mapPos);
+    SHARED_EXPORT err_type_t getMapPosition(id_type_t agentID, MapPosition &mapPos);
 
 
     /**
@@ -156,7 +156,7 @@ namespace simmap {
      * @param mapPos New position in path
      * @return Error code (0 = no error)
      */
-    SHARED_EXPORT err_type_t match(id_type_t agentID, Position pos, double ds, MapPosition *mapPos);
+    SHARED_EXPORT err_type_t match(id_type_t agentID, Position pos, double ds, MapPosition &mapPos);
 
 
     /**
@@ -169,7 +169,7 @@ namespace simmap {
      * @return Error code (0 = no error)
      */
     SHARED_EXPORT err_type_t
-    move(id_type_t agentID, double distance, double lateralPosition, double *lenFront, double *lenBack);
+    move(id_type_t agentID, double distance, double lateralPosition, double &lenFront, double &lenBack);
 
 
     /**
@@ -189,7 +189,8 @@ namespace simmap {
      * @param n Number of grid points
      * @return Error code (0 = no error)
      */
-    SHARED_EXPORT err_type_t horizon(id_type_t agentID, const double *gridPoints, HorizonInformation *horizon, unsigned long n);
+    SHARED_EXPORT err_type_t
+    horizon(id_type_t agentID, const double *gridPoints, HorizonInformation *horizon, unsigned long n);
 
 
     /**
@@ -199,7 +200,7 @@ namespace simmap {
      * @param n Number of objects (pre-set for maximum number)
      * @return Error code (0 = no error)
      */
-    SHARED_EXPORT err_type_t objects(id_type_t agentID, ObjectInformation *obj, unsigned long *n);
+    SHARED_EXPORT err_type_t objects(id_type_t agentID, ObjectInformation *obj, unsigned long &n);
 
 
     /**
@@ -209,7 +210,7 @@ namespace simmap {
      * @param n Number of lanes (pre-set for maximum number)
      * @return Error code (0 = no error)
      */
-    SHARED_EXPORT err_type_t lanes(id_type_t agentID, LaneInformation *lanes, unsigned long *n);
+    SHARED_EXPORT err_type_t lanes(id_type_t agentID, LaneInformation *lanes, unsigned long &n);
 
 
     /**
@@ -219,7 +220,7 @@ namespace simmap {
      * @param n Number of targets (pre-set for maximum number)
      * @return Error code (0 = no error)
      */
-    SHARED_EXPORT err_type_t targets(id_type_t agentID, TargetInformation *targets, unsigned long *n);
+    SHARED_EXPORT err_type_t targets(id_type_t agentID, TargetInformation *targets, unsigned long &n);
 
 }
 

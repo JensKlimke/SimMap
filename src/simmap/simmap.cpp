@@ -228,13 +228,13 @@ namespace simmap {
     }
 
 
-    err_type_t loadMap(const char *filename, id_type_t *id) {
+    err_type_t loadMap(const char *filename, id_type_t &id) {
 
         const int ERR = 20;
 
         try {
 
-            *id = 0;
+            id = 0;
             simmap::odra::ODRAdapter *map;
 
             try {
@@ -270,7 +270,7 @@ namespace simmap {
             }
 
             // return segment id
-            *id = _seg_id_counter;
+            id = _seg_id_counter;
 
         } catch (const std::exception &e) {
             std::cerr << e.what() << std::endl;
@@ -445,7 +445,7 @@ namespace simmap {
     }
 
 
-    err_type_t getPosition(id_type_t agentID, Position *pos) {
+    err_type_t getPosition(id_type_t agentID, Position &pos) {
 
         const int ERR = 70;
 
@@ -466,11 +466,11 @@ namespace simmap {
             auto p = mc.absolutePosition();
 
             // save result
-            pos->x = p.position.x;
-            pos->y = p.position.y;
-            pos->z = p.position.z;
-            pos->phi = p.angle;
-            pos->kappa = p.curvature;
+            pos.x = p.position.x;
+            pos.y = p.position.y;
+            pos.z = p.position.z;
+            pos.phi = p.angle;
+            pos.kappa = p.curvature;
 
 
         } catch (const std::exception &e) {
@@ -483,7 +483,7 @@ namespace simmap {
     }
 
 
-    err_type_t setMapPosition(id_type_t agentID, MapPosition mapPos, double *lenFront, double *lenBack) {
+    err_type_t setMapPosition(id_type_t agentID, MapPosition mapPos, double &lenFront, double &lenBack) {
 
         const int ERR = 80;
 
@@ -504,11 +504,11 @@ namespace simmap {
             try {
 
                 // create path
-                Path::create(ag->path, ag->track, *lenFront, *lenBack, mc);
+                Path::create(ag->path, ag->track, lenFront, lenBack, mc);
 
                 // set lengths
-                *lenFront = ag->path.distanceToHead();
-                *lenBack = ag->path.distanceToBack();
+                lenFront = ag->path.distanceToHead();
+                lenBack = ag->path.distanceToBack();
 
             } catch (const std::exception &e) {
                 std::cerr << e.what() << std::endl;
@@ -526,7 +526,7 @@ namespace simmap {
     }
 
 
-    err_type_t getMapPosition(id_type_t agentID, MapPosition *mapPos) {
+    err_type_t getMapPosition(id_type_t agentID, MapPosition &mapPos) {
 
         const int ERR = 90;
 
@@ -542,9 +542,9 @@ namespace simmap {
             auto mc = ag->path.position();
 
             // copy position
-            mapPos->edgeID = mc.edge()->id().c_str();
-            mapPos->latPos = mc.d();
-            mapPos->longPos = mc.s();
+            mapPos.edgeID = mc.edge()->id().c_str();
+            mapPos.latPos = mc.d();
+            mapPos.longPos = mc.s();
 
         } catch (const std::exception &e) {
             std::cerr << e.what() << std::endl;
@@ -556,7 +556,7 @@ namespace simmap {
     }
 
 
-    err_type_t match(id_type_t agentID, Position pos, double ds, MapPosition *mapPos) {
+    err_type_t match(id_type_t agentID, Position pos, double ds, MapPosition &mapPos) {
 
         const int ERR = 100;
 
@@ -580,12 +580,12 @@ namespace simmap {
             auto edge = mc.edge();
 
             // save map position
-            mapPos->edgeID  = edge->id().c_str();
-            mapPos->longPos = mc.s();
+            mapPos.edgeID = edge->id().c_str();
+            mapPos.longPos = mc.s();
 
             // transform real position into matched positions cs
             auto loc = base::toLocal(mc.absolutePosition(), vec);
-            mapPos->latPos = loc.y;
+            mapPos.latPos = loc.y;
 
         } catch (const std::exception &e) {
             std::cerr << e.what() << std::endl;
@@ -597,7 +597,7 @@ namespace simmap {
     }
 
 
-    err_type_t move(id_type_t agentID, double distance, double lateralPosition, double *lenFront, double *lenBack) {
+    err_type_t move(id_type_t agentID, double distance, double lateralPosition, double &lenFront, double &lenBack) {
 
         const int ERR = 110;
 
@@ -626,7 +626,7 @@ namespace simmap {
             try {
 
                 // update path
-                ag->path.updatePath(*lenFront, *lenBack, ag->track);
+                ag->path.updatePath(lenFront, lenBack, ag->track);
 
             } catch (const std::exception &e) {
                 std::cerr << e.what() << std::endl;
@@ -634,8 +634,8 @@ namespace simmap {
             }
 
             // update lengths
-            *lenFront = ag->path.distanceToHead();
-            *lenBack = ag->path.distanceToBack();
+            lenFront = ag->path.distanceToHead();
+            lenBack = ag->path.distanceToBack();
 
 
         } catch (const std::exception &e) {
@@ -802,7 +802,7 @@ namespace simmap {
     }
 
 
-    err_type_t objects(id_type_t agentID, ObjectInformation *obj, unsigned long *n) {
+    err_type_t objects(id_type_t agentID, ObjectInformation *obj, unsigned long &n) {
 
         const int ERR = 130;
 
@@ -815,25 +815,25 @@ namespace simmap {
                 return ERR + err;
 
             // check n
-            if (*n == 0)
+            if (n == 0)
                 return ERR + 5;
 
             // copy n to store max
-            auto max = *n;
-            *n = 0;
+            auto max = n;
+            n = 0;
 
             // iterate over objects
             for (const auto &o : ag->path.objects()) {
 
-                auto object = dynamic_cast<const graph::Object*>(o.second);
+                auto object = dynamic_cast<const graph::Object *>(o.second);
                 auto t = _getObjectType(object);
 
-                obj[*n].id = object->getID().c_str();
-                obj[*n].distance = o.first;
-                obj[*n].type = t.first;
-                obj[*n].value = t.second;
+                obj[n].id = object->getID().c_str();
+                obj[n].distance = o.first;
+                obj[n].type = t.first;
+                obj[n].value = t.second;
 
-                if (++*n == max)
+                if (++n == max)
                     break;
 
             }
@@ -850,7 +850,7 @@ namespace simmap {
     }
 
 
-    err_type_t lanes(id_type_t agentID, LaneInformation *lanes, unsigned long *n) {
+    err_type_t lanes(id_type_t agentID, LaneInformation *lanes, unsigned long &n) {
 
         const int ERR = 140;
 
@@ -863,12 +863,12 @@ namespace simmap {
                 return ERR + err;
 
             // check n
-            if (*n == 0)
+            if (n == 0)
                 return ERR + 5;
 
             // copy n to store max
-            auto max = *n;
-            *n = 0;
+            auto max = n;
+            n = 0;
 
             // iterate over neighbors
             // TODO: save neighbored lanes to efficiently search for targets (recalculate intelligently on position update)
@@ -878,8 +878,8 @@ namespace simmap {
                 auto sd = p.first.sameDir;
 
                 // create lane information
-                lanes[*n] = LaneInformation{};
-                auto li = &lanes[*n];
+                lanes[n] = LaneInformation{};
+                auto li = &lanes[n];
 
                 // get edge
                 auto pos = p.second.position();
@@ -897,7 +897,7 @@ namespace simmap {
                 li->s  = pos.s();
 
                 // check length
-                if (++*n == max)
+                if (++n == max)
                     break;
 
             }
@@ -913,7 +913,7 @@ namespace simmap {
     }
 
 
-    err_type_t targets(id_type_t agentID, TargetInformation *targets, unsigned long *n) {
+    err_type_t targets(id_type_t agentID, TargetInformation *targets, unsigned long &n) {
 
         const int ERR = 150;
 
@@ -926,7 +926,7 @@ namespace simmap {
                 return ERR + err;
 
             // check n
-            if (*n == 0)
+            if (n == 0)
                 return ERR + 5;
 
 
@@ -949,8 +949,8 @@ namespace simmap {
 
 
             // copy n to store max
-            auto max = *n;
-            *n = 0;
+            auto max = n;
+            n = 0;
 
             // create target vector
             std::vector<TargetInformation> tars;
@@ -971,8 +971,8 @@ namespace simmap {
                  });
 
             // copy
-            *n = static_cast<unsigned long>(tars.size() > max ? max : tars.size());
-            for (size_t i = 0; i < *n; ++i)
+            n = static_cast<unsigned long>(tars.size() > max ? max : tars.size());
+            for (size_t i = 0; i < n; ++i)
                 targets[i] = tars.at(i);
 
 
