@@ -731,13 +731,13 @@ namespace simmap {
                 horizon[i].s = s;
 
                 // preset (in case it is aborted)
-                horizon[i].x          = 0.0;
-                horizon[i].y          = 0.0;
-                horizon[i].psi        = 0.0;
-                horizon[i].kappa      = 0.0;
-                horizon[i].laneWidth  = 0.0;
-                horizon[i].rightWidth = 0.0;
-                horizon[i].leftWidth  = 0.0;
+                horizon[i].x = 0.0;
+                horizon[i].y = 0.0;
+                horizon[i].psi = 0.0;
+                horizon[i].kappa = 0.0;
+                horizon[i].egoLaneWidth = 0.0;
+                horizon[i].rightLaneWidth = 0.0;
+                horizon[i].leftLaneWidth = 0.0;
 
                 // check if distance to head is reached
                 if (s > ag->path.distanceToHead()) {
@@ -779,15 +779,15 @@ namespace simmap {
                 }
 
                 // position angle and curvature
-                horizon[i].x     = mp.position.x;
-                horizon[i].y     = mp.position.y;
-                horizon[i].psi   = mp.angle;
+                horizon[i].x = mp.position.x;
+                horizon[i].y = mp.position.y;
+                horizon[i].psi = mp.angle;
                 horizon[i].kappa = mp.curvature;
 
                 // widths of lanes, TODO: move that paths
-                horizon[i].laneWidth  = mc.width();
-                horizon[i].rightWidth = mcr.outOfRoad() ? 0.0 : mcr.width();
-                horizon[i].leftWidth  = mcl.outOfRoad() ? 0.0 : mcl.width();
+                horizon[i].egoLaneWidth = mc.width();
+                horizon[i].rightLaneWidth = mcr.outOfRoad() ? 0.0 : mcr.width();
+                horizon[i].leftLaneWidth = mcl.outOfRoad() ? 0.0 : mcl.width();
 
             }
 

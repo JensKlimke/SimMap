@@ -73,14 +73,14 @@ namespace simmap {
 
     /** Struct to define a point in a virtual horizon */
     struct HorizonInformation {
-        double s;           /**< the longitudinal distance to the point */
-        double x;           /**< the x coordinate */
-        double y;           /**< the y coordinate */
-        double psi;         /**< the angle of the edge at the point */
-        double kappa;       /**< the curvature of the edge at the point */
-        double laneWidth;   /**< the width of the ego lane at the point */
-        double rightWidth;  /**< the width of the lane to the right at the point */
-        double leftWidth;   /**< the width of the lane to the left at the point */
+        double s;                /**< the longitudinal distance to the point */
+        double x;                /**< the x coordinate */
+        double y;                /**< the y coordinate */
+        double psi;              /**< the angle of the edge at the point */
+        double kappa;            /**< the curvature of the edge at the point */
+        double egoLaneWidth;     /**< the width of the ego lane at the point */
+        double rightLaneWidth;   /**< the width of the lane to the right at the point */
+        double leftLaneWidth;    /**< the width of the lane to the left at the point */
     };
 
 

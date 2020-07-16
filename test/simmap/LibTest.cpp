@@ -515,13 +515,13 @@ TEST_F(LibraryTest, MatchAndUpdatePosition) {
         double k0 = horData[0].kappa;
 
         EXPECT_DOUBLE_EQ(101.875, 1.0 / k0);
-        EXPECT_DOUBLE_EQ(3.75, horData[0].laneWidth);
-        EXPECT_DOUBLE_EQ(3.5,  horData[0].rightWidth);
-        EXPECT_DOUBLE_EQ(3.75, horData[0].leftWidth);
+        EXPECT_DOUBLE_EQ(3.75, horData[0].egoLaneWidth);
+        EXPECT_DOUBLE_EQ(3.5, horData[0].rightLaneWidth);
+        EXPECT_DOUBLE_EQ(3.75, horData[0].leftLaneWidth);
 
-        EXPECT_DOUBLE_EQ(3.75, horData[19].laneWidth);
-        EXPECT_DOUBLE_EQ(3.5,  horData[19].rightWidth);
-        EXPECT_DOUBLE_EQ(3.75, horData[19].leftWidth);
+        EXPECT_DOUBLE_EQ(3.75, horData[19].egoLaneWidth);
+        EXPECT_DOUBLE_EQ(3.5, horData[19].rightLaneWidth);
+        EXPECT_DOUBLE_EQ(3.75, horData[19].leftLaneWidth);
 
         // update position
         pos.x = x0 + ds * (x1 - x0) / dsh;

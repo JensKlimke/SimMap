@@ -16,7 +16,7 @@ RUN rm -rf /tmp/protobuf
 RUN cd /tmp &&  git clone --recurse-submodules -b v1.30.0 https://github.com/grpc/grpc
 RUN cd /tmp/grpc && mkdir -p cmake/build
 RUN cd /tmp/grpc/cmake/build && cmake -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/usr/local ../..
-RUN cd /tmp/grpc/cmake/build && make && make install && ldconfig
+RUN cd /tmp/grpc/cmake/build && make && make install
 RUN rm -rf /tmp/grpc
 
 # copy code

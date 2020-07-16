@@ -107,7 +107,7 @@ message AgentLane {
 
 message AgentGridPoints {
     AgentInstance agent = 1;
-    repeated double position = 2;
+    repeated double gridPoints = 2;
 }
 
 message Horizon {
@@ -115,15 +115,18 @@ message Horizon {
 }
 
 message ObjectList {
-    repeated ObjectInformation point = 1;
+    repeated ObjectInformation object = 1;
+    uint32 maxNoOfElements = 2;
 }
 
 message LaneList {
-    repeated LaneInformation point = 1;
+    repeated LaneInformation lane = 1;
+    uint32 maxNoOfElements = 2;
 }
 
 message TargetList {
-    repeated TargetInformation point = 1;
+    repeated TargetInformation target = 1;
+    uint32 maxNoOfElements = 2;
 }
 
 message Position {
@@ -147,9 +150,9 @@ message HorizonInformation {
     double y = 3;
     double psi = 4;
     double kappa = 5;
-    double laneWidth = 6;
-    double rightWidth = 7;
-    double leftWidth = 8;
+    double egoLaneWidth = 6;
+    double rightLaneWidth = 7;
+    double leftLaneWidth = 8;
 };
 
 

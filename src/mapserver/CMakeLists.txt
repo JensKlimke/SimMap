@@ -29,6 +29,7 @@ add_executable(mapserver
 target_link_libraries(mapserver PRIVATE
         ${Protobuf_LIBRARIES}
         ${gRPC_LIBRARIES}
+        simmap
         )
 
 # include directory

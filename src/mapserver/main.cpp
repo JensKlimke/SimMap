@@ -214,27 +214,160 @@ public:
     Status switchLane(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentLane *request,
                       ::simmap::agent_interface::Void *response) override {
 
+        // execute
+        if (simmap::switchLane(request->agent().id(), request->laneoffset()) != 0)
+            return Status::CANCELLED;
+
+        // ok
+        return Status::OK;
 
     }
 
     Status horizon(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentGridPoints *request,
                    ::simmap::agent_interface::Horizon *response) override {
-        return Service::horizon(context, request, response);
+
+        // prepare horizon
+        auto n = request->gridpoints_size();
+        simmap::HorizonInformation hor[n];
+
+        // execute
+        if (simmap::horizon(request->agent().id(), request->gridpoints().data(), hor, n) != 0)
+            return Status::CANCELLED;
+
+        // iterate over horizon points
+        for (int i = 0; i < n; ++i) {
+
+            // create point
+            auto pnt = response->add_point();
+
+            // set data
+            pnt->set_s(hor[i].s);
+            pnt->set_x(hor[i].x);
+            pnt->set_y(hor[i].y);
+            pnt->set_psi(hor[i].psi);
+            pnt->set_kappa(hor[i].kappa);
+            pnt->set_egolanewidth(hor[i].egoLaneWidth);
+            pnt->set_leftlanewidth(hor[i].leftLaneWidth);
+            pnt->set_rightlanewidth(hor[i].rightLaneWidth);
+
+        }
+
+        // ok
+        return Status::OK;
+
     }
 
     Status objects(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentInstance *request,
                    ::simmap::agent_interface::ObjectList *response) override {
-        return Service::objects(context, request, response);
+
+        // prepare object list
+        unsigned long n = response->maxnoofelements();
+        simmap::ObjectInformation objects[n];
+
+        // execute
+        if (simmap::objects(request->id(), objects, n) != 0)
+            return Status::CANCELLED;
+
+        // iterate over horizon points
+        for (int i = 0; i < n; ++i) {
+
+            // create point
+            auto obj = response->add_object();
+
+            // enum types
+            auto type = simmap::agent_interface::ObjectInformation_ObjectType_UNKNOWN;
+            if (objects[i].type == simmap::ObjectType::SPEED_LIMIT)
+                type = simmap::agent_interface::ObjectInformation_ObjectType_SPEED_LIMIT;
+            else if (objects[i].type == simmap::ObjectType::STOP_SIGN)
+                type = simmap::agent_interface::ObjectInformation_ObjectType_STOP_SIGN;
+
+            // set data
+            obj->set_id(objects[i].id);
+            obj->set_distance(objects[i].distance);
+            obj->set_type(type);
+            obj->set_value(objects[i].value);
+
+        }
+
+        // ok
+        return Status::OK;
+
     }
 
     Status lanes(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentInstance *request,
                  ::simmap::agent_interface::LaneList *response) override {
-        return Service::lanes(context, request, response);
+
+        // prepare lane list
+        unsigned long n = response->maxnoofelements();
+        simmap::LaneInformation lanes[n];
+
+        // execute
+        if (simmap::lanes(request->id(), lanes, n) != 0)
+            return Status::CANCELLED;
+
+        // iterate over horizon points
+        for (int i = 0; i < n; ++i) {
+
+            // create point
+            auto lane = response->add_lane();
+
+            // access
+            auto access = simmap::agent_interface::LaneInformation_Access_NOT_POSSIBLE;
+            if (lanes[i].access == simmap::Access::ALLOWED)
+                access = simmap::agent_interface::LaneInformation_Access_ALLOWED;
+            else if (lanes[i].access == simmap::Access::NOT_ALLOWED)
+                access = simmap::agent_interface::LaneInformation_Access_NOT_ALLOWED;
+
+            // direction
+            auto direction = simmap::agent_interface::LaneInformation_Direction_FORWARDS;
+            if (lanes[i].direction == simmap::Direction::BACKWARDS)
+                direction = simmap::agent_interface::LaneInformation_Direction_BACKWARDS;
+
+            // set data
+            lane->set_id(lanes[i].id);
+            lane->set_s(lanes[i].s);
+            lane->set_index(lanes[i].index);
+            lane->set_lengthontrack(lanes[i].lengthOnTrack);
+            lane->set_lengthtoclosed(lanes[i].lengthToClosed);
+            lane->set_access(access);
+
+        }
+
+        // ok
+        return Status::OK;
+
     }
 
     Status targets(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentInstance *request,
                    ::simmap::agent_interface::TargetList *response) override {
-        return Service::targets(context, request, response);
+
+        // prepare target list
+        unsigned long n = response->maxnoofelements();
+        simmap::TargetInformation targets[n];
+
+        // execute
+        if (simmap::targets(request->id(), targets, n) != 0)
+            return Status::CANCELLED;
+
+        // iterate over horizon points
+        for (int i = 0; i < n; ++i) {
+
+            // create point
+            auto target = response->add_target();
+
+            // set data
+            target->set_id(targets[i].id);
+            target->set_lane(targets[i].lane);
+            target->set_rel_pos_x(targets[i].x);
+            target->set_rel_pos_y(targets[i].y);
+            target->set_distance(targets[i].distance);
+            target->set_latoffset(targets[i].latOffset);
+
+        }
+
+        // ok
+        return Status::OK;
+
     }
 
 
