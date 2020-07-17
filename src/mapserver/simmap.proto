@@ -23,8 +23,9 @@
 
 syntax = "proto3";
 
-package simmap.agent_interface;
+package simmap.envrionment.manager;
 
+option csharp_namespace = "SimMap";
 
 service AgentEnvironmentServer {
 

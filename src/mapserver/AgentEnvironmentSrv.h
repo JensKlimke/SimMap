@@ -46,7 +46,7 @@ using grpc::Status;
 using std::chrono::system_clock;
 
 
-class AgentEnvironmentSrv final : public simmap::agent_interface::AgentEnvironmentServer::Service {
+class AgentEnvironmentSrv final : public simmap::envrionment::manager::AgentEnvironmentServer::Service {
 
     unsigned long map_id{};
 
@@ -75,8 +75,8 @@ public:
 
     }
 
-    Status registerAgent(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentMap *request,
-                         ::simmap::agent_interface::Void *response) override {
+    Status registerAgent(::grpc::ServerContext *context, const ::simmap::envrionment::manager::AgentMap *request,
+                         ::simmap::envrionment::manager::Void *response) override {
 
         // execute
         if (simmap::registerAgent(request->agent().id(), request->map().id()) != 0)
@@ -87,8 +87,8 @@ public:
 
     }
 
-    Status unregisterAgent(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentInstance *request,
-                           ::simmap::agent_interface::Void *response) override {
+    Status unregisterAgent(::grpc::ServerContext *context, const ::simmap::envrionment::manager::AgentInstance *request,
+                           ::simmap::envrionment::manager::Void *response) override {
 
         // execute
         if (simmap::unregisterAgent(request->id()) != 0)
@@ -99,8 +99,8 @@ public:
 
     }
 
-    Status setTrack(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentTrack *request,
-                    ::simmap::agent_interface::Void *response) override {
+    Status setTrack(::grpc::ServerContext *context, const ::simmap::envrionment::manager::AgentTrack *request,
+                    ::simmap::envrionment::manager::Void *response) override {
 
         // prepare track
         auto n = request->track().roads_size();
@@ -119,8 +119,8 @@ public:
 
     }
 
-    Status getPosition(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentInstance *request,
-                       ::simmap::agent_interface::Position *response) override {
+    Status getPosition(::grpc::ServerContext *context, const ::simmap::envrionment::manager::AgentInstance *request,
+                       ::simmap::envrionment::manager::Position *response) override {
 
         // prepare data
         simmap::Position pos{};
@@ -141,8 +141,9 @@ public:
 
     }
 
-    Status setMapPosition(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentMapPosition *request,
-                          ::simmap::agent_interface::TrackLengths *response) override {
+    Status
+    setMapPosition(::grpc::ServerContext *context, const ::simmap::envrionment::manager::AgentMapPosition *request,
+                   ::simmap::envrionment::manager::TrackLengths *response) override {
 
         // prepare map position
         simmap::MapPosition mapPos{};
@@ -166,8 +167,8 @@ public:
 
     }
 
-    Status getMapPosition(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentInstance *request,
-                          ::simmap::agent_interface::MapPosition *response) override {
+    Status getMapPosition(::grpc::ServerContext *context, const ::simmap::envrionment::manager::AgentInstance *request,
+                          ::simmap::envrionment::manager::MapPosition *response) override {
 
         // prepare map position
         simmap::MapPosition mapPos{};
@@ -186,8 +187,8 @@ public:
 
     }
 
-    Status match(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentPositionUpdate *request,
-                 ::simmap::agent_interface::MapPosition *response) override {
+    Status match(::grpc::ServerContext *context, const ::simmap::envrionment::manager::AgentPositionUpdate *request,
+                 ::simmap::envrionment::manager::MapPosition *response) override {
 
         // prepare input data
         simmap::Position pos{};
@@ -214,8 +215,8 @@ public:
 
     }
 
-    Status move(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentDisplacement *request,
-                ::simmap::agent_interface::TrackLengths *response) override {
+    Status move(::grpc::ServerContext *context, const ::simmap::envrionment::manager::AgentDisplacement *request,
+                ::simmap::envrionment::manager::TrackLengths *response) override {
 
         // variables
         double lenFront{}, lenBack{};
@@ -234,8 +235,8 @@ public:
 
     }
 
-    Status switchLane(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentLane *request,
-                      ::simmap::agent_interface::Void *response) override {
+    Status switchLane(::grpc::ServerContext *context, const ::simmap::envrionment::manager::AgentLane *request,
+                      ::simmap::envrionment::manager::Void *response) override {
 
         // execute
         if (simmap::switchLane(request->agent().id(), request->laneoffset()) != 0)
@@ -246,8 +247,8 @@ public:
 
     }
 
-    Status horizon(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentGridPoints *request,
-                   ::simmap::agent_interface::Horizon *response) override {
+    Status horizon(::grpc::ServerContext *context, const ::simmap::envrionment::manager::AgentGridPoints *request,
+                   ::simmap::envrionment::manager::Horizon *response) override {
 
         // prepare horizon
         auto n = request->gridpoints_size();
@@ -280,8 +281,11 @@ public:
 
     }
 
-    Status objects(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentInstance *request,
-                   ::simmap::agent_interface::ObjectList *response) override {
+    Status objects(::grpc::ServerContext *context, const ::simmap::envrionment::manager::AgentInstance *request,
+                   ::simmap::envrionment::manager::ObjectList *response) override {
+
+        // namespace
+        using namespace ::simmap::envrionment::manager;
 
         // prepare object list
         unsigned long n = response->maxnoofelements();
@@ -298,11 +302,11 @@ public:
             auto obj = response->add_object();
 
             // enum types
-            auto type = simmap::agent_interface::ObjectInformation_ObjectType_UNKNOWN;
+            auto type = ObjectInformation_ObjectType_UNKNOWN;
             if (objects[i].type == simmap::ObjectType::SPEED_LIMIT)
-                type = simmap::agent_interface::ObjectInformation_ObjectType_SPEED_LIMIT;
+                type = ObjectInformation_ObjectType_SPEED_LIMIT;
             else if (objects[i].type == simmap::ObjectType::STOP_SIGN)
-                type = simmap::agent_interface::ObjectInformation_ObjectType_STOP_SIGN;
+                type = ObjectInformation_ObjectType_STOP_SIGN;
 
             // set data
             obj->set_id(objects[i].id);
@@ -317,8 +321,11 @@ public:
 
     }
 
-    Status lanes(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentInstance *request,
-                 ::simmap::agent_interface::LaneList *response) override {
+    Status lanes(::grpc::ServerContext *context, const ::simmap::envrionment::manager::AgentInstance *request,
+                 ::simmap::envrionment::manager::LaneList *response) override {
+
+        // namespace
+        using namespace ::simmap::envrionment::manager;
 
         // prepare lane list
         unsigned long n = response->maxnoofelements();
@@ -335,16 +342,16 @@ public:
             auto lane = response->add_lane();
 
             // access
-            auto access = simmap::agent_interface::LaneInformation_Access_NOT_POSSIBLE;
+            auto access = LaneInformation_Access_NOT_POSSIBLE;
             if (lanes[i].access == simmap::Access::ALLOWED)
-                access = simmap::agent_interface::LaneInformation_Access_ALLOWED;
+                access = LaneInformation_Access_ALLOWED;
             else if (lanes[i].access == simmap::Access::NOT_ALLOWED)
-                access = simmap::agent_interface::LaneInformation_Access_NOT_ALLOWED;
+                access = LaneInformation_Access_NOT_ALLOWED;
 
             // direction
-            auto direction = simmap::agent_interface::LaneInformation_Direction_FORWARDS;
+            auto direction = LaneInformation_Direction_FORWARDS;
             if (lanes[i].direction == simmap::Direction::BACKWARDS)
-                direction = simmap::agent_interface::LaneInformation_Direction_BACKWARDS;
+                direction = LaneInformation_Direction_BACKWARDS;
 
             // set data
             lane->set_id(lanes[i].id);
@@ -353,6 +360,7 @@ public:
             lane->set_lengthontrack(lanes[i].lengthOnTrack);
             lane->set_lengthtoclosed(lanes[i].lengthToClosed);
             lane->set_access(access);
+            lane->set_direction(direction);
 
         }
 
@@ -361,8 +369,8 @@ public:
 
     }
 
-    Status targets(::grpc::ServerContext *context, const ::simmap::agent_interface::AgentInstance *request,
-                   ::simmap::agent_interface::TargetList *response) override {
+    Status targets(::grpc::ServerContext *context, const ::simmap::envrionment::manager::AgentInstance *request,
+                   ::simmap::envrionment::manager::TargetList *response) override {
 
         // prepare target list
         unsigned long n = response->maxnoofelements();
